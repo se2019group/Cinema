@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,7 +32,33 @@ public class TicketServiceImpl implements TicketService {
     @Override
     @Transactional
     public ResponseVO addTicket(TicketForm ticketForm) {
-        return null;
+    	try {
+    		List<Ticket> tickets=new ArrayList<Ticket>();
+    		int userId=ticketForm.getUserId();
+    		int scheduleId=ticketForm.getScheduleId();
+    		List<SeatForm> seats=ticketForm.getSeats();
+    		int i;
+    		Ticket ticket;
+    		
+    		i=0;
+    		while(i<seats.size()) {
+    			ticket=new Ticket();
+    			ticket.setUserId(userId);
+    			ticket.setScheduleId(scheduleId);
+    			ticket.setColumnIndex(seats.get(i).getColumnIndex());
+    			ticket.setRowIndex(seats.get(i).getRowIndex());
+    			ticket.setState(0);//状态为未完成
+    			ticket.setTime(new Timestamp(System.currentTimeMillis()));
+    			
+    			tickets.add(ticket);
+    			i+=1;
+    		}
+    		
+    		return ResponseVO.buildSuccess(ticketMapper.insertTickets(tickets));
+    	}catch (Exception e) {
+            e.printStackTrace();
+            return ResponseVO.buildFailure("失败");
+        }
     }
 
     @Override
