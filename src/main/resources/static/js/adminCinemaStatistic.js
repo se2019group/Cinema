@@ -151,6 +151,18 @@ $(document).ready(function() {
 
     function getPlacingRate() {
         // todo
+        getRequest(
+            'statistics/PlacingRate',
+            function(res){
+                var data = res.content||[];
+                var tableData = data.map(function (item) {
+                    return {
+                        value: item.time,
+                        name: item.name
+                    };
+                });
+            }
+        )
     }
 
     function getPolularMovie() {

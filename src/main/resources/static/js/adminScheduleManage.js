@@ -135,12 +135,12 @@ $(document).ready(function() {
         //todo 需要做一下表单验证？
         var reNum = /^[1-9][0-9]*$/
         if(!reNum.test(form['fare'])) {
-            alert("錯誤的票價")
+            alert("错误的票价")
             return
         }
 
         if(form['startTime']=="" || form['endTime']=="" || form['fare']==""){
-            alert("沒有填完整");
+            alert("没有填完整");
             return
         }
 
@@ -171,6 +171,15 @@ $(document).ready(function() {
             fare: $("#schedule-edit-price-input").val()
         };
         //todo 需要做一下表单验证？
+        var reNum = /^[1-9][0-9]*$/
+        if(!reNum.test(form['fare'])) {
+            alert("錯誤的票價")
+            return
+        }
+        if(form['startTime']=="" || form['endTime']=="" || form['fare']==""){
+            alert("沒有填完整");
+            return
+        }
         postRequest(
             '/schedule/update',
             form,
