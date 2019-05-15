@@ -1,11 +1,11 @@
 package com.example.cinema.blImpl.sales;
 
-import com.example.cinema.bl.promotion.ActivityService;
-import com.example.cinema.bl.promotion.CouponService;
+import com.example.cinema.bl.promotion.*;
 import com.example.cinema.bl.sales.TicketService;
 import com.example.cinema.blImpl.management.hall.HallServiceForBl;
 import com.example.cinema.blImpl.management.schedule.ScheduleServiceForBl;
 import com.example.cinema.blImpl.promotion.CouponServiceImpl;
+import com.example.cinema.data.management.MovieMapper;
 import com.example.cinema.data.promotion.ActivityMapper;
 import com.example.cinema.data.promotion.CouponMapper;
 import com.example.cinema.data.sales.TicketMapper;
@@ -14,6 +14,7 @@ import com.example.cinema.po.Coupon;
 import com.example.cinema.po.Hall;
 import com.example.cinema.po.ScheduleItem;
 import com.example.cinema.po.Ticket;
+import com.example.cinema.po.VIPCard;
 import com.example.cinema.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,10 @@ public class TicketServiceImpl implements TicketService {
     CouponMapper couponMapper;
     @Autowired
     ActivityMapper activityMapper;
+    @Autowired
+    MovieMapper movieMapper;
+    @Autowired
+    VIPService vipService;
     
     @Override
     @Transactional
@@ -114,11 +119,20 @@ public class TicketServiceImpl implements TicketService {
             while(i<activities.size()) {
             	j=0;
             	while(j<id.size()) {
-            		
+            		if(activities.get(i).getMovieList().contains(movieMapper.selectMovieById(id.get(j)))) {
+            			break;
+            		}
+            		j+=1;
             	}
+            	
+            	if(j!=id.size()) {
+            		coupons.add(activities.get(i).getCoupon());
+            	}
+            	i+=1;
             }
+            ticketWithCouponVO.setCoupons(coupons);
             
-            return null;
+            return ResponseVO.buildSuccess(ticketWithCouponVO);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseVO.buildFailure("失败");
@@ -158,7 +172,60 @@ public class TicketServiceImpl implements TicketService {
     @Override
     @Transactional
     public ResponseVO completeByVIPCard(List<Integer> id, int couponId) {
-        return null;
+    	try {
+            double sumFare;
+            Ticket ticket;
+            ScheduleItem scheduleItem;
+            int i,j;
+            TicketWithCouponVO ticketWithCouponVO=new TicketWithCouponVO();
+            List<Coupon> coupons=new ArrayList<Coupon>();
+            List<TicketVO> ticketVOList=new ArrayList<TicketVO>();
+            List<Activity> activities=activityMapper.selectActivities();
+            ticketWithCouponVO.setActivities(activities);
+            VIPCard vipCard;
+            
+            //得到电影票的总价并将会员卡扣费
+            i=0;
+            sumFare=0;
+            while(i<id.size()) {
+            	ticket=ticketMapper.selectTicketById(id.get(i));
+            	ticketVOList.add(ticket.getVO());
+            	scheduleItem=scheduleService.getScheduleItemById(ticket.getScheduleId());
+            	sumFare+=scheduleItem.getFare();
+            	vipCard=(VIPCard)vipService.getCardByUserId(ticket.getUserId()).getContent();
+            	if(vipCard.getBalance()<scheduleItem.getFare()) {
+            		return ResponseVO.buildFailure("余额不足！");
+            	}
+            	vipCard.setBalance(vipCard.getBalance()-scheduleItem.getFare());
+            	
+            	i+=1;
+            }
+            ticketWithCouponVO.setTotal(sumFare);
+            ticketWithCouponVO.setTicketVOList(ticketVOList);
+            
+            //根据优惠策略生成优惠券
+            i=0;
+            while(i<activities.size()) {
+            	j=0;
+            	while(j<id.size()) {
+            		if(activities.get(i).getMovieList().contains(movieMapper.selectMovieById(id.get(j)))) {
+            			break;
+            		}
+            		j+=1;
+            	}
+            	
+            	if(j!=id.size()) {
+            		coupons.add(activities.get(i).getCoupon());
+            	}
+            	i+=1;
+            }
+            ticketWithCouponVO.setCoupons(coupons);
+            
+            return ResponseVO.buildSuccess(ticketWithCouponVO);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseVO.buildFailure("失败");
+        }
     }
 
     @Override
