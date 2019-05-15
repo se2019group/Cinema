@@ -1,9 +1,16 @@
 package com.example.cinema.blImpl.sales;
 
+import com.example.cinema.bl.promotion.ActivityService;
+import com.example.cinema.bl.promotion.CouponService;
 import com.example.cinema.bl.sales.TicketService;
 import com.example.cinema.blImpl.management.hall.HallServiceForBl;
 import com.example.cinema.blImpl.management.schedule.ScheduleServiceForBl;
+import com.example.cinema.blImpl.promotion.CouponServiceImpl;
+import com.example.cinema.data.promotion.ActivityMapper;
+import com.example.cinema.data.promotion.CouponMapper;
 import com.example.cinema.data.sales.TicketMapper;
+import com.example.cinema.po.Activity;
+import com.example.cinema.po.Coupon;
 import com.example.cinema.po.Hall;
 import com.example.cinema.po.ScheduleItem;
 import com.example.cinema.po.Ticket;
@@ -28,7 +35,11 @@ public class TicketServiceImpl implements TicketService {
     ScheduleServiceForBl scheduleService;
     @Autowired
     HallServiceForBl hallService;
-
+    @Autowired
+    CouponMapper couponMapper;
+    @Autowired
+    ActivityMapper activityMapper;
+    
     @Override
     @Transactional
     public ResponseVO addTicket(TicketForm ticketForm) {
@@ -64,7 +75,54 @@ public class TicketServiceImpl implements TicketService {
     @Override
     @Transactional
     public ResponseVO completeTicket(List<Integer> id, int couponId) {
-        return null;
+    	try {
+            double sumFare;
+            Ticket ticket;
+            ScheduleItem scheduleItem;
+            int i,j;
+            TicketWithCouponVO ticketWithCouponVO=new TicketWithCouponVO();
+            Timestamp now=new Timestamp(System.currentTimeMillis());
+            Coupon coupon=couponMapper.selectById(couponId);
+            List<Coupon> coupons=new ArrayList<Coupon>();
+            List<TicketVO> ticketVOList=new ArrayList<TicketVO>();
+            List<Activity> activities=activityMapper.selectActivities();
+            ticketWithCouponVO.setActivities(activities);
+            
+            //得到电影票的总价
+            i=0;
+            sumFare=0;
+            while(i<id.size()) {
+            	ticket=ticketMapper.selectTicketById(id.get(i));
+            	ticketVOList.add(ticket.getVO());
+            	scheduleItem=scheduleService.getScheduleItemById(ticket.getScheduleId());
+            	sumFare+=scheduleItem.getFare();
+            	i+=1;
+            }
+            
+            //检验优惠券是否可以使用
+            if(coupon.getStartTime().before(now) && now.before(coupon.getEndTime())
+            		&& sumFare>=coupon.getTargetAmount()) {
+            	ticketWithCouponVO.setTotal(sumFare-coupon.getDiscountAmount());
+            }
+            else {
+            	ticketWithCouponVO.setTotal(sumFare);
+            }
+            ticketWithCouponVO.setTicketVOList(ticketVOList);
+            
+            //根据优惠策略生成优惠券
+            i=0;
+            while(i<activities.size()) {
+            	j=0;
+            	while(j<id.size()) {
+            		
+            	}
+            }
+            
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseVO.buildFailure("失败");
+        }
     }
 
     @Override
@@ -89,8 +147,12 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public ResponseVO getTicketByUser(int userId) {
-        return null;
-
+    	 try {
+             return ResponseVO.buildSuccess(ticketMapper.selectTicketByUser(userId));
+         } catch (Exception e) {
+             e.printStackTrace();
+             return ResponseVO.buildFailure("失败");
+         }
     }
 
     @Override
@@ -101,9 +163,22 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public ResponseVO cancelTicket(List<Integer> id) {
-        return null;
+    	try {
+    		int i;
+            Ticket ticket;
+            
+            i=0;
+            while(i<id.size()) {
+            	if(ticketMapper.selectTicketById(id.get(i)).getState()==0) {
+            		ticketMapper.updateTicketState(id.get(i), 1);;//将票的状态设置成“已完成”
+            	}
+            	i+=1;
+            }
+            return ResponseVO.buildSuccess();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseVO.buildFailure("失败");
+        }
+    	
     }
-
-
-
 }
