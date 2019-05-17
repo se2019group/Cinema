@@ -1,14 +1,21 @@
 package com.example.cinema.blImpl.statistics;
 
 import com.example.cinema.bl.statistics.StatisticsService;
+import com.example.cinema.data.management.HallMapper;
+import com.example.cinema.data.management.MovieMapper;
+import com.example.cinema.data.management.ScheduleMapper;
+import com.example.cinema.data.sales.TicketMapper;
 import com.example.cinema.data.statistics.StatisticsMapper;
 import com.example.cinema.po.AudiencePrice;
+import com.example.cinema.po.Hall;
+import com.example.cinema.po.Movie;
 import com.example.cinema.po.MovieScheduleTime;
 import com.example.cinema.po.MovieTotalBoxOffice;
 import com.example.cinema.po.ScheduleItem;
 import com.example.cinema.vo.AudiencePriceVO;
 import com.example.cinema.vo.MovieScheduleTimeVO;
 import com.example.cinema.vo.MovieTotalBoxOfficeVO;
+import com.example.cinema.vo.RelativeRatesVO;
 import com.example.cinema.vo.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +35,15 @@ import java.util.List;
 public class StatisticsServiceImpl implements StatisticsService {
     @Autowired
     private StatisticsMapper statisticsMapper;
+    @Autowired
+    private MovieMapper movieMapper;
+    @Autowired
+    private ScheduleMapper scheduleMapper;
+    @Autowired
+    private TicketMapper ticketMapper;
+    @Autowired
+    private HallMapper hallMapper;
+    
     @Override
     public ResponseVO getScheduleRateByDate(Date date) {
         try{
@@ -82,8 +98,44 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     @Override
     public ResponseVO getMoviePlacingRateByDate(Date date) {
-        //要求见接口说明
-        return null;
+    	try {
+            int i,j,ticketNum,seatNum;
+            List<Movie> movies=movieMapper.selectAllMovie();
+            double[] rates=new double[movies.size()];
+            RelativeRatesVO relativeRatesVO=new RelativeRatesVO();
+            relativeRatesVO.setMovies(movies);
+            List<ScheduleItem> scheduleItems;
+            List<Hall> halls;
+            
+            //计算总的座位数
+            i=0;
+            seatNum=0;
+            halls=hallMapper.selectAllHall();
+            while(i<halls.size()) {
+            	seatNum+=(halls.get(i).getColumn()*halls.get(i).getRow());
+            	i+=1;
+            }
+            
+            i=0;
+            while(i<movies.size()) {
+            	scheduleItems=scheduleMapper.selectScheduleByMovieIDAndDate(movies.get(i).getId(), date);
+            	j=0;
+            	ticketNum=0;
+            	while(j<scheduleItems.size()) {
+            		ticketNum+=ticketMapper.selectTicketsBySchedule(scheduleItems.get(j).getId()).size();
+            		j+=1;
+            	}
+            	
+            	rates[i]=ticketNum/(seatNum*scheduleItems.size());
+            	i+=1;
+            }
+            relativeRatesVO.setRates(rates);
+            
+            return ResponseVO.buildSuccess(relativeRatesVO);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseVO.buildFailure("失败");
+        }
     }
 
     @Override
