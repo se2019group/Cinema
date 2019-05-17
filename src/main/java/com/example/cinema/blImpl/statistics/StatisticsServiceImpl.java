@@ -5,6 +5,7 @@ import com.example.cinema.data.statistics.StatisticsMapper;
 import com.example.cinema.po.AudiencePrice;
 import com.example.cinema.po.MovieScheduleTime;
 import com.example.cinema.po.MovieTotalBoxOffice;
+import com.example.cinema.po.ScheduleItem;
 import com.example.cinema.vo.AudiencePriceVO;
 import com.example.cinema.vo.MovieScheduleTimeVO;
 import com.example.cinema.vo.MovieTotalBoxOfficeVO;
@@ -12,6 +13,7 @@ import com.example.cinema.vo.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -86,8 +88,26 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     @Override
     public ResponseVO getPopularMovies(int days, int movieNum) {
-        //要求见接口说明
-        return null;
+        try {
+            // 处理查询表单的起止时间
+            Date startDate=new Date();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            startDate = simpleDateFormat.parse(simpleDateFormat.format(startDate));
+            Date endDate = getNumDayBeforeDate(startDate, days);
+            List<MovieTotalBoxOffice>  PopularMovies= new ArrayList<>();
+            PopularMovies=statisticsMapper.selectMovieTotalBoxOfficeByDate(startDate,endDate);
+            List<MovieTotalBoxOffice>  PopularMoviesRank= new ArrayList<>();
+            int i=0;
+                for(MovieTotalBoxOffice movie : PopularMovies) {
+                    if (i < movieNum){
+                        PopularMoviesRank.add( movie );
+                    i++;}
+                }
+            return  ResponseVO.buildSuccess(PopularMoviesRank);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return ResponseVO.buildFailure("失败");
+        }
     }
 
 
@@ -103,7 +123,19 @@ public class StatisticsServiceImpl implements StatisticsService {
         calendarTime.add(Calendar.DAY_OF_YEAR, num);
         return calendarTime.getTime();
     }
-
+    /**
+     * 获得num天前的日期
+     * @param oldDate
+     * @param num
+     * @return
+     */
+    Date getNumDayBeforeDate(Date oldDate, int num){
+        num=(num-1)*-1;
+        Calendar calendarTime = Calendar.getInstance();
+        calendarTime.setTime(oldDate);
+        calendarTime.add(Calendar.DAY_OF_YEAR, num);
+        return calendarTime.getTime();
+    }
 
 
     private List<MovieScheduleTimeVO> movieScheduleTimeList2MovieScheduleTimeVOList(List<MovieScheduleTime> movieScheduleTimeList){

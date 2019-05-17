@@ -27,6 +27,11 @@ public interface StatisticsMapper {
      * @return
      */
     List<MovieTotalBoxOffice> selectMovieTotalBoxOffice();
+    /**
+     * 查询所有电影的总票房（包括已经下架的，降序排列）
+     * @return
+     */
+    List<MovieTotalBoxOffice> selectMovieTotalBoxOfficeByDate(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
     /**
      * 查询某天每个客户的购票金额

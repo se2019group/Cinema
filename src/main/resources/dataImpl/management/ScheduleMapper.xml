@@ -88,6 +88,10 @@
             order by end_time asc
     </select>
 
+    <select id="selectScheduleByMovieIDAndDate" resultMap="ScheduleItem" parameterType="java.util.List">
+        select * from schedule where movie_id = #{movieId} and convert(char(10),start_time,120) =#{date}
+    </select>
+
     <resultMap id="ScheduleItem" type="com.example.cinema.po.ScheduleItem">
         <id column="id" property="id"></id>
         <result column="hall_id" property="hallId"></result>

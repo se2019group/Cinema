@@ -8,6 +8,7 @@ import com.example.cinema.blImpl.promotion.CouponServiceImpl;
 import com.example.cinema.data.management.MovieMapper;
 import com.example.cinema.data.promotion.ActivityMapper;
 import com.example.cinema.data.promotion.CouponMapper;
+import com.example.cinema.data.promotion.VIPCardMapper;
 import com.example.cinema.data.sales.TicketMapper;
 import com.example.cinema.po.Activity;
 import com.example.cinema.po.Coupon;
@@ -43,7 +44,7 @@ public class TicketServiceImpl implements TicketService {
     @Autowired
     MovieMapper movieMapper;
     @Autowired
-    VIPService vipService;
+    VIPCardMapper vipCardMapper;
     
     @Override
     @Transactional
@@ -69,8 +70,8 @@ public class TicketServiceImpl implements TicketService {
     			tickets.add(ticket);
     			i+=1;
     		}
-    		
-    		return ResponseVO.buildSuccess(ticketMapper.insertTickets(tickets));
+    		ticketMapper.insertTickets(tickets);
+    		return ResponseVO.buildSuccess(tickets);
     	}catch (Exception e) {
             e.printStackTrace();
             return ResponseVO.buildFailure("失败");
@@ -182,9 +183,15 @@ public class TicketServiceImpl implements TicketService {
             List<TicketVO> ticketVOList=new ArrayList<TicketVO>();
             List<Activity> activities=activityMapper.selectActivities();
             ticketWithCouponVO.setActivities(activities);
-            VIPCard vipCard;
+            VIPCard vipCard=vipCardMapper.selectCardByUserId(ticketMapper.selectTicketById(id.get(0)).getUserId());
+            Coupon coupon=couponMapper.selectById(couponId);
+            Timestamp now=new Timestamp(System.currentTimeMillis());
             
-            //得到电影票的总价并将会员卡扣费
+            if(vipCard==null) {
+        		return ResponseVO.buildFailure("会员卡不存在！");
+        	}
+            
+            //得到电影票的总价
             i=0;
             sumFare=0;
             while(i<id.size()) {
@@ -192,16 +199,24 @@ public class TicketServiceImpl implements TicketService {
             	ticketVOList.add(ticket.getVO());
             	scheduleItem=scheduleService.getScheduleItemById(ticket.getScheduleId());
             	sumFare+=scheduleItem.getFare();
-            	vipCard=(VIPCard)vipService.getCardByUserId(ticket.getUserId()).getContent();
-            	if(vipCard.getBalance()<scheduleItem.getFare()) {
-            		return ResponseVO.buildFailure("余额不足！");
-            	}
-            	vipCard.setBalance(vipCard.getBalance()-scheduleItem.getFare());
             	
             	i+=1;
             }
-            ticketWithCouponVO.setTotal(sumFare);
             ticketWithCouponVO.setTicketVOList(ticketVOList);
+            
+            //检验优惠券
+            if(coupon.getStartTime().before(now) && now.before(coupon.getEndTime()) && sumFare>=coupon.getTargetAmount()) {
+            	sumFare-=coupon.getDiscountAmount();
+            }
+            ticketWithCouponVO.setTotal(sumFare);
+            
+            //会员卡扣款
+            if(vipCard.getBalance()<sumFare) {
+            	return ResponseVO.buildFailure("余额不足！");
+            }
+            else {
+            	vipCardMapper.updateCardBalance(vipCard.getId(), vipCard.getBalance()-sumFare);
+            }
             
             //根据优惠策略生成优惠券
             i=0;
@@ -236,8 +251,9 @@ public class TicketServiceImpl implements TicketService {
             
             i=0;
             while(i<id.size()) {
-            	if(ticketMapper.selectTicketById(id.get(i)).getState()==0) {
-            		ticketMapper.updateTicketState(id.get(i), 1);;//将票的状态设置成“已完成”
+            	ticket=ticketMapper.selectTicketById(id.get(i));
+            	if(ticket!=null && (ticket.getState()==0 || ticket.getState()==1)) {
+            		ticketMapper.updateTicketState(id.get(i), 2);//将票的状态设置成“已失效”
             	}
             	i+=1;
             }
