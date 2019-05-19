@@ -111,6 +111,6 @@ public interface ScheduleMapper {
      */
     List<ScheduleItem> selectScheduleByMovieId(@Param("movieId") int movieId);
 
-    List<ScheduleItem> selectScheduleByMovieIDAndDate(@Param("movieId") int movieId,Date date);
+
 
 }
