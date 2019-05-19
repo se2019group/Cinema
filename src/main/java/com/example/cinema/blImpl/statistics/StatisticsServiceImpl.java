@@ -106,8 +106,10 @@ public class StatisticsServiceImpl implements StatisticsService {
             relativeRatesVO.setMovies(movies);
             List<ScheduleItem> scheduleItems;
             List<Hall> halls;
-            
-            //计算总的座位数
+            Date requireDate;
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            date = simpleDateFormat.parse(simpleDateFormat.format(date));
+
             i=0;
             seatNum=0;
             halls=hallMapper.selectAllHall();
@@ -118,15 +120,19 @@ public class StatisticsServiceImpl implements StatisticsService {
             
             i=0;
             while(i<movies.size()) {
-            	scheduleItems=scheduleMapper.selectScheduleByMovieIDAndDate(movies.get(i).getId(), date);
+            	scheduleItems=scheduleMapper.selectScheduleByMovieId(movies.get(i).getId());
             	j=0;
             	ticketNum=0;
             	while(j<scheduleItems.size()) {
-            		ticketNum+=ticketMapper.selectTicketsBySchedule(scheduleItems.get(j).getId()).size();
+                    requireDate=simpleDateFormat.parse(simpleDateFormat.format(scheduleItems.get(j).getStartTime()));
+            	    if(date==requireDate)
+            		    ticketNum+=ticketMapper.selectTicketsBySchedule(scheduleItems.get(j).getId()).size();
             		j+=1;
             	}
-            	
-            	rates[i]=ticketNum/(seatNum*scheduleItems.size());
+            	if(seatNum*scheduleItems.size()!=0)
+            	    rates[i]=ticketNum/(seatNum*scheduleItems.size());
+            	else
+            	    rates[i]=0;
             	i+=1;
             }
             relativeRatesVO.setRates(rates);
