@@ -187,5 +187,41 @@ $(document).ready(function () {
 
     function getPolularMovie() {
         // todo
+        var days = 7;
+        var movieNum=7;
+        getRequest(
+            `/statistics/popular/movie?days=${days}&&movieNum=${movieNum}`,
+            function (res) {
+                var data = res.content || [];
+                var tableData = data.map(function (item) {
+                    return item.boxOffice;
+                });
+                var nameList = data.map(function (item) {
+                    return item.name;
+                });
+                var option = {
+                    title: {
+                        text: '最受欢迎',
+                        x: 'center'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: nameList
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [{
+                        data: tableData,
+                        type: 'bar'
+                    }]
+                };
+                var scheduleRateChart = echarts.init($("#popular-movie-container")[0]);
+                scheduleRateChart.setOption(option);
+            },
+            function (error) {
+                alert(JSON.stringify(error));
+            }
+        )
     }
 });
