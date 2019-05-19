@@ -1,8 +1,8 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
 
     getScheduleRate();
-    
+
     getBoxOffice();
 
     getAudiencePrice();
@@ -16,53 +16,53 @@ $(document).ready(function() {
         getRequest(
             '/statistics/scheduleRate',
             function (res) {
-                var data = res.content||[];
+                var data = res.content || [];
                 var tableData = data.map(function (item) {
-                   return {
-                       value: item.time,
-                       name: item.name
-                   };
+                    return {
+                        value: item.time,
+                        name: item.name
+                    };
                 });
                 var nameList = data.map(function (item) {
                     return item.name;
                 });
                 var option = {
-                    title : {
+                    title: {
                         text: '今日排片率',
                         subtext: new Date().toLocaleDateString(),
-                        x:'center'
+                        x: 'center'
                     },
-                    tooltip : {
+                    tooltip: {
                         trigger: 'item',
                         formatter: "{a} <br/>{b} : {c} ({d}%)"
                     },
                     legend: {
-                        x : 'center',
-                        y : 'bottom',
-                        data:nameList
+                        x: 'center',
+                        y: 'bottom',
+                        data: nameList
                     },
                     toolbox: {
-                        show : true,
-                        feature : {
-                            mark : {show: true},
-                            dataView : {show: true, readOnly: false},
-                            magicType : {
+                        show: true,
+                        feature: {
+                            mark: {show: true},
+                            dataView: {show: true, readOnly: false},
+                            magicType: {
                                 show: true,
                                 type: ['pie', 'funnel']
                             },
-                            restore : {show: true},
-                            saveAsImage : {show: true}
+                            restore: {show: true},
+                            saveAsImage: {show: true}
                         }
                     },
-                    calculable : true,
-                    series : [
+                    calculable: true,
+                    series: [
                         {
-                            name:'面积模式',
-                            type:'pie',
-                            radius : [30, 110],
-                            center : ['50%', '50%'],
-                            roseType : 'area',
-                            data:tableData
+                            name: '面积模式',
+                            type: 'pie',
+                            radius: [30, 110],
+                            center: ['50%', '50%'],
+                            roseType: 'area',
+                            data: tableData
                         }
                     ]
                 };
@@ -88,10 +88,10 @@ $(document).ready(function() {
                     return item.name;
                 });
                 var option = {
-                    title : {
+                    title: {
                         text: '所有电影票房',
-                        subtext: '截止至'+new Date().toLocaleDateString(),
-                        x:'center'
+                        subtext: '截止至' + new Date().toLocaleDateString(),
+                        x: 'center'
                     },
                     xAxis: {
                         type: 'category',
@@ -125,9 +125,9 @@ $(document).ready(function() {
                     return formatDate(new Date(item.date));
                 });
                 var option = {
-                    title : {
+                    title: {
                         text: '每日客单价',
-                        x:'center'
+                        x: 'center'
                     },
                     xAxis: {
                         type: 'category',
@@ -151,16 +151,36 @@ $(document).ready(function() {
 
     function getPlacingRate() {
         // todo
+        var date = new Date()
         getRequest(
-            'statistics/PlacingRate',
-            function(res){
-                var data = res.content||[];
-                var tableData = data.map(function (item) {
-                    return {
-                        value: item.time,
-                        name: item.name
-                    };
-                });
+            `/statistics/PlacingRate?date=${date.toLocaleDateString()}`,
+            function (res) {
+                var data = res.content || [];
+                var tableData = data.rates;
+                var nameList = data.movies;
+                var option = {
+                    title: {
+                        text: '所有电影排片率',
+                        subtext: '截止至' + date.toLocaleDateString(),
+                        x: 'center'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: nameList
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [{
+                        data: tableData,
+                        type: 'bar'
+                    }]
+                };
+                var scheduleRateChart = echarts.init($("#place-rate-container")[0]);
+                scheduleRateChart.setOption(option);
+            },
+            function (error) {
+                alert(JSON.stringify(error));
             }
         )
     }
