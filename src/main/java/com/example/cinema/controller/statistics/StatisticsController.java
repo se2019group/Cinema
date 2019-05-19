@@ -34,7 +34,7 @@ public class StatisticsController {
     }
 
     @RequestMapping(value = "statistics/PlacingRate", method = RequestMethod.GET)
-    public ResponseVO getMoviePlacingRateByDate(@RequestParam @DateTimeFormat(pattern = "yyyy/MM/dd") Date date){
+    public ResponseVO getMoviePlacingRateByDate(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date date){
         return statisticsService.getMoviePlacingRateByDate(date);
     }
 

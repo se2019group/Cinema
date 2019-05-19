@@ -153,7 +153,7 @@ $(document).ready(function () {
         // todo
         var date = new Date()
         getRequest(
-            `/statistics/PlacingRate?date=${date.toLocaleDateString()}`,
+            `/statistics/PlacingRate?date=${date.toISOString().split("T")[0]}`,
             function (res) {
                 var data = res.content || [];
                 var tableData = data.rates;
