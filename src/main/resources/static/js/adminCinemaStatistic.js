@@ -151,38 +151,6 @@ $(document).ready(function () {
 
     function getPlacingRate() {
         // todo
-        var date = new Date()
-        getRequest(
-            `/statistics/PlacingRate?date=${date.toISOString().split("T")[0]}`,
-            function (res) {
-                var data = res.content || [];
-                var tableData = data.rates;
-                var nameList = data.movies;
-                var option = {
-                    title: {
-                        text: '所有电影排片率',
-                        subtext: '截止至' + date.toLocaleDateString(),
-                        x: 'center'
-                    },
-                    xAxis: {
-                        type: 'category',
-                        data: nameList
-                    },
-                    yAxis: {
-                        type: 'value'
-                    },
-                    series: [{
-                        data: tableData,
-                        type: 'bar'
-                    }]
-                };
-                var scheduleRateChart = echarts.init($("#place-rate-container")[0]);
-                scheduleRateChart.setOption(option);
-            },
-            function (error) {
-                alert(JSON.stringify(error));
-            }
-        )
     }
 
     function getPolularMovie() {
