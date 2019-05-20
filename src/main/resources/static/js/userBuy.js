@@ -46,7 +46,7 @@ $(document).ready(function () {
                         "<tr>"
                         +"<td>" + schedule.movieName + "</td>"
                         + "<td>" + schedule.hallName + "</td>"
-                        +"<td>"+ticket.rowIndex+"排"+ticket.columnIndex+"列"+"</td>"
+                        +"<td>"+(ticket.rowIndex+1)+"排"+(ticket.columnIndex+1)+"列"+"</td>"
                         + "<td>" + schedule.startTime.split("T")[0]+" "
                             + schedule.startTime.split("T")[1].split(".")[0]+ "</td>"
                         + "<td>" + schedule.endTime.split("T")[0]+" "
