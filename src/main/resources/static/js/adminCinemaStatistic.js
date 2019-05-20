@@ -44,14 +44,14 @@ $(document).ready(function () {
                     toolbox: {
                         show: true,
                         feature: {
-                            mark: {show: true},
-                            dataView: {show: true, readOnly: false},
+                            mark: { show: true },
+                            dataView: { show: true, readOnly: false },
                             magicType: {
                                 show: true,
                                 type: ['pie', 'funnel']
                             },
-                            restore: {show: true},
-                            saveAsImage: {show: true}
+                            restore: { show: true },
+                            saveAsImage: { show: true }
                         }
                     },
                     calculable: true,
@@ -157,7 +157,9 @@ $(document).ready(function () {
             function (res) {
                 var data = res.content || [];
                 var tableData = data.rates;
-                var nameList = data.movies;
+                var nameList = data.movies.map(function (movie) {
+                    return movie.name;
+                });
                 var option = {
                     title: {
                         text: '所有电影排片率',
@@ -188,13 +190,13 @@ $(document).ready(function () {
     function getPolularMovie() {
         // todo
         var days = 7;
-        var movieNum=7;
+        var movieNum = 7;
         getRequest(
             `/statistics/popular/movie?days=${days}&&movieNum=${movieNum}`,
             function (res) {
                 var data = res.content || [];
                 var tableData = data.map(function (item) {
-                    return item.boxOffice;
+                        return item.boxOffice;
                 });
                 var nameList = data.map(function (item) {
                     return item.name;

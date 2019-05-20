@@ -9,6 +9,14 @@ function getRequest(url, onSuccess, onError) {
     });
 }
 
+function getDeferred(url) {
+    return $.ajax({
+        type: 'GET',
+        url: url,
+        async: true,
+    });
+}
+
 function postRequest(url, data, onSuccess, onError) {
     $.ajax({
         type: 'POST',
@@ -19,6 +27,17 @@ function postRequest(url, data, onSuccess, onError) {
         processData: false,
         success: onSuccess,
         error: onError
+    });
+}
+
+function postDeferred(url, data) {
+    return $.ajax({
+        type: 'POST',
+        url: url,
+        async: true,
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        processData: false,
     });
 }
 

@@ -4,7 +4,6 @@ var order = {ticketId: [], couponId: 0};
 var coupons = [];
 var isVIP = false;
 var useVIP = true;
-var ticketVOList=[];
 
 $(document).ready(function () {
     scheduleId = parseInt(window.location.href.split('?')[1].split('&')[1].split('=')[1]);
@@ -100,84 +99,56 @@ function seatClick(id, i, j) {
 }
 
 
-
-
 function orderConfirmClick() {
     $('#seat-state').css("display", "none");
     $('#order-state').css("display", "");
 
     // TODO:这里是假数据，需要连接后端获取真数据，数据格式可以自行修改，但如果改了格式，别忘了修改renderOrder方法
-
-    // 生成订单信息
-    //  1. 获取tickets信息
-    //      1.1 获得已经选取的座位信息（就是selectSeats）
-    //      1.2 userID如何获取？自动生成订单id
-    //      1.3 对每个选择的座位生成ticket对象
-    // "ticketVOList": [{
-    //     "id": 63,
-    //     "userId": 15,
-    //     "scheduleId": 67,
-    //     "columnIndex": 5,
-    //     "rowIndex": 1,
-    //     "state": "未完成"
-    // }, ],
-    var form={
-        userId:sessionStorage.getItem("id"),
-        scheduleId:scheduleId,
-        seats:selectedSeats.map(function (seat) {
-            return{
-                columnIndex:seat[1],
-                rowIndex:seat[0]
+    var form = {
+        userId: sessionStorage.getItem("id"),
+        scheduleId: scheduleId,
+        seats: selectedSeats.map(function (seat) {
+            return {
+                columnIndex: seat[1],
+                rowIndex: seat[0]
             }
         })
-    }
+    };
 
-    postRequest(
+    var ticketPromise = postDeferred(
         '/ticket/lockSeat',
-        form,
-        function (res) {
-            if(res.success){
-                ticketVOList = res.content;
-            } else {
-                alert(res.message);
-            }
-        },
-        function (error) {
-            alert(JSON.stringify(error));
+        form
+    );
+    
+    //  2. 获取优惠券信息
+    var couponPromise = getDeferred(
+        '/coupon/' + sessionStorage.getItem("id") + '/get'
+    );
+
+    //  3. 获取活动信息
+    var activityPromise = getDeferred(
+        '/activity/get'
+    );
+
+    $.when(ticketPromise, couponPromise, activityPromise).done(
+        function (ticketRes, couponRes, activityRes) {
+            var ticketVOList = ticketRes[0].content;
+            var couponsList = couponRes[0].content;
+            var activitiesList = activityRes[0].content;
+            var total = ticketVOList.length * parseInt($("#schedule-fare").text());
+            var orderInfo = {
+                "ticketVOList": ticketVOList,
+                "total": total,
+                "coupons": couponsList,
+                "activities": activitiesList
+            };
+            renderOrder(orderInfo);
+        }
+    ).fail(
+        function () {
+            alert("失败")
         }
     );
-    // 2. 根据ticket数量计算票价，获取票价*ticketVOList长度
-    var ticketPrice = ticketVOList.length*$("#schedule-fare").text();
-    //  2. 获取优惠券信息
-    //      2.1 跟后台要，找API
-    var couponsList = [];
-    getRequest(
-        '/coupon/'+sessionStorage.getItem("id")+'/get',
-        function (res) {
-            couponsList=res.content;
-        },
-        function(error){
-            alert(error);
-        }
-    )
-    //  3. 获取活动信息
-    var activitiesList = [];
-    getRequest(
-        '/activity/get',
-        function (res) {
-            activitiesList=res.content;
-        },
-        function(error){
-            alert(error);
-        }
-    )
-    var orderInfo = {
-        "ticketVOList": ticketVOList,
-        "total": ticketPrice,
-        "coupons": couponsList,
-        "activities":activitiesList
-    };
-    renderOrder(orderInfo);
 
     getRequest(
         '/vip/' + sessionStorage.getItem('id') + '/get',
@@ -272,25 +243,25 @@ function postPayRequest() {
     $('#success-state').css("display", "");
     $('#buyModal').modal('hide')
 
-    var form={
+    var form = {
         //list of ticket Id
-        id:ticketVOList.map(function (ticket) {
+        id: ticketVOList.map(function (ticket) {
             return ticket.id
-        }) ,
-        couponId:$("#order-coupons").children('option:selected').val()
+        }),
+        couponId: $("#order-coupons").children('option:selected').val()
     }
     var api;
-    if(useVIP){
+    if (useVIP) {
         api = '/ticket/vip/buy'
     }
-    else{
+    else {
         api = '/ticket/buy'
     }
     postRequest(
         api,
         form,
         function (res) {
-            if(res.success){
+            if (res.success) {
 
             } else {
                 alert(res.message);
