@@ -152,10 +152,12 @@ public class StatisticsServiceImpl implements StatisticsService {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             startDate = simpleDateFormat.parse(simpleDateFormat.format(startDate));
             Date endDate = getNumDayBeforeDate(startDate, days);
-            List<MovieTotalBoxOffice>  PopularMovies= new ArrayList<>();
-            PopularMovies=statisticsMapper.selectMovieTotalBoxOfficeByDate(startDate,endDate);
-            List<MovieTotalBoxOffice>  PopularMoviesRank= new ArrayList<>();
+            List<MovieTotalBoxOffice>  PopularMovies= statisticsMapper.selectMovieTotalBoxOfficeByDate(startDate,endDate);
+            List<MovieTotalBoxOffice>  PopularMoviesRank=  new ArrayList<>();
             int i=0;
+            if(movieNum>PopularMovies.size()){
+                movieNum=PopularMovies.size();
+            }
                 for(MovieTotalBoxOffice movie : PopularMovies) {
                     if (i < movieNum){
                         PopularMoviesRank.add( movie );
@@ -188,7 +190,7 @@ public class StatisticsServiceImpl implements StatisticsService {
      * @return
      */
     Date getNumDayBeforeDate(Date oldDate, int num){
-        num=(num-1)*-1;
+        num=(num)*-1;
         Calendar calendarTime = Calendar.getInstance();
         calendarTime.setTime(oldDate);
         calendarTime.add(Calendar.DAY_OF_YEAR, num);

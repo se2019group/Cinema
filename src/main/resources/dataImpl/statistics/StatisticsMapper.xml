@@ -20,7 +20,7 @@
     <select id="selectMovieTotalBoxOfficeByDate" resultType="com.example.cinema.po.MovieTotalBoxOffice">
         select movie.id as movieId, boxOffice,name from movie
         left join
-            (select movie_id as movieId,sum(fare) as boxOffice from schedule where end_time between #{startDate} and #{endDate}
+            (select movie_id as movieId,sum(fare) as boxOffice from schedule
             right join
             (select schedule_id from ticket where state = 1 and time between #{startDate} and #{endDate}) t
             on schedule.id = t.schedule_id group by movie_id) s
