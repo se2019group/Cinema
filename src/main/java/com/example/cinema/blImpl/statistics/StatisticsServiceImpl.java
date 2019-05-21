@@ -109,7 +109,7 @@ public class StatisticsServiceImpl implements StatisticsService {
             Date requireDate;
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             date = simpleDateFormat.parse(simpleDateFormat.format(date));
-
+            int size;
             i=0;
             seatNum=0;
             halls=hallMapper.selectAllHall();
@@ -123,14 +123,17 @@ public class StatisticsServiceImpl implements StatisticsService {
             	scheduleItems=scheduleMapper.selectScheduleByMovieId(movies.get(i).getId());
             	j=0;
             	ticketNum=0;
+            	size=0;
             	while(j<scheduleItems.size()) {
                     requireDate=simpleDateFormat.parse(simpleDateFormat.format(scheduleItems.get(j).getStartTime()));
-            	    if(date==requireDate)
-            		    ticketNum+=ticketMapper.selectTicketsBySchedule(scheduleItems.get(j).getId()).size();
+            	    if(date.equals(requireDate)) {
+                        ticketNum += ticketMapper.selectTicketsBySchedule(scheduleItems.get(j).getId()).size();
+                        size++;
+                    }
             		j+=1;
             	}
-            	if(seatNum*scheduleItems.size()!=0)
-            	    rates[i]=ticketNum/(seatNum*scheduleItems.size());
+            	if(seatNum*size!=0)
+            	    rates[i]=(double)ticketNum/(seatNum*size);
             	else
             	    rates[i]=0;
             	i+=1;
