@@ -31,7 +31,7 @@ public class TicketController {
     public ResponseVO buyTicket(@RequestParam(value="ids") List<Integer> ticketId,@RequestParam int couponId){
         return ticketService.completeTicket(ticketId,couponId);
     }
-    
+
     @GetMapping("/get/{userId}")
     public ResponseVO getTicketByUserId(@PathVariable int userId){
         return ticketService.getTicketByUser(userId);

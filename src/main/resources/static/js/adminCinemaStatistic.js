@@ -1,3 +1,5 @@
+var tmp;
+
 $(document).ready(function () {
 
 
@@ -156,6 +158,7 @@ $(document).ready(function () {
             `/statistics/PlacingRate?date=${date.toISOString().split("T")[0]}`,
             function (res) {
                 var data = res.content || [];
+                tmp = res.content;
                 var tableData = data.rates;
                 var nameList = data.movies.map(function (movie) {
                     return movie.name;
