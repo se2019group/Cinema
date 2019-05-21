@@ -4,6 +4,7 @@ var order = {ticketId: [], couponId: 0};
 var coupons = [];
 var isVIP = false;
 var useVIP = true;
+var ticketVOList = [];
 
 $(document).ready(function () {
     scheduleId = parseInt(window.location.href.split('?')[1].split('&')[1].split('=')[1]);
@@ -132,7 +133,7 @@ function orderConfirmClick() {
 
     $.when(ticketPromise, couponPromise, activityPromise).done(
         function (ticketRes, couponRes, activityRes) {
-            var ticketVOList = ticketRes[0].content;
+            ticketVOList = ticketRes[0].content;
             var couponsList = couponRes[0].content;
             var activitiesList = activityRes[0].content;
             var total = ticketVOList.length * parseInt($("#schedule-fare").text());
@@ -243,13 +244,15 @@ function postPayRequest() {
     $('#success-state').css("display", "");
     $('#buyModal').modal('hide')
 
+    var ticketIds = new Array();
+    ticketVOList.forEach(function (value) {
+       ticketIds.push(value.id);
+    });
     var form = {
         //list of ticket Id
-        id: ticketVOList.map(function (ticket) {
-            return ticket.id
-        }),
-        couponId: $("#order-coupons").children('option:selected').val()
-    }
+        ids: ticketIds,
+        couponId: $("#order-coupons").children('option:selected').val() || -1
+    };
     var api;
     if (useVIP) {
         api = '/ticket/vip/buy'
@@ -257,20 +260,41 @@ function postPayRequest() {
     else {
         api = '/ticket/buy'
     }
-    postRequest(
-        api,
-        form,
-        function (res) {
+    api += `?ids=${form.ids.join("&ids=")}&&couponId=${form.couponId}`;
+    $.ajax({
+        type: 'POST',
+        url: api,
+        async: true,
+        data: {},
+        contentType: 'application/json',
+        processData: false,
+        success: function (res) {
             if (res.success) {
 
             } else {
                 alert(res.message);
+                history.go(-1);
             }
         },
-        function (error) {
+        error: function (error) {
             alert(JSON.stringify(error));
         }
-    )
+    });
+    // });
+    // postRequest(
+    //     api,
+    //     form,
+    //     function (res) {
+    //         if (res.success) {
+    //
+    //         } else {
+    //             alert(res.message);
+    //         }
+    //     },
+    //     function (error) {
+    //         alert(JSON.stringify(error));
+    //     }
+    // )
 }
 
 function validateForm() {
