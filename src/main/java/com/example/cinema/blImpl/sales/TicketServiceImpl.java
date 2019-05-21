@@ -88,11 +88,23 @@ public class TicketServiceImpl implements TicketService {
             int i,j;
             TicketWithCouponVO ticketWithCouponVO=new TicketWithCouponVO();
             Timestamp now=new Timestamp(System.currentTimeMillis());
-            Coupon coupon=couponMapper.selectById(couponId);
+            Coupon coupon=null;
             List<Coupon> coupons=new ArrayList<Coupon>();
             List<TicketVO> ticketVOList=new ArrayList<TicketVO>();
             List<Activity> activities=activityMapper.selectActivities();
             ticketWithCouponVO.setActivities(activities);
+            
+            //检验是否有优惠券
+            if(couponId>=0) {
+            	coupon=couponMapper.selectById(couponId);
+            }
+            
+            //将电影票的状态设置成 已完成
+            i=0;
+            while(i<id.size()) {
+            	ticketMapper.updateTicketState(id.get(i), 1);
+            	i+=1;
+            }
             
             //得到电影票的总价
             i=0;
@@ -106,9 +118,14 @@ public class TicketServiceImpl implements TicketService {
             }
             
             //检验优惠券是否可以使用
-            if(coupon.getStartTime().before(now) && now.before(coupon.getEndTime())
-            		&& sumFare>=coupon.getTargetAmount()) {
-            	ticketWithCouponVO.setTotal(sumFare-coupon.getDiscountAmount());
+            if(coupon!=null) {
+	            if(coupon.getStartTime().before(now) && now.before(coupon.getEndTime())
+	            		&& sumFare>=coupon.getTargetAmount()) {
+	            	ticketWithCouponVO.setTotal(sumFare-coupon.getDiscountAmount());
+	            }
+	            else {
+	            	ticketWithCouponVO.setTotal(sumFare);
+	            }
             }
             else {
             	ticketWithCouponVO.setTotal(sumFare);
@@ -184,12 +201,17 @@ public class TicketServiceImpl implements TicketService {
             List<Activity> activities=activityMapper.selectActivities();
             ticketWithCouponVO.setActivities(activities);
             VIPCard vipCard=vipCardMapper.selectCardByUserId(ticketMapper.selectTicketById(id.get(0)).getUserId());
-            Coupon coupon=couponMapper.selectById(couponId);
+            Coupon coupon=null;
             Timestamp now=new Timestamp(System.currentTimeMillis());
             
             if(vipCard==null) {
         		return ResponseVO.buildFailure("会员卡不存在！");
         	}
+            
+            //检验是否有优惠券
+            if(couponId>=0) {
+            	coupon=couponMapper.selectById(couponId);
+            }
             
             //得到电影票的总价
             i=0;
@@ -202,11 +224,12 @@ public class TicketServiceImpl implements TicketService {
             	
             	i+=1;
             }
-            ticketWithCouponVO.setTicketVOList(ticketVOList);
             
             //检验优惠券
-            if(coupon.getStartTime().before(now) && now.before(coupon.getEndTime()) && sumFare>=coupon.getTargetAmount()) {
-            	sumFare-=coupon.getDiscountAmount();
+            if(coupon!=null) {
+	            if(coupon.getStartTime().before(now) && now.before(coupon.getEndTime()) && sumFare>=coupon.getTargetAmount()) {
+	            	sumFare-=coupon.getDiscountAmount();
+	            }
             }
             ticketWithCouponVO.setTotal(sumFare);
             
@@ -235,6 +258,19 @@ public class TicketServiceImpl implements TicketService {
             	i+=1;
             }
             ticketWithCouponVO.setCoupons(coupons);
+            
+            //将电影票的状态设置成 已完成
+            i=0;
+            while(i<id.size()) {
+            	ticketMapper.updateTicketState(id.get(i), 1);
+            	i+=1;
+            }
+            i=0;
+            while(i<ticketVOList.size()) {
+            	ticketVOList.get(i).setState("已完成");
+            	i+=1;
+            }
+            ticketWithCouponVO.setTicketVOList(ticketVOList);
             
             return ResponseVO.buildSuccess(ticketWithCouponVO);
         } catch (Exception e) {

@@ -148,10 +148,10 @@ public class StatisticsServiceImpl implements StatisticsService {
     public ResponseVO getPopularMovies(int days, int movieNum) {
         try {
             // 处理查询表单的起止时间
-            Date startDate=new Date();
+            Date endDate=new Date();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            startDate = simpleDateFormat.parse(simpleDateFormat.format(startDate));
-            Date endDate = getNumDayBeforeDate(startDate, days);
+            endDate = simpleDateFormat.parse(simpleDateFormat.format(getNumDayAfterDate(endDate,1)));
+            Date startDate = getNumDayBeforeDate(endDate, days);
             List<MovieTotalBoxOffice>  PopularMovies= statisticsMapper.selectMovieTotalBoxOfficeByDate(startDate,endDate);
             List<MovieTotalBoxOffice>  PopularMoviesRank=  new ArrayList<>();
             int i=0;
