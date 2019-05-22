@@ -133,7 +133,7 @@ function orderConfirmClick() {
 
     $.when(ticketPromise, couponPromise, activityPromise).done(
         function (ticketRes, couponRes, activityRes) {
-            ticketVOList = ticketRes[0].content;
+             ticketVOList = ticketRes[0].content;
             var couponsList = couponRes[0].content;
             var activitiesList = activityRes[0].content;
             var total = ticketVOList.length * parseInt($("#schedule-fare").text());
@@ -243,7 +243,6 @@ function postPayRequest() {
     $('#order-state').css("display", "none");
     $('#success-state').css("display", "");
     $('#buyModal').modal('hide')
-
     var ticketIds = new Array();
     ticketVOList.forEach(function (value) {
        ticketIds.push(value.id);
@@ -270,7 +269,6 @@ function postPayRequest() {
         processData: false,
         success: function (res) {
             if (res.success) {
-
             } else {
                 alert(res.message);
                 history.go(-1);

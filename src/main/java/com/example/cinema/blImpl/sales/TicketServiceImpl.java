@@ -51,12 +51,12 @@ public class TicketServiceImpl implements TicketService {
     public ResponseVO addTicket(TicketForm ticketForm) {
     	try {
     		List<Ticket> tickets=new ArrayList<Ticket>();
+            Ticket t=new Ticket();
     		int userId=ticketForm.getUserId();
     		int scheduleId=ticketForm.getScheduleId();
     		List<SeatForm> seats=ticketForm.getSeats();
     		int i;
     		Ticket ticket;
-    		
     		i=0;
     		while(i<seats.size()) {
     			ticket=new Ticket();
@@ -71,7 +71,14 @@ public class TicketServiceImpl implements TicketService {
     			i+=1;
     		}
     		ticketMapper.insertTickets(tickets);
-    		return ResponseVO.buildSuccess(tickets);
+            List<Ticket> completetickets=new ArrayList<Ticket>();
+            i=0;
+            while(i<seats.size()) {
+                t=ticketMapper.selectTicketByScheduleIdAndSeat(scheduleId,seats.get(i).getColumnIndex(),seats.get(i).getRowIndex());
+                completetickets.add(t);
+                i++;
+            }
+    		return ResponseVO.buildSuccess(completetickets);
     	}catch (Exception e) {
             e.printStackTrace();
             return ResponseVO.buildFailure("失败");
@@ -98,7 +105,6 @@ public class TicketServiceImpl implements TicketService {
             if(couponId>=0) {
             	coupon=couponMapper.selectById(couponId);
             }
-            
             //将电影票的状态设置成 已完成
             i=0;
             while(i<id.size()) {
@@ -118,7 +124,7 @@ public class TicketServiceImpl implements TicketService {
             }
             
             //检验优惠券是否可以使用
-            if(coupon!=null) {
+            if(couponId!=-1) {
 	            if(coupon.getStartTime().before(now) && now.before(coupon.getEndTime())
 	            		&& sumFare>=coupon.getTargetAmount()) {
 	            	ticketWithCouponVO.setTotal(sumFare-coupon.getDiscountAmount());
@@ -226,7 +232,7 @@ public class TicketServiceImpl implements TicketService {
             }
             
             //检验优惠券
-            if(coupon!=null) {
+            if(couponId!=-1) {
 	            if(coupon.getStartTime().before(now) && now.before(coupon.getEndTime()) && sumFare>=coupon.getTargetAmount()) {
 	            	sumFare-=coupon.getDiscountAmount();
 	            }
