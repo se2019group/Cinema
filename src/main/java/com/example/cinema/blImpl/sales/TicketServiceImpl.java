@@ -226,6 +226,7 @@ public class TicketServiceImpl implements TicketService {
             VIPCard vipCard=vipCardMapper.selectCardByUserId(ticketMapper.selectTicketById(id.get(0)).getUserId());
             Coupon coupon=null;
             Timestamp now=new Timestamp(System.currentTimeMillis());
+            boolean useCoupon=false;
             
             if(vipCard==null) {
         		return ResponseVO.buildFailure("会员卡不存在！");
@@ -252,7 +253,7 @@ public class TicketServiceImpl implements TicketService {
             if(coupon!=null) {
 	            if(coupon.getStartTime().before(now) && now.before(coupon.getEndTime()) && sumFare>=coupon.getTargetAmount()) {
 	            	sumFare-=coupon.getDiscountAmount();
-	            	couponMapper.deleteCouponUser(couponId, ticketMapper.selectTicketById(id.get(0)).getUserId());
+	            	useCoupon=true;
 	            }
             }
             ticketWithCouponVO.setTotal(sumFare);
@@ -302,6 +303,11 @@ public class TicketServiceImpl implements TicketService {
             	i+=1;
             }
             ticketWithCouponVO.setCoupons(coupons);
+            
+            //检验是否使用了优惠券
+            if(useCoupon) {
+            	couponMapper.deleteCouponUser(couponId, ticketMapper.selectTicketById(id.get(0)).getUserId());
+            }
             
             //将电影票的状态设置成 已完成
             i=0;
