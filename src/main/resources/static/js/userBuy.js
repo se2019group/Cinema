@@ -1,3 +1,4 @@
+var tmp
 $(document).ready(function () {
     getMovieList();
 
@@ -36,30 +37,34 @@ $(document).ready(function () {
     // $('.movie-on-list').append(movieDomStr);
     function renderTicketList(list) {
         $('.ticket-in-table').empty();
-        var stateList=["未完成","已完成","已失效"]
+        var stateList = ["未完成", "已完成", "已失效"];
+        var promises = [];
         list.forEach(function (ticket) {
-            getRequest(
-                "/schedule/" + ticket.scheduleId,
-                function (res) {
-                    var schedule = res.content;
+            promises.push(getDeferred("/schedule/" + ticket.scheduleId));
+        });
+        $.when(promises).done(
+            function() {
+                tickets = arguments[0]
+                tickets.forEach(function (res) {
+                    alert(JSON.stringify(res))
+                    var schedule = res.responseJSON.content;
                     var ticketInfo =
                         "<tr>"
-                        +"<td>" + schedule.movieName + "</td>"
+                        + "<td>" + schedule.movieName + "</td>"
                         + "<td>" + schedule.hallName + "</td>"
-                        +"<td>"+(ticket.rowIndex+1)+"排"+(ticket.columnIndex+1)+"列"+"</td>"
-                        + "<td>" + schedule.startTime.split("T")[0]+" "
-                            + schedule.startTime.split("T")[1].split(".")[0]+ "</td>"
-                        + "<td>" + schedule.endTime.split("T")[0]+" "
-                            + schedule.endTime.split("T")[1].split(".")[0] + "</td>"
-                        +"<td>"+stateList[ticket.state]+"</td>"
-                    +" </tr>";
+                        + "<td>" + (ticket.rowIndex + 1) + "排" + (ticket.columnIndex + 1) + "列" + "</td>"
+                        + "<td>" + schedule.startTime.split("T")[0] + " "
+                        + schedule.startTime.split("T")[1].split(".")[0] + "</td>"
+                        + "<td>" + schedule.endTime.split("T")[0] + " "
+                        + schedule.endTime.split("T")[1].split(".")[0] + "</td>"
+                        + "<td>" + stateList[ticket.state] + "</td>"
+                        + " </tr>";
                     $('.ticket-in-table').append(ticketInfo);
-                },
-                function (error) {
-                    alert(error);
-                }
-            )
-        });
+                })
+            }
+        ).fail(
+            alert("failed")
+        )
     }
-
 });
+

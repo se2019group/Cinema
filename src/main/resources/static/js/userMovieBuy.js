@@ -115,12 +115,12 @@ function orderConfirmClick() {
             }
         })
     };
-
+        
     var ticketPromise = postDeferred(
         '/ticket/lockSeat',
         form
     );
-    
+
     //  2. 获取优惠券信息
     var couponPromise = getDeferred(
         '/coupon/' + sessionStorage.getItem("id") + '/get'
@@ -270,10 +270,12 @@ function postPayRequest() {
         processData: false,
         success: function (res) {
             if (res.success) {
-
             } else {
                 alert(res.message);
-                history.go(-1);
+                postRequest(
+                    '/ticket/cancel'+`?ids=${form.ids.join("&ids=")}`,
+
+                )
             }
         },
         error: function (error) {

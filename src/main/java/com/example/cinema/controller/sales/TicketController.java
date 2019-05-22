@@ -41,8 +41,9 @@ public class TicketController {
     public ResponseVO getOccupiedSeats(@RequestParam int scheduleId){
         return ticketService.getBySchedule(scheduleId);
     }
-    @PostMapping("/cancel")
-    public ResponseVO cancelTicket(@RequestParam List<Integer> ticketId){
+
+    @RequestMapping(value="/cancel", method = RequestMethod.POST)
+    public ResponseVO cancelTicket(@RequestParam("ids") List<Integer> ticketId){
         return ticketService.cancelTicket(ticketId);
     }
 
