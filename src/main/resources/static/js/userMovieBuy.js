@@ -1,6 +1,6 @@
 var selectedSeats = []
 var scheduleId;
-var order = {ticketId: [], couponId: 0};
+var order = { ticketId: [], couponId: 0 };
 var coupons = [];
 var isVIP = false;
 var useVIP = true;
@@ -116,7 +116,7 @@ function orderConfirmClick() {
             }
         })
     };
-        
+
     var ticketPromise = postDeferred(
         '/ticket/lockSeat',
         form
@@ -134,11 +134,12 @@ function orderConfirmClick() {
 
     $.when(ticketPromise, couponPromise, activityPromise).done(
         function (ticketRes, couponRes, activityRes) {
-             ticketVOList = ticketRes[0].content;
+            ticketVOList = ticketRes[0].content;
             var couponsList = couponRes[0].content;
             tmp = couponRes[0];
             var activitiesList = activityRes[0].content;
             var total = ticketVOList.length * parseInt($("#schedule-fare").text());
+            couponsList = couponsList.filter(each => each.targetAmount<=total && each.discountAmount <=total);
             var orderInfo = {
                 "ticketVOList": ticketVOList,
                 "total": total,
@@ -247,7 +248,7 @@ function postPayRequest() {
     $('#buyModal').modal('hide')
     var ticketIds = new Array();
     ticketVOList.forEach(function (value) {
-       ticketIds.push(value.id);
+        ticketIds.push(value.id);
     });
     var form = {
         //list of ticket Id
@@ -265,8 +266,8 @@ function postPayRequest() {
     postRequest(
         api,
         {},
-        function(res) {
-            if(res.success) {
+        function (res) {
+            if (res.success) {
             } else {
                 alert(res.message)
             }
