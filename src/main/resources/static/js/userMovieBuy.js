@@ -2,6 +2,7 @@ var selectedSeats = []
 var scheduleId;
 var order = {ticketId: [], couponId: 0};
 var coupons = [];
+var couponsIndex = [];
 var isVIP = false;
 var useVIP = true;
 var ticketVOList = [];
@@ -136,9 +137,9 @@ function orderConfirmClick() {
         function (ticketRes, couponRes, activityRes) {
              ticketVOList = ticketRes[0].content;
             var couponsList = couponRes[0].content;
-            tmp = couponRes[0];
             var activitiesList = activityRes[0].content;
             var total = ticketVOList.length * parseInt($("#schedule-fare").text());
+            couponsList = couponsList.filter(each => each.targetAmount<=total && each.discountAmount <=total);
             var orderInfo = {
                 "ticketVOList": ticketVOList,
                 "total": total,
@@ -210,6 +211,7 @@ function renderOrder(orderInfo) {
         $('#pay-amount').html("<div><b>金额：</b>" + total + "元</div>");
     } else {
         coupons = orderInfo.coupons;
+        let i = -1;
         for (let coupon of coupons) {
             couponTicketStr += "<option>满" + coupon.targetAmount + "减" + coupon.discountAmount + "</option>"
         }
