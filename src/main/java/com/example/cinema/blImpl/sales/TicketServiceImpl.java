@@ -67,10 +67,12 @@ public class TicketServiceImpl implements TicketService {
     			ticket.setState(0);//状态为未完成
     			ticket.setTime(new Timestamp(System.currentTimeMillis()));
     			
+    			ticketMapper.insertTicket(ticket);
+    			ticket=ticketMapper.selectTicketByScheduleIdAndSeat(scheduleId, seats.get(i).getColumnIndex(),seats.get(i).getRowIndex());
+    			
     			tickets.add(ticket);
     			i+=1;
     		}
-    		ticketMapper.insertTickets(tickets);
     		return ResponseVO.buildSuccess(tickets);
     	}catch (Exception e) {
             e.printStackTrace();
@@ -117,11 +119,12 @@ public class TicketServiceImpl implements TicketService {
             	i+=1;
             }
             
-            //检验优惠券是否可以使用
+            //检验优惠券是否可以使用，如果可以，在使用后删除该用户的这个优惠券
             if(coupon!=null) {
 	            if(coupon.getStartTime().before(now) && now.before(coupon.getEndTime())
 	            		&& sumFare>=coupon.getTargetAmount()) {
 	            	ticketWithCouponVO.setTotal(sumFare-coupon.getDiscountAmount());
+	            	couponMapper.deleteCouponUser(couponId, ticketMapper.selectTicketById(id.get(0)).getUserId());
 	            }
 	            else {
 	            	ticketWithCouponVO.setTotal(sumFare);
@@ -249,6 +252,7 @@ public class TicketServiceImpl implements TicketService {
             if(coupon!=null) {
 	            if(coupon.getStartTime().before(now) && now.before(coupon.getEndTime()) && sumFare>=coupon.getTargetAmount()) {
 	            	sumFare-=coupon.getDiscountAmount();
+	            	couponMapper.deleteCouponUser(couponId, ticketMapper.selectTicketById(id.get(0)).getUserId());
 	            }
             }
             ticketWithCouponVO.setTotal(sumFare);
