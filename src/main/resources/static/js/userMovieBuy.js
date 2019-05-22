@@ -264,27 +264,19 @@ function postPayRequest() {
         api = '/ticket/buy'
     }
     api += `?ids=${form.ids.join("&ids=")}&&couponId=${form.couponId == -1 ? -1 : coupons[form.couponId].id}`;
-    $.ajax({
-        type: 'POST',
-        url: api,
-        async: true,
-        data: {},
-        contentType: 'application/json',
-        processData: false,
-        success: function (res) {
-            if (res.success) {
+    postRequest(
+        api,
+        {},
+        function(res) {
+            if(res.success) {
             } else {
-                alert(res.message);
-                postRequest(
-                    '/ticket/cancel'+`?ids=${form.ids.join("&ids=")}`,
-
-                )
+                alert(res.message)
             }
         },
-        error: function (error) {
+        function (error) {
             alert(JSON.stringify(error));
         }
-    });
+    );
 }
 
 function validateForm() {
