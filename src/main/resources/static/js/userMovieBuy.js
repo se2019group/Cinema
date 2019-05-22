@@ -281,21 +281,6 @@ function postPayRequest() {
             alert(JSON.stringify(error));
         }
     });
-    // });
-    // postRequest(
-    //     api,
-    //     form,
-    //     function (res) {
-    //         if (res.success) {
-    //
-    //         } else {
-    //             alert(res.message);
-    //         }
-    //     },
-    //     function (error) {
-    //         alert(JSON.stringify(error));
-    //     }
-    // )
 }
 
 function validateForm() {

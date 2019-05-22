@@ -42,12 +42,14 @@ $(document).ready(function () {
         list.forEach(function (ticket) {
             promises.push(getDeferred("/schedule/" + ticket.scheduleId));
         });
-        $.when(promises).done(
+        $.when(Promise.all(promises)).done(
             function() {
-                tickets = arguments[0]
-                tickets.forEach(function (res) {
-                    alert(JSON.stringify(res))
-                    var schedule = res.responseJSON.content;
+                alert(JSON.stringify(arguments))
+                var responses = arguments[0];
+                var schedules = responses.map(each => each.content);
+                for(let i=0; i < schedules.length; i++) {
+                    let schedule = schedules[i];
+                    let ticket = list[i];
                     var ticketInfo =
                         "<tr>"
                         + "<td>" + schedule.movieName + "</td>"
@@ -60,11 +62,11 @@ $(document).ready(function () {
                         + "<td>" + stateList[ticket.state] + "</td>"
                         + " </tr>";
                     $('.ticket-in-table').append(ticketInfo);
-                })
+                }
             }
-        ).fail(
-            alert("failed")
-        )
+        ).fail(function() {
+            alert('Failed');
+        })
     }
 });
 
