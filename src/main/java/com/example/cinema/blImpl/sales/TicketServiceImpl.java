@@ -135,7 +135,21 @@ public class TicketServiceImpl implements TicketService {
             //根据优惠策略生成优惠券并将优惠券放入数据库中
             i=0;
             while(i<activities.size()) {
-            	j=0;
+            	//判断时间是否满足
+    			if(!(activities.get(i).getStartTime().before(now) && now.before(activities.get(i).getEndTime()))) {
+            		i+=1;
+            		continue;
+            	}
+    			
+    			//如果优惠活动满足的电影数量为0，则任何电影都满足
+    			if(activities.get(i).getMovieList().size()==0) {
+    				coupons.add(activities.get(i).getCoupon());
+            		couponMapper.insertCouponUser(activities.get(i).getCoupon().getId(), ticketMapper.selectTicketById(id.get(0)).getUserId());
+            		i+=1;
+            		continue;
+    			}
+    			
+    			j=0;
             	Lable:
             	while(j<id.size()) {
             		k=0;
@@ -155,9 +169,6 @@ public class TicketServiceImpl implements TicketService {
             	i+=1;
             }
             ticketWithCouponVO.setCoupons(coupons);
-            
-            System.out.println("活动数量："+activities.size());
-            System.out.println("获得的优惠券数量："+coupons.size());
             
             return ResponseVO.buildSuccess(ticketWithCouponVO);
         } catch (Exception e) {
@@ -250,10 +261,24 @@ public class TicketServiceImpl implements TicketService {
             	vipCardMapper.updateCardBalance(vipCard.getId(), vipCard.getBalance()-sumFare);
             }
             
-          //根据优惠策略生成优惠券并将优惠券放入数据库中
+            //根据优惠策略生成优惠券并将优惠券放入数据库中
             i=0;
             while(i<activities.size()) {
-            	j=0;
+            	//判断时间是否满足
+    			if(!(activities.get(i).getStartTime().before(now) && now.before(activities.get(i).getEndTime()))) {
+            		i+=1;
+            		continue;
+            	}
+    			
+    			//如果优惠活动满足的电影数量为0，则任何电影都满足
+    			if(activities.get(i).getMovieList().size()==0) {
+    				coupons.add(activities.get(i).getCoupon());
+            		couponMapper.insertCouponUser(activities.get(i).getCoupon().getId(), ticketMapper.selectTicketById(id.get(0)).getUserId());
+            		i+=1;
+            		continue;
+    			}
+    			
+    			j=0;
             	Lable:
             	while(j<id.size()) {
             		k=0;
@@ -273,9 +298,6 @@ public class TicketServiceImpl implements TicketService {
             	i+=1;
             }
             ticketWithCouponVO.setCoupons(coupons);
-            
-            System.out.println("活动数量："+activities.size());
-            System.out.println("获得的优惠券数量："+coupons.size());
             
             //将电影票的状态设置成 已完成
             i=0;
