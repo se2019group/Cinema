@@ -134,10 +134,10 @@ $(document).ready(function() {
 
         //todo 需要做一下表单验证？
         var reNum = /^[1-9][0-9]*$/
-        if(!reNum.test(form['fare'])) {
-            alert("错误的票价")
-            return
-        }
+        // if(!reNum.test(form['fare'])) {
+        //     alert("错误的票价")
+        //     return
+        // }
 
         if(form['startTime']=="" || form['endTime']=="" || form['fare']==""){
             alert("没有填完整");
@@ -172,10 +172,10 @@ $(document).ready(function() {
         };
         //todo 需要做一下表单验证？
         var reNum = /^[1-9][0-9]*$/
-        if(!reNum.test(form['fare'])) {
-            alert("錯誤的票價")
-            return
-        }
+        // if(!reNum.test(form['fare'])) {
+        //     alert("錯誤的票價")
+        //     return
+        // }
         if(form['startTime']=="" || form['endTime']=="" || form['fare']==""){
             alert("沒有填完整");
             return
