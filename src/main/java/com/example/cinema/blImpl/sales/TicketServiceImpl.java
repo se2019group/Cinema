@@ -85,7 +85,7 @@ public class TicketServiceImpl implements TicketService {
             double sumFare;
             Ticket ticket;
             ScheduleItem scheduleItem;
-            int i,j;
+            int i,j,k;
             TicketWithCouponVO ticketWithCouponVO=new TicketWithCouponVO();
             Timestamp now=new Timestamp(System.currentTimeMillis());
             Coupon coupon=null;
@@ -132,23 +132,32 @@ public class TicketServiceImpl implements TicketService {
             }
             ticketWithCouponVO.setTicketVOList(ticketVOList);
             
-            //根据优惠策略生成优惠券
+            //根据优惠策略生成优惠券并将优惠券放入数据库中
             i=0;
             while(i<activities.size()) {
             	j=0;
+            	Lable:
             	while(j<id.size()) {
-            		if(activities.get(i).getMovieList().contains(movieMapper.selectMovieById(id.get(j)))) {
-            			break;
+            		k=0;
+            		while(k<activities.get(i).getMovieList().size()) {
+            			if(scheduleService.getScheduleItemById(ticketMapper.selectTicketById(id.get(j)).getScheduleId()).getMovieId()
+            					==activities.get(i).getMovieList().get(k).getId()) {
+            				break Lable;
+            			}
+            			k+=1;
             		}
             		j+=1;
             	}
-            	
             	if(j!=id.size()) {
             		coupons.add(activities.get(i).getCoupon());
+            		couponMapper.insertCouponUser(activities.get(i).getCoupon().getId(), ticketMapper.selectTicketById(id.get(0)).getUserId());
             	}
             	i+=1;
             }
             ticketWithCouponVO.setCoupons(coupons);
+            
+            System.out.println("活动数量："+activities.size());
+            System.out.println("获得的优惠券数量："+coupons.size());
             
             return ResponseVO.buildSuccess(ticketWithCouponVO);
         } catch (Exception e) {
@@ -194,7 +203,7 @@ public class TicketServiceImpl implements TicketService {
             double sumFare;
             Ticket ticket;
             ScheduleItem scheduleItem;
-            int i,j;
+            int i,j,k;
             TicketWithCouponVO ticketWithCouponVO=new TicketWithCouponVO();
             List<Coupon> coupons=new ArrayList<Coupon>();
             List<TicketVO> ticketVOList=new ArrayList<TicketVO>();
@@ -241,23 +250,32 @@ public class TicketServiceImpl implements TicketService {
             	vipCardMapper.updateCardBalance(vipCard.getId(), vipCard.getBalance()-sumFare);
             }
             
-            //根据优惠策略生成优惠券
+          //根据优惠策略生成优惠券并将优惠券放入数据库中
             i=0;
             while(i<activities.size()) {
             	j=0;
+            	Lable:
             	while(j<id.size()) {
-            		if(activities.get(i).getMovieList().contains(movieMapper.selectMovieById(id.get(j)))) {
-            			break;
+            		k=0;
+            		while(k<activities.get(i).getMovieList().size()) {
+            			if(scheduleService.getScheduleItemById(ticketMapper.selectTicketById(id.get(j)).getScheduleId()).getMovieId()
+            					==activities.get(i).getMovieList().get(k).getId()) {
+            				break Lable;
+            			}
+            			k+=1;
             		}
             		j+=1;
             	}
-            	
             	if(j!=id.size()) {
             		coupons.add(activities.get(i).getCoupon());
+            		couponMapper.insertCouponUser(activities.get(i).getCoupon().getId(), ticketMapper.selectTicketById(id.get(0)).getUserId());
             	}
             	i+=1;
             }
             ticketWithCouponVO.setCoupons(coupons);
+            
+            System.out.println("活动数量："+activities.size());
+            System.out.println("获得的优惠券数量："+coupons.size());
             
             //将电影票的状态设置成 已完成
             i=0;
