@@ -252,7 +252,7 @@ function postPayRequest() {
     var form = {
         //list of ticket Id
         ids: ticketIds,
-        couponId: $("#order-coupons").children('option:selected').index() || -1
+        couponId: $("#order-coupons").children('option:selected').index()
     };
     var api;
     if (useVIP) {
@@ -261,7 +261,7 @@ function postPayRequest() {
     else {
         api = '/ticket/buy'
     }
-    api += `?ids=${form.ids.join("&ids=")}&&couponId=${coupons[form.couponId].id}`;
+    api += `?ids=${form.ids.join("&ids=")}&&couponId=${form.couponId == -1 ? -1 : coupons[form.couponId].id}`;
     $.ajax({
         type: 'POST',
         url: api,
