@@ -44,7 +44,6 @@ $(document).ready(function () {
         });
         $.when(Promise.all(promises)).done(
             function() {
-                alert(JSON.stringify(arguments))
                 var responses = arguments[0];
                 var schedules = responses.map(each => each.content);
                 for(let i=0; i < schedules.length; i++) {

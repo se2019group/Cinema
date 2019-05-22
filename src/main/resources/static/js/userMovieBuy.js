@@ -5,6 +5,7 @@ var coupons = [];
 var isVIP = false;
 var useVIP = true;
 var ticketVOList = [];
+var tmp;
 
 $(document).ready(function () {
     scheduleId = parseInt(window.location.href.split('?')[1].split('&')[1].split('=')[1]);
@@ -135,6 +136,7 @@ function orderConfirmClick() {
         function (ticketRes, couponRes, activityRes) {
              ticketVOList = ticketRes[0].content;
             var couponsList = couponRes[0].content;
+            tmp = couponRes[0];
             var activitiesList = activityRes[0].content;
             var total = ticketVOList.length * parseInt($("#schedule-fare").text());
             var orderInfo = {
@@ -250,7 +252,7 @@ function postPayRequest() {
     var form = {
         //list of ticket Id
         ids: ticketIds,
-        couponId: $("#order-coupons").children('option:selected').val() || -1
+        couponId: $("#order-coupons").children('option:selected').index() || -1
     };
     var api;
     if (useVIP) {
@@ -259,7 +261,7 @@ function postPayRequest() {
     else {
         api = '/ticket/buy'
     }
-    api += `?ids=${form.ids.join("&ids=")}&&couponId=${form.couponId}`;
+    api += `?ids=${form.ids.join("&ids=")}&&couponId=${coupons[form.couponId].id}`;
     $.ajax({
         type: 'POST',
         url: api,
