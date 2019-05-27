@@ -12,6 +12,23 @@ $(document).ready(function () {
                 alert(error);
             });
     }
+    deleteTicket=function (id){
+             postRequest(
+                    '/ticket/delete/'+ `?ticketId=${id}`,
+                    {},
+                    function (res) {
+                        if (res.success) {
+                            window.location.reload()
+                        } else {
+                            alert(res.message)
+                        }
+                    },
+                    function (error) {
+                        alert(JSON.stringify(error));
+                    }
+
+                );
+        }
 
     // TODO:填空
     // $('.movie-on-list').empty();
@@ -80,6 +97,7 @@ $(document).ready(function () {
                         + "<td>" + '<button type="button" style="height:30px;width:50px;">退票</button> '+ "</td>"
                         + " </tr>";}
                     else if(ticket.state==2){
+                    var button ="<a role='button' id="+ticket.id+" onclick='deleteTicket(this.id)'><i class='icon-edit'></i>删除</a>";
                     var ticketInfo =
                         "<tr>"
                         + "<td>" + schedule.movieName + "</td>"
@@ -90,7 +108,7 @@ $(document).ready(function () {
                         + "<td>" + schedule.endTime.split("T")[0] + " "
                         + schedule.endTime.split("T")[1].split(".")[0] + "</td>"
                         + "<td>" + stateList[ticket.state] + "</td>"
-                        + "<td>" + '<button type="button" style="height:30px;width:50px;">删除</button> '+ "</td>"
+                        + "<td>" + button + "</td>"
                         + " </tr>";}
 
                     $('.ticket-in-table').append(ticketInfo);
@@ -100,5 +118,6 @@ $(document).ready(function () {
             alert('Failed');
         })
     }
+
 });
 

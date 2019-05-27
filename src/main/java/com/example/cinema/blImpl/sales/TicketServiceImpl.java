@@ -348,6 +348,15 @@ public class TicketServiceImpl implements TicketService {
             e.printStackTrace();
             return ResponseVO.buildFailure("失败");
         }
-    	
+    }
+
+    @Override
+    public ResponseVO deleteTicket(int ticketId) {
+        try{
+            ticketMapper.deleteTicket(ticketId);
+            return ResponseVO.buildSuccess();
+        }catch(Exception e){
+            return ResponseVO.buildFailure("失败");
+        }
     }
 }

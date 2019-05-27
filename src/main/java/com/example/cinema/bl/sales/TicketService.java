@@ -59,4 +59,11 @@ public interface TicketService {
      * @return
      */
     ResponseVO cancelTicket(List<Integer> id);
+
+    /**
+     * 删除已经失效的电影票
+     * @param ticketId
+     * @return
+     */
+    ResponseVO deleteTicket(int ticketId);
 }

@@ -47,6 +47,11 @@ public class TicketController {
         return ticketService.cancelTicket(ticketId);
     }
 
+    @PostMapping("/delete")
+    public ResponseVO deleteTicket(@RequestParam int ticketId){
+        return ticketService.deleteTicket(ticketId);
+    }
+
 
 
 
