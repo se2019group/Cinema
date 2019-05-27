@@ -64,6 +64,7 @@ $(document).ready(function () {
                         + schedule.endTime.split("T")[1].split(".")[0] + "</td>"
                         + "<td>" + stateList[ticket.state] + "</td>"
                         + "<td>" + '<button type="button" style="height:30px;width:50px;">取消付款</button> '+ "</td>"
+                        + "<td>" + '<button type="button" style="height:30px;width:50px;">完成付款</button> '+ "</td>"
                         + " </tr>";}
                     else if(ticket.state==1){
                     var ticketInfo =
