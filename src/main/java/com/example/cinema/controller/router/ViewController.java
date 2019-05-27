@@ -45,6 +45,26 @@ public class ViewController {
         return "adminCinemaStatistic";
     }
 
+    @RequestMapping(value = "/admin/VIP/discount")
+    public String getAdminVIPdiscount() {
+        return "adminVIPdiscount";
+    }
+
+    @RequestMapping(value = "/admin/ticket/return")
+    public String getAdminTickerRerun() {
+        return "adminTicketReturn";
+    }
+
+    @RequestMapping(value = "/admin/staff/manage")
+    public String getAdminStaffManage() {
+        return "adminStaffManage";
+    }
+
+    @RequestMapping(value = "/admin/Coupon/give")
+    public String getAdminCoupongive() {
+        return "adminCoupongive";
+    }
+
     @RequestMapping(value = "/admin/movieDetail")
     public String getAdminMovieDetail(@RequestParam int id) { return "adminMovieDetail"; }
 
@@ -76,5 +96,15 @@ public class ViewController {
     @RequestMapping(value = "/user/member")
     public String getUserMember() {
         return "userMember";
+    }
+
+    @RequestMapping(value = "/user/consume")
+    public String getUserConsume() {
+        return "userConsume";
+    }
+
+    @RequestMapping(value = "/user/recharge")
+    public String getUserRecharge() {
+        return "userRecharge";
     }
 }

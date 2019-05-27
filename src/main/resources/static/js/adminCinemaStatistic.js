@@ -183,6 +183,7 @@ $(document).ready(function () {
                 };
                 var scheduleRateChart = echarts.init($("#place-rate-container")[0]);
                 scheduleRateChart.setOption(option);
+                $("#place-rate-container").prepend("请输入要获得的上座率的日期"+'<input type="text" name="date" value="2019-05-27">'+'<button type="button" style="height:30px;width:80px;">提交</button> ');
             },
             function (error) {
                 alert(JSON.stringify(error));
@@ -223,6 +224,8 @@ $(document).ready(function () {
                 };
                 var scheduleRateChart = echarts.init($("#popular-movie-container")[0]);
                 scheduleRateChart.setOption(option);
+                $("#popular-movie-container").prepend("请输入天数"+'<input type="text" name="dates" value="7">'+'<button type="button" style="height:30px;width:80px;">提交</button> ');
+                $("#popular-movie-container").prepend("请输入要获得排名数量"+'<input type="text" name="date" value="7">');
             },
             function (error) {
                 alert(JSON.stringify(error));

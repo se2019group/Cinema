@@ -22,6 +22,8 @@ $(document).ready(function() {
     function renderHall(halls){
         $('#hall-card').empty();
         var hallDomStr = "";
+        var header= "<div>" + '<button type="button" style="height:30px;width:80px;">增加影厅</button> '+ "</div>";
+        $('#hall-card').append(header);
         halls.forEach(function (hall) {
             var seat = "";
             for(var i =0;i<hall.row;i++){
@@ -36,6 +38,7 @@ $(document).ready(function() {
                 "<div>" +
                 "<span class='cinema-hall-name'>"+ hall.name +"</span>" +
                 "<span class='cinema-hall-size'>"+ hall.column +'*'+ hall.row +"</span>" +
+                "<span class='cinema-change'>"+ '<button type="button" style="height:30px;width:80px;">修改影厅</button> '+"</span>"+
                 "</div>" +
                 "<div class='cinema-seat'>" + seat +
                 "</div>" +

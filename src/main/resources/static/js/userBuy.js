@@ -36,6 +36,9 @@ $(document).ready(function () {
     // });
     // $('.movie-on-list').append(movieDomStr);
     function renderTicketList(list) {
+                 var button=document.createElement("input");
+                button.type = "button" ;
+                 button.value = "按钮" ;
         $('.ticket-in-table').empty();
         var stateList = ["未完成", "已完成", "已失效"];
         var promises = [];
@@ -49,6 +52,7 @@ $(document).ready(function () {
                 for(let i=0; i < schedules.length; i++) {
                     let schedule = schedules[i];
                     let ticket = list[i];
+                    if(ticket.state==0){
                     var ticketInfo =
                         "<tr>"
                         + "<td>" + schedule.movieName + "</td>"
@@ -59,7 +63,35 @@ $(document).ready(function () {
                         + "<td>" + schedule.endTime.split("T")[0] + " "
                         + schedule.endTime.split("T")[1].split(".")[0] + "</td>"
                         + "<td>" + stateList[ticket.state] + "</td>"
-                        + " </tr>";
+                        + "<td>" + '<button type="button" style="height:30px;width:50px;">取消付款</button> '+ "</td>"
+                        + " </tr>";}
+                    else if(ticket.state==1){
+                    var ticketInfo =
+                        "<tr>"
+                        + "<td>" + schedule.movieName + "</td>"
+                        + "<td>" + schedule.hallName + "</td>"
+                        + "<td>" + (ticket.rowIndex + 1) + "排" + (ticket.columnIndex + 1) + "列" + "</td>"
+                        + "<td>" + schedule.startTime.split("T")[0] + " "
+                        + schedule.startTime.split("T")[1].split(".")[0] + "</td>"
+                        + "<td>" + schedule.endTime.split("T")[0] + " "
+                        + schedule.endTime.split("T")[1].split(".")[0] + "</td>"
+                        + "<td>" + stateList[ticket.state] + "</td>"
+                        + "<td>" + '<button type="button" style="height:30px;width:50px;">退票</button> '+ "</td>"
+                        + " </tr>";}
+                    else if(ticket.state==2){
+                    var ticketInfo =
+                        "<tr>"
+                        + "<td>" + schedule.movieName + "</td>"
+                        + "<td>" + schedule.hallName + "</td>"
+                        + "<td>" + (ticket.rowIndex + 1) + "排" + (ticket.columnIndex + 1) + "列" + "</td>"
+                        + "<td>" + schedule.startTime.split("T")[0] + " "
+                        + schedule.startTime.split("T")[1].split(".")[0] + "</td>"
+                        + "<td>" + schedule.endTime.split("T")[0] + " "
+                        + schedule.endTime.split("T")[1].split(".")[0] + "</td>"
+                        + "<td>" + stateList[ticket.state] + "</td>"
+                        + "<td>" + '<button type="button" style="height:30px;width:50px;">删除</button> '+ "</td>"
+                        + " </tr>";}
+
                     $('.ticket-in-table').append(ticketInfo);
                 }
             }

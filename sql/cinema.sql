@@ -341,6 +341,78 @@ INSERT INTO `vip_card` VALUES (1,15,375,'2019-04-21 13:54:38'),(2,12,660,'2019-0
 /*!40000 ALTER TABLE `vip_card` ENABLE KEYS */;
 UNLOCK TABLES;
 
+DROP TABLE IF EXISTS `consume_record`;
+CREATE TABLE `consume_record` (
+`id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` tinyint(4) NOT NULL ,
+  `cardNumber` int(11) NOT NULL,
+  `cost` int(11)  NOT NULL,
+  `content` int(11) DEFAULT NULL,
+  `time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB  AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
+
+LOCK TABLES `consume_record` WRITE;
+INSERT INTO `consume_record` VALUES (1,1,1,100,'可以','2019-04-13 17:00:00');
+UNLOCK TABLES;
+
+DROP TABLE IF EXISTS `recharge_record`;
+CREATE TABLE `recharge_record` (
+`id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL ,
+  `cardNumber` int(11) NOT NULL,
+  `amount` int(11) NOT NULL,
+  `time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB  AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
+
+LOCK TABLES `recharge_record` WRITE;
+INSERT INTO `recharge_record` VALUES (1,1,1,100,'2019-04-13 17:00:00');
+UNLOCK TABLES;
+
+DROP TABLE IF EXISTS `vip_promotion`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `vip_promotion` (
+`targer` int(11) NOT NULL,
+`discount` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+LOCK TABLES `vip_promotion` WRITE;
+INSERT INTO `vip_promotion` VALUES (100,20);
+UNLOCK TABLES;
+
+DROP TABLE IF EXISTS `TicketReturn_Promotion`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `TicketReturn_Promotion` (
+`AllReturnTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+`PartReturnTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+`discount` float NOT NULL,
+`NotReturnTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+LOCK TABLES `TicketReturn_Promotion` WRITE;
+INSERT INTO `TicketReturn_Promotion` VALUES ('2019-04-13 17:00:00','2019-04-13 18:00:00',0.8,'2019-04-13 17:00:00');
+UNLOCK TABLES;
+
+DROP TABLE IF EXISTS `Cinema_Number`;
+CREATE TABLE `Cinema_Number` (
+`Type` int(11) NOT NULL,
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id_uindex` (`id`),
+  UNIQUE KEY `user_username_uindex` (`username`)
+) ENGINE=InnoDB  AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
+
+LOCK TABLES `Cinema_Number` WRITE;
+INSERT INTO `Cinema_Number` VALUES (1,1,'testname','123456'),(0,3,'test','123456'),(1,5,'test1','123456');
+UNLOCK TABLES;
+
 --
 -- Dumping events for database 'cinema'
 --
