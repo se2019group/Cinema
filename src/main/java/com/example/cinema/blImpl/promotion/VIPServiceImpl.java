@@ -2,12 +2,15 @@ package com.example.cinema.blImpl.promotion;
 
 import com.example.cinema.bl.promotion.VIPService;
 import com.example.cinema.data.promotion.VIPCardMapper;
+import com.example.cinema.po.RechargeForm;
 import com.example.cinema.vo.VIPCardForm;
 import com.example.cinema.po.VIPCard;
 import com.example.cinema.vo.ResponseVO;
 import com.example.cinema.vo.VIPInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.sql.Timestamp;
 
 
 /**
@@ -81,6 +84,20 @@ public class VIPServiceImpl implements VIPService {
             return ResponseVO.buildFailure("失败");
         }
     }
-
+    @Override
+    public ResponseVO recharge_record(int userId,int amount){
+        try {
+            String card="123123123";
+            RechargeForm newrecord=new RechargeForm();
+            newrecord.setamount(amount);
+            newrecord.setuser_id(userId);
+            newrecord.setcardNumber(card);//默认银行卡
+            vipCardMapper.insertOneRecord(newrecord);
+            return ResponseVO.buildSuccess();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseVO.buildFailure("失败");
+        }
+    }
 
 }

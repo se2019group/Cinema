@@ -1,5 +1,6 @@
 package com.example.cinema.data.promotion;
 
+import com.example.cinema.po.RechargeForm;
 import com.example.cinema.po.VIPCard;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -11,6 +12,8 @@ import org.apache.ibatis.annotations.Param;
 public interface VIPCardMapper {
 
     int insertOneCard(VIPCard vipCard);
+
+    int insertOneRecord(RechargeForm newrecord);
 
     VIPCard selectCardById(int id);
 

@@ -343,17 +343,16 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `consume_record`;
 CREATE TABLE `consume_record` (
-`id` int(11) NOT NULL AUTO_INCREMENT,
+`userid` int(11) NOT NULL ,
   `type` tinyint(4) NOT NULL ,
-  `cardNumber` int(11) NOT NULL,
+  `cardNumber` varchar(11) NOT NULL,
   `cost` int(11)  NOT NULL,
   `content` int(11) DEFAULT NULL,
-  `time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB  AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
+  `time` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB   DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `consume_record` WRITE;
-INSERT INTO `consume_record` VALUES (1,1,1,100,'可以','2019-04-13 17:00:00');
+INSERT INTO `consume_record` VALUES (15,1,'123123123',100,5,'2019-04-13 17:00:00');
 UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `recharge_record`;

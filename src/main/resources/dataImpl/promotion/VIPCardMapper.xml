@@ -7,6 +7,12 @@
         values(#{userId}, #{balance})
     </insert>
 
+    <insert id="insertOneRecord" parameterType="com.example.cinema.po.RechargeForm"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into recharge_record(user_id,cardNumber,amount)
+        values(#{user_id}, #{cardNumber},#{amount})
+    </insert>
+
     <select id="selectCardById" resultMap="VIPCard">
         select * from vip_card where id=#{id}
     </select>

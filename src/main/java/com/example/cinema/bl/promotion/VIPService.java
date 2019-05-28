@@ -20,6 +20,7 @@ public interface VIPService {
     ResponseVO charge(VIPCardForm vipCardForm);
 
     ResponseVO getCardByUserId(int userId);
+    ResponseVO recharge_record(int userId,int amount);
 
 
 }

@@ -94,6 +94,15 @@ function confirmCommit() {
                     function (error) {
                         alert(error);
                     });
+                    var amount=parseInt($('#userMember-amount').val());
+                postRequest(
+                    '/vip/'+sessionStorage.getItem('id')+'/record?amount='+amount,
+                    null,
+                    function (res) {
+                    },
+                    function (error) {
+                        alert(error);
+                    });
             }
         } else {
             alert("银行卡号或密码错误");

@@ -1,6 +1,7 @@
 package com.example.cinema.controller.promotion;
 
 import com.example.cinema.bl.promotion.VIPService;
+import com.example.cinema.po.VIPCard;
 import com.example.cinema.vo.VIPCardForm;
 import com.example.cinema.vo.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +30,16 @@ public class VIPCardController {
         return vipService.getVIPInfo();
     }
 
+    @RequestMapping(value = "/{userId}/record", method = RequestMethod.POST)
+    public ResponseVO RechargeRecord(@PathVariable int userId,@RequestParam int amount){
+        return vipService.recharge_record(userId,amount);
+    }
+
     @PostMapping("/charge")
     public ResponseVO charge(@RequestBody VIPCardForm vipCardForm){
         return vipService.charge(vipCardForm);
     }
+
 
 
 
