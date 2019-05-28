@@ -2,15 +2,21 @@ package com.example.cinema.blImpl.promotion;
 
 import com.example.cinema.bl.promotion.VIPService;
 import com.example.cinema.data.promotion.VIPCardMapper;
+import com.example.cinema.data.promotion.RechargeMapper;
 import com.example.cinema.po.RechargeForm;
+import com.example.cinema.po.Ticket;
 import com.example.cinema.vo.VIPCardForm;
 import com.example.cinema.po.VIPCard;
 import com.example.cinema.vo.ResponseVO;
 import com.example.cinema.vo.VIPInfoVO;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -20,6 +26,8 @@ import java.sql.Timestamp;
 public class VIPServiceImpl implements VIPService {
     @Autowired
     VIPCardMapper vipCardMapper;
+    @Autowired
+    RechargeMapper rechargeMapper;
 
     @Override
     public ResponseVO addVIPCard(int userId) {
@@ -100,4 +108,14 @@ public class VIPServiceImpl implements VIPService {
         }
     }
 
+    @Transactional
+    public ResponseVO get_recharge_record(int userId){
+        try {
+            List<RechargeForm> list=rechargeMapper.getrecord(userId);
+            return ResponseVO.buildSuccess(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseVO.buildFailure("失败");
+        }
+    }
 }

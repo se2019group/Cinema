@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.cinema.data.promotion.RechargeMapper">
+    <select id="getrecord" resultMap="RechargeRecord">
+        select * from recharge_record where user_id=#{userId}
+    </select>
+    <resultMap id="RechargeRecord" type="com.example.cinema.po.RechargeForm">
+        <result column="user_id" property="user_id"></result>
+        <result column="cardNumber" property="cardNumber"></result>
+        <result column="amount" property="amount"></result>
+        <result column="time" property="time"></result>
+    </resultMap>
+</mapper>

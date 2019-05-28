@@ -1,5 +1,6 @@
 package com.example.cinema.bl.promotion;
 
+import com.example.cinema.po.RechargeForm;
 import com.example.cinema.vo.VIPCardForm;
 import com.example.cinema.vo.ResponseVO;
 
@@ -21,6 +22,7 @@ public interface VIPService {
 
     ResponseVO getCardByUserId(int userId);
     ResponseVO recharge_record(int userId,int amount);
+    ResponseVO get_recharge_record(int userId);
 
 
 }
