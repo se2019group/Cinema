@@ -373,7 +373,7 @@ DROP TABLE IF EXISTS `vip_promotion`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `vip_promotion` (
-`targer` int(11) NOT NULL,
+`target` int(11) NOT NULL,
 `discount` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
