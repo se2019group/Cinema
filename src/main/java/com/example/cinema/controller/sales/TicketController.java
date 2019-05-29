@@ -1,6 +1,7 @@
 package com.example.cinema.controller.sales;
 
 import com.example.cinema.bl.sales.TicketService;
+import com.example.cinema.vo.ConsumeForm;
 import com.example.cinema.vo.ResponseVO;
 import com.example.cinema.vo.TicketForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,10 @@ public class TicketController {
         return ticketService.deleteTicket(ticketId);
     }
 
-
+    @PostMapping("/consume")
+    public ResponseVO ConsumeRecord(@RequestBody ConsumeForm consumeform){
+        return ticketService.Consume_Record(consumeform);
+    }
 
 
 

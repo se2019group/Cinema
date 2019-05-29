@@ -2,7 +2,7 @@ package com.example.cinema.bl.sales;
 
 import com.example.cinema.vo.ResponseVO;
 import com.example.cinema.vo.TicketForm;
-
+import com.example.cinema.vo.ConsumeForm;
 import java.util.List;
 
 
@@ -66,4 +66,6 @@ public interface TicketService {
      * @return
      */
     ResponseVO deleteTicket(int ticketId);
+
+    ResponseVO Consume_Record(ConsumeForm consumeform);
 }

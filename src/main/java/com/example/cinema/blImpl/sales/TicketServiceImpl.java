@@ -10,6 +10,7 @@ import com.example.cinema.data.promotion.ActivityMapper;
 import com.example.cinema.data.promotion.CouponMapper;
 import com.example.cinema.data.promotion.VIPCardMapper;
 import com.example.cinema.data.sales.TicketMapper;
+import com.example.cinema.data.sales.ConsumeMapper;
 import com.example.cinema.po.Activity;
 import com.example.cinema.po.Coupon;
 import com.example.cinema.po.Hall;
@@ -35,6 +36,8 @@ public class TicketServiceImpl implements TicketService {
 
     @Autowired
     TicketMapper ticketMapper;
+    @Autowired
+    ConsumeMapper consumeMapper;
     @Autowired
     ScheduleServiceForBl scheduleService;
     @Autowired
@@ -371,4 +374,20 @@ public class TicketServiceImpl implements TicketService {
             return ResponseVO.buildFailure("失败");
         }
     }
+    @Override
+    public ResponseVO Consume_Record(ConsumeForm consumeform){
+        String cardNumber="123123123";
+        ConsumeRecord onerecord=new ConsumeRecord();
+       onerecord.setamount(consumeform.getamount());
+       onerecord.setuserid(consumeform.getuserid());
+       onerecord.setypet(consumeform.gettype());
+       if(consumeform.gettype()==1){
+           cardNumber=(vipCardMapper.selectCardByUserId(consumeform.getuserid())).getId()+"";
+       }
+          int content=(scheduleService.getScheduleItemById(consumeform.getscheduleId())).getMovieId();
+       onerecord.setcontent(content);
+       onerecord.setcardNumber(cardNumber);
+       consumeMapper.insertConsume(onerecord);
+        return ResponseVO.buildSuccess();
+ }
 }

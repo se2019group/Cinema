@@ -6,6 +6,8 @@ var isVIP = false;
 var useVIP = true;
 var ticketVOList = [];
 var tmp;
+var actualTotal= -1;
+var total;
 
 $(document).ready(function () {
     scheduleId = parseInt(window.location.href.split('?')[1].split('&')[1].split('=')[1]);
@@ -199,7 +201,7 @@ function renderOrder(orderInfo) {
     }
     $('#order-tickets').html(ticketStr);
 
-    var total = orderInfo.total.toFixed(2);
+    total = orderInfo.total.toFixed(2);
     $('#order-total').text(total);
     $('#order-footer-total').text("总金额： ¥" + total);
 
@@ -222,7 +224,7 @@ function renderOrder(orderInfo) {
 function changeCoupon(couponIndex) {
     order.couponId = coupons[couponIndex].id;
     $('#order-discount').text("优惠金额： ¥" + coupons[couponIndex].discountAmount.toFixed(2));
-    var actualTotal = (parseFloat($('#order-total').text()) - parseFloat(coupons[couponIndex].discountAmount)).toFixed(2);
+    actualTotal = (parseFloat($('#order-total').text()) - parseFloat(coupons[couponIndex].discountAmount)).toFixed(2);
     $('#order-actual-total').text(" ¥" + actualTotal);
     $('#pay-amount').html("<div><b>金额：</b>" + actualTotal + "元</div>");
 }
@@ -230,10 +232,12 @@ function changeCoupon(couponIndex) {
 function payConfirmClick() {
     if (useVIP) {
         postPayRequest();
+        postConsumeRequest();
     } else {
         if (validateForm()) {
             if ($('#userBuy-cardNum').val() === "123123123" && $('#userBuy-cardPwd').val() === "123123") {
                 postPayRequest();
+                postConsumeRequest();
             } else {
                 alert("银行卡号或密码错误");
             }
@@ -276,7 +280,41 @@ function postPayRequest() {
             alert(JSON.stringify(error));
         }
     );
+
+
 }
+function postConsumeRequest(){
+        var type=0;
+        var cost=0;
+        if (useVIP) {
+                  type=1
+              }
+        if(actualTotal==-1){
+         cost=total;}
+        else{
+        cost=actualTotal;}
+        console.log(cost);
+        var form = {
+                  "userid": sessionStorage.getItem("id"),
+                  "type":type,
+                  "amount":cost,
+                  "scheduleId": scheduleId
+              };
+        postRequest(
+                '/ticket/consume',
+                form,
+                function (res) {
+                       if (res.success) {
+                        } else {
+                            alert(res.message)
+                            }
+                        },
+                function (error) {
+                            alert(JSON.stringify(error));
+                }
+            );
+}
+
 
 function validateForm() {
     var isValidate = true;
