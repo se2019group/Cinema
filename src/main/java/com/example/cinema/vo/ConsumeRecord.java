@@ -7,7 +7,7 @@ public class ConsumeRecord {
     private int type;
     private String cardNumber;
     private float amount;
-    private int content;
+    private String content;
     private Date time;
     public int getuserid() {
         return userid;
@@ -35,8 +35,8 @@ public class ConsumeRecord {
         this.cardNumber =cardNumber ;
     }
 
-    public int getcontent(){return  content;}
-    public void setcontent(int content){this.content=content;}
+    public String getcontent(){return  content;}
+    public void setcontent(String content){this.content=content;}
 
     public Date gettime() {
         return time;

@@ -347,12 +347,12 @@ CREATE TABLE `consume_record` (
   `type` tinyint(4) NOT NULL ,
   `cardNumber` varchar(11) NOT NULL,
   `cost` int(11)  NOT NULL,
-  `content` int(11) DEFAULT NULL,
+  `content` varchar(255) DEFAULT NULL,
   `time` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB   DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `consume_record` WRITE;
-INSERT INTO `consume_record` VALUES (15,1,'123123123',100,5,'2019-04-13 17:00:00');
+INSERT INTO `consume_record` VALUES (15,0,'123123123',100,'夏目友人帐','2019-04-13 17:00:00');
 UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `recharge_record`;
@@ -386,15 +386,15 @@ DROP TABLE IF EXISTS `TicketReturn_Promotion`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `TicketReturn_Promotion` (
-`AllReturnTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-`PartReturnTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+`AllReturnTime` int(11) NOT NULL,
+`PartReturnTime` int(11) NOT NULL,
 `discount` float NOT NULL,
-`NotReturnTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+`NotReturnTime` int(11) NOT NULL,
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 LOCK TABLES `TicketReturn_Promotion` WRITE;
-INSERT INTO `TicketReturn_Promotion` VALUES ('2019-04-13 17:00:00','2019-04-13 18:00:00',0.8,'2019-04-13 17:00:00');
+INSERT INTO `TicketReturn_Promotion` VALUES (48,5,0.8,2);
 UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Cinema_Number`;

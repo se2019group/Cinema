@@ -6,4 +6,15 @@
         insert into consume_record(userid,type,cardNumber,cost,content)
         values(#{userid},#{type},#{cardNumber}, #{amount},#{content})
     </insert>
+    <select id="searchConsumeByuserId" resultMap="Consume">
+        select * from consume_record where userid=#{userid}
+    </select>
+    <resultMap id="Consume" type="com.example.cinema.vo.ConsumeRecord">
+        <result column="userid" property="userid"></result>
+        <result column="type" property="type"></result>
+        <result column="cardNumber" property="cardNumber"></result>
+        <result column="cost" property="amount"></result>
+        <result column="content" property="content"></result>
+        <result column="time" property="time"></result>
+    </resultMap>
 </mapper>

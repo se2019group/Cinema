@@ -385,12 +385,14 @@ public class TicketServiceImpl implements TicketService {
        if(consumeform.gettype()==1){
            cardNumber=(vipCardMapper.selectCardByUserId(consumeform.getuserid())).getId()+"";
        }
-          int content=(scheduleService.getScheduleItemById(consumeform.getscheduleId())).getMovieId();
+          String content=(scheduleService.getScheduleItemById(consumeform.getscheduleId())).getMovieName();
        onerecord.setcontent(content);
        onerecord.setcardNumber(cardNumber);
        consumeMapper.insertConsume(onerecord);
         return ResponseVO.buildSuccess();
+
  }
+<<<<<<< Updated upstream
 
 
     @Override
@@ -407,4 +409,12 @@ public class TicketServiceImpl implements TicketService {
 
 
 
+=======
+    @Override
+   public ResponseVO  getConsume_Record(int userId){
+        List<ConsumeRecord> results=new  ArrayList<ConsumeRecord>();
+        results=consumeMapper.searchConsumeByuserId(userId);
+        return ResponseVO.buildSuccess(results);
+    }
+>>>>>>> Stashed changes
 }
