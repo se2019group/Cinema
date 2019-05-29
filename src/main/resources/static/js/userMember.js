@@ -35,16 +35,31 @@ function getVIP() {
         function (res) {
             if (res.success) {
                 $("#member-buy-price").text(res.content.price);
-                $("#member-buy-description").text("充值优惠：" + res.content.description + "。永久有效");
-                $("#member-description").text(res.content.description);
             } else {
-                alert(res.content);
+                alert(res.message);
             }
 
         },
         function (error) {
             alert(error);
-        });
+        }
+    );
+
+    getRequest(
+        '/vipPromotion/get',
+        function(res){
+            if(res.success){
+                $("#member-description").text("满"+res.content.target +"送"+res.content.discount);
+                $("#member-buy-description").text("充值优惠：满" + res.content.target +"送"+res.content.discount+ "。限时活动");
+            }
+            else{
+                alert(res.message);
+            }
+        },
+        function(error){
+            alert(error);
+        }
+    )
 }
 
 function buyClick() {

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.cinema.data.promotion.VIPPromotionMapper">
+
+    <select id="getVIPPromotion" resultMap="VIPPromotion">
+        select * from vip_promotion
+    </select>
+
+    <update id="updateVIPPromotion" >
+        update vip_promotion set target = #{target} , discount=#{discount} where id=#{id}
+    </update>
+
+    <resultMap id="VIPPromotion" type="com.example.cinema.po.VIPPromotion">
+        <result column="id" property="id"></result>
+        <result column="target" property="target"></result>
+        <result column="discount" property="discount"></result>
+    </resultMap>
+</mapper>

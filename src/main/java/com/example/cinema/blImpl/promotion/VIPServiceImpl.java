@@ -2,11 +2,13 @@ package com.example.cinema.blImpl.promotion;
 
 import com.example.cinema.bl.promotion.VIPService;
 import com.example.cinema.data.promotion.VIPCardMapper;
+import com.example.cinema.data.promotion.VIPPromotionMapper;
 import com.example.cinema.data.promotion.RechargeMapper;
 import com.example.cinema.po.RechargeForm;
 import com.example.cinema.po.Ticket;
 import com.example.cinema.vo.VIPCardForm;
 import com.example.cinema.po.VIPCard;
+import com.example.cinema.po.VIPPromotion;
 import com.example.cinema.vo.ResponseVO;
 import com.example.cinema.vo.VIPInfoVO;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
@@ -28,6 +30,8 @@ public class VIPServiceImpl implements VIPService {
     VIPCardMapper vipCardMapper;
     @Autowired
     RechargeMapper rechargeMapper;
+    @Autowired
+    VIPPromotionMapper vipPromotionMapper;
 
     @Override
     public ResponseVO addVIPCard(int userId) {
@@ -63,15 +67,16 @@ public class VIPServiceImpl implements VIPService {
 
     @Override
     public ResponseVO charge(VIPCardForm vipCardForm) {
-
+    	VIPPromotion vipPromotion=vipPromotionMapper.getVIPPromotion();
         VIPCard vipCard = vipCardMapper.selectCardById(vipCardForm.getVipId());
+        
         if (vipCard == null) {
             return ResponseVO.buildFailure("会员卡不存在");
         }
-        double balance = vipCard.calculate(vipCardForm.getAmount());
-        vipCard.setBalance(vipCard.getBalance() + balance);
+        double balance = vipCard.getBalance();
+        balance+=(vipCardForm.getAmount()+((int)vipCardForm.getAmount()/vipPromotion.getTarget())*vipPromotion.getDiscount());
         try {
-            vipCardMapper.updateCardBalance(vipCardForm.getVipId(), vipCard.getBalance());
+            vipCardMapper.updateCardBalance(vipCardForm.getVipId(), balance);
             return ResponseVO.buildSuccess(vipCard);
         } catch (Exception e) {
             e.printStackTrace();

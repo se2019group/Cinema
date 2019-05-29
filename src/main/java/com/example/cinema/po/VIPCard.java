@@ -3,6 +3,11 @@ package com.example.cinema.po;
 
 import java.sql.Timestamp;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.example.cinema.bl.promotion.VIPPromotionService;
+import com.example.cinema.data.promotion.VIPPromotionMapper;
+
 /**
  * Created by liying on 2019/4/14.
  */
@@ -69,10 +74,5 @@ public class VIPCard {
 
     public void setJoinDate(Timestamp joinDate) {
         this.joinDate = joinDate;
-    }
-
-    public double calculate(double amount) {
-        return (int)(amount/200)*30+amount;
-
     }
 }
