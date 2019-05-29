@@ -53,10 +53,19 @@ public class TicketController {
         return ticketService.deleteTicket(ticketId);
     }
 
+
     @PostMapping("/consume")
     public ResponseVO ConsumeRecord(@RequestBody ConsumeForm consumeform){
         return ticketService.Consume_Record(consumeform);
     }
+
+    @PostMapping("/abolish")
+    public ResponseVO abolishTicket(@RequestParam int ticketId){
+        return ticketService.abolishTicket(ticketId);
+    }
+
+
+
 
 
 

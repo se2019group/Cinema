@@ -339,7 +339,7 @@ public class TicketServiceImpl implements TicketService {
     	try {
     		int i;
             Ticket ticket;
-            
+
             i=0;
             while(i<id.size()) {
             	ticket=ticketMapper.selectTicketById(id.get(i));
@@ -374,6 +374,7 @@ public class TicketServiceImpl implements TicketService {
             return ResponseVO.buildFailure("失败");
         }
     }
+
     @Override
     public ResponseVO Consume_Record(ConsumeForm consumeform){
         String cardNumber="123123123";
@@ -390,4 +391,20 @@ public class TicketServiceImpl implements TicketService {
        consumeMapper.insertConsume(onerecord);
         return ResponseVO.buildSuccess();
  }
+
+
+    @Override
+    public ResponseVO abolishTicket(int ticketId){
+        try{
+            Ticket ticket=ticketMapper.selectTicketById(ticketId);
+            ticketMapper.updateTicketState(ticketId, 2);//将票的状态设置成“已失效”
+            return ResponseVO.buildSuccess();
+        }catch (Exception e){
+            return ResponseVO.buildFailure("失败");
+        }
+
+    }
+
+
+
 }

@@ -67,5 +67,14 @@ public interface TicketService {
      */
     ResponseVO deleteTicket(int ticketId);
 
+
     ResponseVO Consume_Record(ConsumeForm consumeform);
+
+    /**
+     * 取消购买
+     * @param ticketId
+     * @return
+     */
+    ResponseVO abolishTicket(int ticketId);
+
 }

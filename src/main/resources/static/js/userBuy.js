@@ -2,6 +2,7 @@ var tmp
 $(document).ready(function () {
     getMovieList();
 
+
     function getMovieList() {
         getRequest(
             '/ticket/get/' + sessionStorage.getItem('id'),
@@ -28,7 +29,25 @@ $(document).ready(function () {
                     }
 
                 );
-        }
+    }
+
+    cancelTicket=function(ids){
+        postRequest(
+            '/ticket/abolish/'+ `?ticketId=${ids}`,
+            {},
+            function (res) {
+                if (res.success) {
+                    window.location.reload()
+                } else {
+                    alert(res.message)
+                }
+            },
+            function (error) {
+                alert(JSON.stringify(error));
+            }
+
+         );
+    }
 
     // TODO:填空
     // $('.movie-on-list').empty();
@@ -70,6 +89,7 @@ $(document).ready(function () {
                     let schedule = schedules[i];
                     let ticket = list[i];
                     if(ticket.state==0){
+                    var button1 ="<a role='button' id="+ticket.id+" onclick='cancelTicket(this.id)'><i class='icon-edit'></i>取消付款</a>";
                     var ticketInfo =
                         "<tr>"
                         + "<td>" + schedule.movieName + "</td>"
@@ -80,7 +100,7 @@ $(document).ready(function () {
                         + "<td>" + schedule.endTime.split("T")[0] + " "
                         + schedule.endTime.split("T")[1].split(".")[0] + "</td>"
                         + "<td>" + stateList[ticket.state] + "</td>"
-                        + "<td>" + '<button type="button" style="height:30px;width:50px;">取消付款</button> '+ "</td>"
+                        + "<td>" + button1 + "</td>"
                         + "<td>" + '<button type="button" style="height:30px;width:50px;">完成付款</button> '+ "</td>"
                         + " </tr>";}
                     else if(ticket.state==1){
