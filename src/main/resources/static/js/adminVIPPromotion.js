@@ -13,7 +13,7 @@ $(document).ready(function() {
             '/vipPromotion/get',
 
             function(res){
-                target.val(""+res.content.target);
+                target.val(res.content.target);
                 discount.val(res.content.discount);
             },
             function(error){
@@ -27,10 +27,15 @@ $(document).ready(function() {
             '/vipPromotion/set?target='+target.val()+'&discount='+discount.val(),
             {},
             function(res){
-                alert('优惠信息修改成功!');
+                if(res.success){
+                    alert('优惠信息修改成功!');
+                }
+                else{
+                    alert(res.message);
+                }
             },
             function(error){
-                alert('设置失败');
+                alert('设置失败\n也许你输入的不是整数……');
             }
         )
     })

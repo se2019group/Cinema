@@ -70,7 +70,6 @@ public interface TicketService {
 
     ResponseVO Consume_Record(ConsumeForm consumeform);
 
-<<<<<<< Updated upstream
     /**
      * 取消购买
      * @param ticketId
@@ -78,7 +77,6 @@ public interface TicketService {
      */
     ResponseVO abolishTicket(int ticketId);
 
-=======
     ResponseVO  getConsume_Record(int userId);
->>>>>>> Stashed changes
+
 }

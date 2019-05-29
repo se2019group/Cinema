@@ -59,7 +59,6 @@ public class TicketController {
         return ticketService.Consume_Record(consumeform);
     }
 
-<<<<<<< Updated upstream
     @PostMapping("/abolish")
     public ResponseVO abolishTicket(@RequestParam int ticketId){
         return ticketService.abolishTicket(ticketId);
@@ -69,11 +68,9 @@ public class TicketController {
 
 
 
-=======
     @GetMapping("/consume/{userId}")
     public ResponseVO getConsumeByuserId(@PathVariable int userId){
         return ticketService.getConsume_Record(userId);
     }
->>>>>>> Stashed changes
 
 }

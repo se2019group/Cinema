@@ -25,6 +25,12 @@ public class VIPPromotionServiceImpl implements VIPPromotionService{
 	@Override
 	public ResponseVO setVIPPromotion(int target,int discount) {
 		try {
+			if(target<=0) {
+				return ResponseVO.buildFailure("门槛金额不能小于等于0！");
+			}
+			else if(discount<=0) {
+				return ResponseVO.buildFailure("赠送金额不能小于等于0！");
+			}
 			vipPromotionMapper.updateVIPPromotion(target, discount,1);
 			return ResponseVO.buildSuccess();
 		}catch (Exception e) {

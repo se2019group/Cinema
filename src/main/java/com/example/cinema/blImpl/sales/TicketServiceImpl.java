@@ -392,7 +392,6 @@ public class TicketServiceImpl implements TicketService {
         return ResponseVO.buildSuccess();
 
  }
-<<<<<<< Updated upstream
 
 
     @Override
@@ -409,12 +408,10 @@ public class TicketServiceImpl implements TicketService {
 
 
 
-=======
-    @Override
+   @Override
    public ResponseVO  getConsume_Record(int userId){
         List<ConsumeRecord> results=new  ArrayList<ConsumeRecord>();
         results=consumeMapper.searchConsumeByuserId(userId);
         return ResponseVO.buildSuccess(results);
     }
->>>>>>> Stashed changes
 }
