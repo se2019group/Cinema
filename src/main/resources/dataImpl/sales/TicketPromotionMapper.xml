@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.cinema.data.sales.TicketPromotionMapper">
+    <select id="getPromotion" resultMap="Promotion">
+        select * from ticketreturn_promotion where id=#{id}
+    </select>
+    <update id="changePromotion" >
+        update ticketreturn_promotion set AllReturnTime = #{FullTime},PartReturnTime=#{PartTime},discount=#{Discounts},NotReturnTime=#{OutTime} where id=1
+    </update>
+
+    <resultMap id="Promotion" type="com.example.cinema.po.TicketPromotion">
+        <result column="AllReturnTime" property="FullTime"></result>
+        <result column="PartReturnTime" property="PartTime"></result>
+        <result column="discount" property="Discounts"></result>
+        <result column="NotReturnTime" property="OutTime"></result>
+    </resultMap>
+</mapper>

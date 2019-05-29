@@ -1,9 +1,11 @@
 package com.example.cinema.controller.sales;
 
 import com.example.cinema.bl.sales.TicketService;
+import com.example.cinema.po.TicketPromotion;
 import com.example.cinema.vo.ConsumeForm;
 import com.example.cinema.vo.ResponseVO;
 import com.example.cinema.vo.TicketForm;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -65,12 +67,23 @@ public class TicketController {
     }
 
 
+<<<<<<< Updated upstream
 
 
 
+=======
+>>>>>>> Stashed changes
     @GetMapping("/consume/{userId}")
     public ResponseVO getConsumeByuserId(@PathVariable int userId){
         return ticketService.getConsume_Record(userId);
     }
 
+    @GetMapping("/promotion/get")
+    public ResponseVO getTicketPromotion(){
+        return ticketService.TicketPromotion();
+    }
+    @PostMapping("/promotion/change")
+    public ResponseVO changeTicketPromotion(@RequestBody TicketPromotion ticketPromotion){
+        return ticketService.changeTicketPromotion(ticketPromotion);
+    }
 }

@@ -13,6 +13,7 @@
     <script src="/js/jquery.js"></script>
     <script src="/js/bootstrap.js"></script>
     <script src="/js/request.js"></script>
+    <script src="/js/adminTicketReturn.js"></script>
 </head>
 <body>
 <div class="main-container">
@@ -39,18 +40,18 @@
         </div>
         <div class="content">
             全额退款的时间限制:<br>
-            <input type="text" name="target" value="96">
+            <input type="text" id="fulltime" value="480">
             <br>
             折扣退款的时间限制:<br>
-            <input type="text" name="give" value="30">
+            <input type="text" id="parttime" value="50">
             <br>
             折扣退款的折扣:<br>
-            <input type="text" name="give" value="0.8">
+            <input type="text" id="discount" value="0.08">
             <br>
             无法退款的时间限制:<br>
-            <input type="text" name="give" value="2">
+            <input type="text" id="outtime" value="20">
             <br><br>
-            <input type="button" value="确认修改">
+            <input type="button" value="确认修改" onclick='change()'>
         </div>
         </br>
     </div>

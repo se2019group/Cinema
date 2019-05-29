@@ -1,5 +1,6 @@
 package com.example.cinema.bl.sales;
 
+import com.example.cinema.po.TicketPromotion;
 import com.example.cinema.vo.ResponseVO;
 import com.example.cinema.vo.TicketForm;
 import com.example.cinema.vo.ConsumeForm;
@@ -78,5 +79,10 @@ public interface TicketService {
     ResponseVO abolishTicket(int ticketId);
 
     ResponseVO  getConsume_Record(int userId);
+<<<<<<< Updated upstream
 
+=======
+    ResponseVO  TicketPromotion();
+    ResponseVO changeTicketPromotion(TicketPromotion ticketPromotion);
+>>>>>>> Stashed changes
 }

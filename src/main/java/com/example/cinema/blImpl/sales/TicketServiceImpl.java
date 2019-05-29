@@ -10,13 +10,9 @@ import com.example.cinema.data.promotion.ActivityMapper;
 import com.example.cinema.data.promotion.CouponMapper;
 import com.example.cinema.data.promotion.VIPCardMapper;
 import com.example.cinema.data.sales.TicketMapper;
+import com.example.cinema.data.sales.TicketPromotionMapper;
 import com.example.cinema.data.sales.ConsumeMapper;
-import com.example.cinema.po.Activity;
-import com.example.cinema.po.Coupon;
-import com.example.cinema.po.Hall;
-import com.example.cinema.po.ScheduleItem;
-import com.example.cinema.po.Ticket;
-import com.example.cinema.po.VIPCard;
+import com.example.cinema.po.*;
 import com.example.cinema.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,7 +46,8 @@ public class TicketServiceImpl implements TicketService {
     MovieMapper movieMapper;
     @Autowired
     VIPCardMapper vipCardMapper;
-    
+    @Autowired
+    TicketPromotionMapper  ticketPromotionMapper;
     @Override
     @Transactional
     public ResponseVO addTicket(TicketForm ticketForm) {
@@ -408,10 +405,26 @@ public class TicketServiceImpl implements TicketService {
 
 
 
+<<<<<<< Updated upstream
    @Override
+=======
+    @Override
+>>>>>>> Stashed changes
    public ResponseVO  getConsume_Record(int userId){
         List<ConsumeRecord> results=new  ArrayList<ConsumeRecord>();
         results=consumeMapper.searchConsumeByuserId(userId);
         return ResponseVO.buildSuccess(results);
     }
+<<<<<<< Updated upstream
+=======
+    @Override
+    public ResponseVO  TicketPromotion(){
+        return ResponseVO.buildSuccess(ticketPromotionMapper.getPromotion(1));
+    }
+    @Override
+    public ResponseVO changeTicketPromotion(TicketPromotion ticketPromotion){
+        ticketPromotionMapper.changePromotion(ticketPromotion.getFullTime(),ticketPromotion.getPartTime(),ticketPromotion.getDiscounts(),ticketPromotion.getOutTime());
+        return ResponseVO.buildSuccess();
+    }
+>>>>>>> Stashed changes
 }

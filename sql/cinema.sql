@@ -386,15 +386,17 @@ DROP TABLE IF EXISTS `TicketReturn_Promotion`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `TicketReturn_Promotion` (
+`id`int(11) NOT NULL AUTO_INCREMENT,
 `AllReturnTime` int(11) NOT NULL,
 `PartReturnTime` int(11) NOT NULL,
 `discount` float NOT NULL,
 `NotReturnTime` int(11) NOT NULL,
-)ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4;
+    PRIMARY KEY (`id`)
+)ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 LOCK TABLES `TicketReturn_Promotion` WRITE;
-INSERT INTO `TicketReturn_Promotion` VALUES (48,5,0.8,2);
+INSERT INTO `TicketReturn_Promotion` VALUES (1,48,5,0.8,2);
 UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Cinema_Number`;
