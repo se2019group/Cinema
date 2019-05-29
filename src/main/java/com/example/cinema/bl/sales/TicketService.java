@@ -79,10 +79,7 @@ public interface TicketService {
     ResponseVO abolishTicket(int ticketId);
 
     ResponseVO  getConsume_Record(int userId);
-<<<<<<< Updated upstream
 
-=======
     ResponseVO  TicketPromotion();
     ResponseVO changeTicketPromotion(TicketPromotion ticketPromotion);
->>>>>>> Stashed changes
 }

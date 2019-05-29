@@ -67,12 +67,9 @@ public class TicketController {
     }
 
 
-<<<<<<< Updated upstream
 
 
 
-=======
->>>>>>> Stashed changes
     @GetMapping("/consume/{userId}")
     public ResponseVO getConsumeByuserId(@PathVariable int userId){
         return ticketService.getConsume_Record(userId);

@@ -405,18 +405,12 @@ public class TicketServiceImpl implements TicketService {
 
 
 
-<<<<<<< Updated upstream
-   @Override
-=======
     @Override
->>>>>>> Stashed changes
    public ResponseVO  getConsume_Record(int userId){
         List<ConsumeRecord> results=new  ArrayList<ConsumeRecord>();
         results=consumeMapper.searchConsumeByuserId(userId);
         return ResponseVO.buildSuccess(results);
     }
-<<<<<<< Updated upstream
-=======
     @Override
     public ResponseVO  TicketPromotion(){
         return ResponseVO.buildSuccess(ticketPromotionMapper.getPromotion(1));
@@ -426,5 +420,4 @@ public class TicketServiceImpl implements TicketService {
         ticketPromotionMapper.changePromotion(ticketPromotion.getFullTime(),ticketPromotion.getPartTime(),ticketPromotion.getDiscounts(),ticketPromotion.getOutTime());
         return ResponseVO.buildSuccess();
     }
->>>>>>> Stashed changes
 }
