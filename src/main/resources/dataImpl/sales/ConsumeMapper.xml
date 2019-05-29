@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.cinema.data.sales.ConsumeMapper">
+    <insert id="insertConsume" parameterType="com.example.cinema.vo.ConsumeRecord"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into consume_record(userid,type,cardNumber,cost,content)
+        values(#{userid},#{type},#{cardNumber}, #{amount},#{content})
+    </insert>
+</mapper>
