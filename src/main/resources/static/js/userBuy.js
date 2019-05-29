@@ -84,6 +84,7 @@ $(document).ready(function () {
                         + "<td>" + '<button type="button" style="height:30px;width:50px;">完成付款</button> '+ "</td>"
                         + " </tr>";}
                     else if(ticket.state==1){
+                    var button ="<a role='button' id="+ticket.id+" onclick='deleteTicket(this.id)'><i class='icon-edit'></i>删除</a>";
                     var ticketInfo =
                         "<tr>"
                         + "<td>" + schedule.movieName + "</td>"
@@ -95,6 +96,7 @@ $(document).ready(function () {
                         + schedule.endTime.split("T")[1].split(".")[0] + "</td>"
                         + "<td>" + stateList[ticket.state] + "</td>"
                         + "<td>" + '<button type="button" style="height:30px;width:50px;">退票</button> '+ "</td>"
+                        + "<td>" + button + "</td>"
                         + " </tr>";}
                     else if(ticket.state==2){
                     var button ="<a role='button' id="+ticket.id+" onclick='deleteTicket(this.id)'><i class='icon-edit'></i>删除</a>";

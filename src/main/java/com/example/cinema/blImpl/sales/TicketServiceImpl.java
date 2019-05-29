@@ -22,7 +22,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -353,8 +355,18 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public ResponseVO deleteTicket(int ticketId) {
         try{
-            ticketMapper.deleteTicket(ticketId);
-            return ResponseVO.buildSuccess();
+            Ticket ticket=ticketMapper.selectTicketById(ticketId);
+            ScheduleItem scheduleItem=scheduleService.getScheduleItemById(ticket.getScheduleId());
+            Date endtime=scheduleItem.getEndTime();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date now=simpleDateFormat.parse(simpleDateFormat.format(new Date()));
+            endtime=simpleDateFormat.parse(simpleDateFormat.format(endtime));
+            if(endtime.before(now)){
+                ticketMapper.deleteTicket(ticketId);
+                return ResponseVO.buildSuccess();
+            }else{
+                return ResponseVO.buildFailure("失败");
+            }
         }catch(Exception e){
             return ResponseVO.buildFailure("失败");
         }
