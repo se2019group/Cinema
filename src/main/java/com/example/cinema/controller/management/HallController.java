@@ -21,7 +21,12 @@ public class HallController {
     }
 
     @RequestMapping(value = "/hall/add", method = RequestMethod.POST)
-    public ResponseVO addMovie(@RequestBody HallForm hallForm){
-        return hallService.addHall(hallForm);
+    public ResponseVO addHall(@RequestBody HallForm addHallForm){
+        return hallService.addHall(addHallForm);
+    }
+
+    @RequestMapping(value = "/hall/update",method = RequestMethod.POST)
+    public ResponseVO updateHall(@RequestBody HallForm updateHallForm) {
+        return hallService.updateHall(updateHallForm);
     }
 }

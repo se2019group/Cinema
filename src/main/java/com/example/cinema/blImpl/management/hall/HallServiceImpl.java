@@ -51,15 +51,26 @@ public class HallServiceImpl implements HallService, HallServiceForBl {
     }
 
     @Override
-    public ResponseVO addHall(HallForm hallForm){
+    public ResponseVO addHall(HallForm addHallForm){
         try{
             List<Hall>hallList=hallMapper.selectAllHall();
             for(int i=0;i<hallList.size();i++){
-                if(hallForm.getId()==hallList.get(i).getId()){
+                if(addHallForm.getId()==hallList.get(i).getId()){
                     return ResponseVO.buildFailure("影厅id重复");
                 }
             }
-            hallMapper.insertHall(hallForm);
+            hallMapper.insertHall(addHallForm);
+            return ResponseVO.buildSuccess();
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseVO.buildFailure("失败");
+        }
+    }
+
+    @Override
+    public ResponseVO updateHall(HallForm updateHallForm){
+        try{
+            hallMapper.updateHall(updateHallForm);
             return ResponseVO.buildSuccess();
         }catch (Exception e){
             e.printStackTrace();

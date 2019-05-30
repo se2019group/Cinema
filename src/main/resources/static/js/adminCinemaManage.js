@@ -21,7 +21,9 @@ $(document).ready(function() {
 
     $("#hall-form-btn").click(function () {
             var hallForm = getHallForm();
-
+            if(!validateHallForm(hallForm)) {
+                return;
+            }
             postRequest(
                 '/hall/add',
                 hallForm,
@@ -41,6 +43,29 @@ $(document).ready(function() {
                 row: $('#hall-row-input').val(),
                 column: $('#hall-column-input').val(),
             };
+    }
+    function validateHallForm(data) {
+            var isValidate = true;
+            if(!data.id) {
+                isValidate = false;
+                alert("影厅id不能为空")
+                return isValidate;
+            }
+            if(!data.name) {
+                isValidate = false;
+                alert("影厅名不能为空")
+                return isValidate;
+            }
+            if(!data.row) {
+                isValidate = false;
+                alert("影厅行不能为空")
+                return isValidate;
+            }
+            if(!data.column) {
+                isValidate = false;
+                alert("影厅列不能为空")
+            }
+            return isValidate;
         }
     function renderHall(halls){
         $('#hall-card').empty();

@@ -27,8 +27,15 @@ public interface HallMapper {
 
     /**
      * 增加影厅
-     * @param hallForm
+     * @param addHallForm
      * @return
      */
-    int insertHall(HallForm hallForm);
+    int insertHall(HallForm addHallForm);
+
+    /**
+     * 修改影厅信息
+     * @param updateHallForm
+     * @return
+     */
+    int updateHall(HallForm updateHallForm);
 }
