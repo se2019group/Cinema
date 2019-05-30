@@ -19,11 +19,33 @@ $(document).ready(function() {
         );
     }
 
+    $("#hall-form-btn").click(function () {
+            var hallForm = getHallForm();
+
+            postRequest(
+                '/hall/add',
+                hallForm,
+                function (res) {
+                    $("#hallModal").modal('hide');
+                    window.location.reload();
+                },
+                 function (error) {
+                    alert(error);
+                });
+        });
+
+    function getHallForm() {
+            return {
+                id: $('#hall-id-input').val(),
+                name: $('#hall-name-input').val(),
+                row: $('#hall-row-input').val(),
+                column: $('#hall-column-input').val(),
+            };
+        }
     function renderHall(halls){
         $('#hall-card').empty();
         var hallDomStr = "";
-        var header= "<div>" + '<button type="button" style="height:30px;width:80px;">增加影厅</button> '+ "</div>";
-        $('#hall-card').append(header);
+
         halls.forEach(function (hall) {
             var seat = "";
             for(var i =0;i<hall.row;i++){

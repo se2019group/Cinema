@@ -8,7 +8,19 @@
         select * from hall where id = #{hallId}
     </select>
 
+    <insert id="insertHall" parameterType="com.example.cinema.vo.HallForm"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into hall(name,`row`,`column`)
+        values(#{name},#{row},#{column})
+    </insert>
+
+
+
     <resultMap id="Hall" type="com.example.cinema.po.Hall">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="row" property="row"></result>
+        <result column="column" property="column"></result>
     </resultMap>
 
 </mapper>
