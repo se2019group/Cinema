@@ -66,10 +66,6 @@ public class TicketController {
         return ticketService.abolishTicket(ticketId);
     }
 
-
-
-
-
     @GetMapping("/consume/{userId}")
     public ResponseVO getConsumeByuserId(@PathVariable int userId){
         return ticketService.getConsume_Record(userId);
@@ -82,5 +78,9 @@ public class TicketController {
     @PostMapping("/promotion/change")
     public ResponseVO changeTicketPromotion(@RequestBody TicketPromotion ticketPromotion){
         return ticketService.changeTicketPromotion(ticketPromotion);
+    }
+    @PostMapping("/return/{ticketId}")
+    public ResponseVO TicketReturn(@PathVariable int ticketId){
+        return ticketService.TicketReturn(ticketId);
     }
 }

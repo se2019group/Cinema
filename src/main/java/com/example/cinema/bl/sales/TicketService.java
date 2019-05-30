@@ -82,4 +82,5 @@ public interface TicketService {
 
     ResponseVO  TicketPromotion();
     ResponseVO changeTicketPromotion(TicketPromotion ticketPromotion);
+    ResponseVO TicketReturn(int ticketId);
 }

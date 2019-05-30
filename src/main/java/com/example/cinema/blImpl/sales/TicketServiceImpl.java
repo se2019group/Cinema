@@ -420,4 +420,62 @@ public class TicketServiceImpl implements TicketService {
         ticketPromotionMapper.changePromotion(ticketPromotion.getFullTime(),ticketPromotion.getPartTime(),ticketPromotion.getDiscounts(),ticketPromotion.getOutTime());
         return ResponseVO.buildSuccess();
     }
+    //策略说明，在全额时间前的全部退，在全额时间与部分退款时间中，折扣退，在部分退款和不能退款中折扣上继续折扣退，在不能退款时间后不能退。
+    //默认退款给VIP卡，没有VIP卡的退到银行卡，因为默认是123123123，所以相当于不退款。
+    //第二次的折扣是在第一次的价格上减去百分之10，此百分之10为整数，向下取整。
+    @Override
+    public ResponseVO TicketReturn(int ticketId){
+        boolean canreturn=true;
+        double returnamount=0;
+        Ticket ticket=ticketMapper.selectTicketById(ticketId);
+        int userid=ticket.getUserId();
+        VIPCard vip=vipCardMapper.selectCardByUserId(userid);
+        int scheduleId=ticket.getScheduleId();
+        ScheduleItem s= scheduleService.getScheduleItemById(scheduleId);
+        double amount=s.getFare();
+        Date start_time=s.getStartTime();
+        Date nowtime= new Date();
+        List<TicketPromotion> t=ticketPromotionMapper.getPromotion(1);
+        TicketPromotion ticketPromotion=t.get(0);
+        int fulltime=ticketPromotion.getFullTime();
+        int parttme=ticketPromotion.getPartTime();
+        float discount=ticketPromotion.getDiscounts();
+        int outtime=ticketPromotion.getOutTime();
+        Date FullTime=new Date(start_time.getTime() -  fulltime * 60 * 60 * 1000);
+        Date PartTime=new Date(start_time.getTime() -  parttme * 60 * 60 * 1000);
+        Date OutTime=new Date(start_time.getTime() -  outtime * 60 * 60 * 1000);
+        if(nowtime.compareTo(FullTime)==-1){
+            returnamount=amount;
+        }
+        else{
+            if ( nowtime.compareTo(PartTime)==-1){
+                returnamount=amount*discount;
+            }
+            else{
+                if (nowtime.compareTo(OutTime)==-1){
+                    returnamount=amount*discount-(int)(amount*discount*0.1);
+                }
+                else{
+                    canreturn=false;
+                }
+            }
+        }
+        if(canreturn){
+            int VIPId=0;
+            abolishTicket(ticket.getId());
+        try{
+           VIPId=vip.getId();
+        }catch (Exception e){
+         VIPId=0;
+        }
+            if(VIPId!=0){
+                returnamount+=vip.getBalance();
+                vipCardMapper.updateCardBalance(vip.getId(),returnamount);
+            }
+            return ResponseVO.buildSuccess("1");
+        }
+        else{
+            return ResponseVO.buildSuccess("0");
+        }
+    }
 }

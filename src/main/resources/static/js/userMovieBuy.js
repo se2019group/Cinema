@@ -293,7 +293,6 @@ function postConsumeRequest(){
          cost=total;}
         else{
         cost=actualTotal;}
-        console.log(cost);
         var form = {
                   "userid": sessionStorage.getItem("id"),
                   "type":type,
