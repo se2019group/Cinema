@@ -67,6 +67,8 @@ $(document).ready(function() {
             }
             return isValidate;
         }
+
+
     function renderHall(halls){
         $('#hall-card').empty();
         var hallDomStr = "";
@@ -80,12 +82,13 @@ $(document).ready(function() {
                 }
                 seat+= "<div>"+temp+"</div>";
             }
+            var button ="<a role='button' id="+hall.id+" onclick='change(this.id)'><i class='icon-edit'></i>修改影厅</a>";
             var hallDom =
                 "<div class='cinema-hall'>" +
                 "<div>" +
                 "<span class='cinema-hall-name'>"+ hall.name +"</span>" +
                 "<span class='cinema-hall-size'>"+ hall.column +'*'+ hall.row +"</span>" +
-                "<span class='cinema-change'>"+ '<button type="button" style="height:30px;width:80px;">修改影厅</button> '+"</span>"+
+                "<span class='cinema-change-btn'>"+ button +"</span>"+
                 "</div>" +
                 "<div class='cinema-seat'>" + seat +
                 "</div>" +
@@ -94,6 +97,31 @@ $(document).ready(function() {
         });
         $('#hall-card').append(hallDomStr);
     }
+
+    change=function (id) {
+        var name=prompt("请输入影厅名", "");
+        var row=prompt("请输入行", "");
+        var column=prompt("请输入列", "");
+
+        var hallForm={
+            id:id,
+            name: name,
+            row: row,
+            column: column,
+        }
+        if(!validateHallForm(hallForm)) {
+            return;
+        }
+            postRequest(
+                '/hall/update',
+                    hallForm,
+                function (res) {
+                    getCinemaHalls();
+                },
+                function (error) {
+                        alert(error);
+                    });
+    };
 
     function getCanSeeDayNum() {
         getRequest(
