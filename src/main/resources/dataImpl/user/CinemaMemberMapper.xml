@@ -8,7 +8,10 @@
         <result column="username" property="username"></result>
         <result column="password" property="password"></result>
     </resultMap>
-
+    <select id="getAccountByName" resultMap="CinemaMember">
+        select * from cinema_member as m where concat(m.username)
+        like concat('%',#{username},'%');
+    </select>
 
 
     <insert id="insertCinemaMember" parameterType="com.example.cinema.vo.CinemaMemberForm"

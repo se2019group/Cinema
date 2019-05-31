@@ -158,20 +158,60 @@ function renderUserList(users) {
 
 function getAccount(username) {
         getRequest(
-            '/search?username='+username,
+            '/search/member?username='+username,
             function (res) {
-                renderAccount(res.content);
+            if(res.content!=null){
+            renderAccount(res.content);}
             },
              function (error) {
             alert(error);
         });
     }
-    function renderAccount(user) {
-        $('.account-on-list').empty();
-            var accountDomStr = '';
-            accountDomStr +=
-                        "<span class='primary-text'>" + user.username + "</span>" +
-                $('.account-on-list').append(accountDomStr);
+    function renderAccount(users) {
+          $('.user-in-table').empty();
+                var userDomStr="";
+               users.forEach(function (user) {
+
+                           var button1 ="<a role='button' id="+user.id+" onclick='change(this.id)'><i class='icon-edit'></i>修改员工信息</a>";
+                           var button2 ="<a role='button' id="+user.id+" onclick='deleteStaff(this.id)'><i class='icon-edit'></i>删除员工</a>";
+
+                           if(user.type==0){
+                            var userDom =
+                               "<tr>"
+                                + "<td>" + "排片经理" + "</td>"
+                                + "<td>" + user.id + "</td>"
+                                + "<td>" + user.username + "</td>"
+                                + "<td>" + user.password + "</td>"
+                                + "<td>" + button1 + "</td>"
+                                + "<td>" + button2 + "</td>"
+                                + " </tr>";
+                                }else if(user.type==1){
+                                var userDom =
+                                    "<tr>"
+                                        + "<td>" + "用户经理" + "</td>"
+                                        + "<td>" + user.id + "</td>"
+                                        + "<td>" + user.username + "</td>"
+                                        + "<td>" + user.password + "</td>"
+                                        + "<td>" + button1 + "</td>"
+                                        + "<td>" + button2 + "</td>"
+                                        + " </tr>";
+                                }else{
+                                var userDom =
+                                        "<tr>"
+                                        + "<td>" + "闲杂人员" + "</td>"
+                                        + "<td>" + user.id + "</td>"
+                                        + "<td>" + user.username + "</td>"
+                                        + "<td>" + user.password + "</td>"
+                                        + "<td>" + button1 + "</td>"
+                                        + "<td>" + button2 + "</td>"
+                                        + " </tr>";
+                                }
+
+
+                           userDomStr+=userDom;
+
+                       });
+                       $('.user-in-table').append(userDomStr);
     }
 
     $('#search-btn').click(function () {

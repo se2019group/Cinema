@@ -5,6 +5,8 @@ import com.example.cinema.bl.sales.TicketService;
 import com.example.cinema.bl.user.AccountService;
 import com.example.cinema.data.promotion.VIPCardMapper;
 import com.example.cinema.data.user.AccountMapper;
+import com.example.cinema.data.user.CinemaMemberMapper;
+import com.example.cinema.po.CinemaMember;
 import com.example.cinema.po.RechargeForm;
 import com.example.cinema.po.User;
 import com.example.cinema.po.VIPCard;
@@ -34,6 +36,8 @@ public class AccountServiceImpl implements AccountService {
     private VIPCardMapper vipCardMapper;
     @Autowired
     private VIPService vipService;
+	@Autowired
+	private  CinemaMemberMapper cinemaMemberMapper;
 
     @Override
     public ResponseVO registerAccount(UserForm userForm) {
@@ -68,8 +72,8 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public ResponseVO getAccountByName(String username){
         try{
-            accountMapper.getAccountByName(username);
-            return ResponseVO.buildSuccess();
+			List<CinemaMember> c=cinemaMemberMapper.getAccountByName(username);
+            return ResponseVO.buildSuccess(c);
         }catch (Exception e){
             e.printStackTrace();
             return ResponseVO.buildFailure("失败");

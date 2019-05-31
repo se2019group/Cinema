@@ -41,7 +41,7 @@ public class AccountController {
         return "index";
     }
 
-    @RequestMapping(value = "/search",method = RequestMethod.GET)
+    @RequestMapping(value = "/search/member",method = RequestMethod.GET)
     public ResponseVO getAccountByName(@RequestParam String username){
         return accountService.getAccountByName(username);
     }

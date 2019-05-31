@@ -1,6 +1,7 @@
 package com.example.cinema.data.user;
 
 import com.example.cinema.po.CinemaMember;
+import com.example.cinema.po.User;
 import com.example.cinema.vo.CinemaMemberForm;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -35,5 +36,11 @@ public interface CinemaMemberMapper {
      * @return
      */
     int updateMember(CinemaMemberForm cinemaMemberForm);
+    /**
+     * 根据用户名查找账号
+     * @param username
+     * @return
+     */
+    List<CinemaMember> getAccountByName(@Param("username") String username);
 
 }
