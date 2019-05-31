@@ -399,8 +399,8 @@ LOCK TABLES `TicketReturn_Promotion` WRITE;
 INSERT INTO `TicketReturn_Promotion` VALUES (1,48,5,0.8,2);
 UNLOCK TABLES;
 
-DROP TABLE IF EXISTS `Cinema_Number`;
-CREATE TABLE `Cinema_Number` (
+DROP TABLE IF EXISTS `Cinema_Member`;
+CREATE TABLE `Cinema_Member` (
 `Type` int(11) NOT NULL,
  `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL,
@@ -410,8 +410,8 @@ CREATE TABLE `Cinema_Number` (
   UNIQUE KEY `user_username_uindex` (`username`)
 ) ENGINE=InnoDB  AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
 
-LOCK TABLES `Cinema_Number` WRITE;
-INSERT INTO `Cinema_Number` VALUES (1,1,'testname','123456'),(0,3,'test','123456'),(1,5,'test1','123456');
+LOCK TABLES `Cinema_Member` WRITE;
+INSERT INTO `Cinema_Member` VALUES (1,1,'testname','123456'),(0,3,'test','123456'),(1,5,'test1','123456');
 UNLOCK TABLES;
 
 --
