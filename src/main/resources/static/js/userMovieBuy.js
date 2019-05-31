@@ -301,7 +301,6 @@ function postConsumeRequest(){
                   "amount":cost,
                   "scheduleId": scheduleId
               };
-        if(balancenow>=actualTotal){
         postRequest(
                 '/ticket/consume',
                 form,
@@ -314,7 +313,7 @@ function postConsumeRequest(){
                 function (error) {
                             alert(JSON.stringify(error));
                 }
-            );}
+            );
 }
 
 

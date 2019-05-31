@@ -63,7 +63,11 @@ listcoupon(res.content);
                 couponTicketStr += "<option>满" + coupon.targetAmount + "减" + coupon.discountAmount + "</option>"}
             }
             $('#order-coupons').html(couponTicketStr);
-            changeCoupon(-1);
+            if(couponTicketStr!=""){
+             changeCoupon(0);
+            }
+            else{
+            changeCoupon(-1);}
         }
     function changeCoupon(couponIndex) {
     if(couponIndex!=-1){
