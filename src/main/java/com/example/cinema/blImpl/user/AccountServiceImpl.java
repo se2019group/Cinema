@@ -9,6 +9,9 @@ import com.example.cinema.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author huwen
  * @date 2019/3/23
@@ -38,5 +41,43 @@ public class AccountServiceImpl implements AccountService {
         return new UserVO(user);
     }
 
+    @Override
+    public ResponseVO deleteAccount(int userId){
+        try{
+            accountMapper.deleteAccount(userId);
+            return ResponseVO.buildSuccess();
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseVO.buildFailure("失败");
+        }
+    }
+
+    @Override
+    public ResponseVO getAccountByName(String username){
+        try{
+            accountMapper.getAccountByName(username);
+            return ResponseVO.buildSuccess();
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseVO.buildFailure("失败");
+        }
+    }
+
+    @Override
+    public ResponseVO getAllAccount() {
+        try {
+            return ResponseVO.buildSuccess(movieList2MovieVOList(accountMapper.selectAllUser()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseVO.buildFailure("失败");
+        }
+    }
+    private List<UserVO> movieList2MovieVOList(List<User> userList){
+        List<UserVO> userVOList = new ArrayList<>();
+        for(User user : userList){
+            userVOList.add(new UserVO(user));
+        }
+        return userVOList;
+    }
 
 }

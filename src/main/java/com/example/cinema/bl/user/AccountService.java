@@ -22,4 +22,25 @@ public interface AccountService {
      */
     public UserVO login(UserForm userForm);
 
+
+    /**
+     * 管理员可用，删除相应id的账号
+     * @param userId
+     * @return
+     */
+    public ResponseVO deleteAccount(int userId);
+
+    /**
+     * 管理员可用，查询账号
+     * @param name
+     * @return
+     */
+    public ResponseVO getAccountByName(String name);
+
+    /**
+     * 管理员可用，查看所有账号信息
+     * @return
+     */
+    public ResponseVO getAllAccount();
+
 }

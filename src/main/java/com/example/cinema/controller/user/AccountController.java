@@ -1,14 +1,13 @@
 package com.example.cinema.controller.user;
 
+import com.example.cinema.bl.user.AccountService;
 import com.example.cinema.blImpl.user.AccountServiceImpl;
 import com.example.cinema.config.InterceptorConfiguration;
 import com.example.cinema.vo.UserForm;
 import com.example.cinema.vo.ResponseVO;
 import com.example.cinema.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -40,5 +39,20 @@ public class AccountController {
     public String logOut(HttpSession session){
         session.removeAttribute(InterceptorConfiguration.SESSION_KEY);
         return "index";
+    }
+
+    @RequestMapping(value = "/search",method = RequestMethod.GET)
+    public ResponseVO getAccountByName(@RequestParam String username){
+        return accountService.getAccountByName(username);
+    }
+
+    @PostMapping("/account/delete")
+    public ResponseVO deleteTicket(@RequestParam int userId){
+        return accountService.deleteAccount(userId);
+    }
+
+    @RequestMapping(value = "/account/all", method = RequestMethod.GET)
+    public ResponseVO getAllAccount(){
+        return accountService.getAllAccount();
     }
 }

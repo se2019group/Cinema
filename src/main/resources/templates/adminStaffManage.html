@@ -6,13 +6,14 @@
     <link rel="stylesheet" type="text/css" href="/css/common.css"/>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.css"/>
     <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/adminSchedule.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/staffInformation.css"/>
 
 
 
     <script src="/js/jquery.js"></script>
     <script src="/js/bootstrap.js"></script>
     <script src="/js/request.js"></script>
+    <script src="/js/adminStaffManage.js"></script>
 </head>
 <body>
 <div class="main-container">
@@ -33,5 +34,41 @@
             <li role="presentation"><a href="/admin/Coupon/give"><i class="icon-bar-chart"></i> 优惠券赠送</a></li>
         </ul>
     </div>
+    <div class="content-container">
+        <div class="filler-container card">
+            <div class="input-group" style="width: 800px">
+                <input type="text" class="form-control" id="search-input" placeholder="请输入用户名">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" id="search-btn" type="button">搜索</button>
+                </span>
+            </div>
+        </div>
+        <ul class="account-on-list">
+        </ul>
+    </div>
+    <div class="content-container">
+        <div class="card col-md-8 col-md-offset-2">
+            <div class="header">
+                <div class="title">
+                    员工列表
+                </div>
+            </div>
+            <div>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>员工id</th>
+                        <th>员工昵称</th>
+                        <th>员工密码</th>
+                    </tr>
+                    </thead>
+                    <tbody class="user-in-table">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
 </body>
 </html>

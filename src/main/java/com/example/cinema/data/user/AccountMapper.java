@@ -1,8 +1,11 @@
 package com.example.cinema.data.user;
 
 import com.example.cinema.po.User;
+import com.example.cinema.vo.UserForm;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @author huwen
@@ -25,4 +28,16 @@ public interface AccountMapper {
      * @return
      */
     public User getAccountByName(@Param("username") String username);
+
+    /**
+     * 根据用户id删除账号
+     * @param userId
+     */
+    public void deleteAccount(@Param("userId")int userId);
+
+    /**
+     * 查询所有账户
+     * @return
+     */
+    List<User> selectAllUser();
 }
