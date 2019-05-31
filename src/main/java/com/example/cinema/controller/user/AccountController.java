@@ -47,7 +47,7 @@ public class AccountController {
     }
 
     @PostMapping("/account/delete")
-    public ResponseVO deleteTicket(@RequestParam int userId){
+    public ResponseVO deleteAccount(@RequestParam int userId){
         return accountService.deleteAccount(userId);
     }
 

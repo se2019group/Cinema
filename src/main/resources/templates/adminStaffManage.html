@@ -35,6 +35,9 @@
         </ul>
     </div>
     <div class="content-container">
+        <div class="content-header">
+            <button type="button" class="btn btn-primary" data-backdrop="static" data-toggle="modal" data-target="#staffModal"><i class="icon-plus-sign"></i> 新增员工</button>
+        </div>
         <div class="filler-container card">
             <div class="input-group" style="width: 800px">
                 <input type="text" class="form-control" id="search-input" placeholder="请输入用户名">
@@ -57,9 +60,10 @@
                 <table class="table table-striped">
                     <thead>
                     <tr>
-                        <th>员工id</th>
-                        <th>员工昵称</th>
-                        <th>员工密码</th>
+                        <th>类型</th>
+                        <th>id</th>
+                        <th>昵称</th>
+                        <th>密码</th>
                     </tr>
                     </thead>
                     <tbody class="user-in-table">
@@ -68,6 +72,78 @@
             </div>
         </div>
 
+    </div>
+</div>
+<div class="modal fade" id="staffModal" tabindex="-1" role="dialog" aria-labelledby="staffModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="staffModalLabel">新增员工</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="staff-type-input"><span class="error-text">*</span>员工类型</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="staff-type-input" placeholder="请输入员工类型">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="staff-name-input"><span class="error-text">*</span>员工姓名</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="staff-name-input" placeholder="请输入员工姓名">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="staff-password-input"><span class="error-text">*</span>员工密码</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="staff-password-input" placeholder="请输入员工密码">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="staff-form-btn">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="staffchange" tabindex="-1" role="dialog" aria-labelledby="hallModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="staffModalchange">修改员工信息</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="staff-type-input"><span class="error-text">*</span>员工类型</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="staff-type-input2" placeholder="请输入员工类型">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="staff-name-input"><span class="error-text">*</span>员工名</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="staff-name-input2" placeholder="请输入员工名">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="staff-password-input"><span class="error-text">*</span>员工密码</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="staff-password-input2" placeholder="请输入员工密码">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="staff-form-btn2">确认</button>
+            </div>
+        </div>
     </div>
 </div>
 </body>

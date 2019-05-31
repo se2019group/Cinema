@@ -66,13 +66,13 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public ResponseVO getAllAccount() {
         try {
-            return ResponseVO.buildSuccess(movieList2MovieVOList(accountMapper.selectAllUser()));
+            return ResponseVO.buildSuccess(userList2UserVOList(accountMapper.selectAllUser()));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseVO.buildFailure("失败");
         }
     }
-    private List<UserVO> movieList2MovieVOList(List<User> userList){
+    private List<UserVO> userList2UserVOList(List<User> userList){
         List<UserVO> userVOList = new ArrayList<>();
         for(User user : userList){
             userVOList.add(new UserVO(user));
