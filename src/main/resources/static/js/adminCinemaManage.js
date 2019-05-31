@@ -1,3 +1,4 @@
+var hallId;
 $(document).ready(function() {
 
     var canSeeDate = 0;
@@ -99,29 +100,35 @@ $(document).ready(function() {
     }
 
     change=function (id) {
-        var name=prompt("请输入影厅名", "");
-        var row=prompt("请输入行", "");
-        var column=prompt("请输入列", "");
+    hallId=id;
+    $('#hallchange').modal();
 
-        var hallForm={
-            id:id,
-            name: name,
-            row: row,
-            column: column,
-        }
-        if(!validateHallForm(hallForm)) {
-            return;
-        }
-            postRequest(
-                '/hall/update',
-                    hallForm,
-                function (res) {
-                    getCinemaHalls();
-                },
-                function (error) {
-                        alert(error);
-                    });
     };
+    $("#hall-form-btn2").click(function () {
+                var name=$("#hall-name-input2").val();
+                       var row=$("#hall-row-input2").val();
+                       var column=$("#hall-column-input2").val();
+                       var hallForm={
+                           id:hallId,
+                           name: name,
+                           row: row,
+                           column: column,
+                       }
+                       if(!validateHallForm(hallForm)) {
+                           return;
+                       }
+                           postRequest(
+                               '/hall/update',
+                                   hallForm,
+                               function (res) {
+                                $("#hallchange").modal('hide');
+                                 window.location.reload();
+                                   getCinemaHalls();
+                               },
+                               function (error) {
+                                       alert(error);
+                                   });
+            });
 
     function getCanSeeDayNum() {
         getRequest(
