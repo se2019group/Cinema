@@ -59,16 +59,20 @@ listcoupon(res.content);
           var couponTicketStr = "";
              coupons = list;
             for (let coupon of coupons) {
-                couponTicketStr += "<option>满" + coupon.targetAmount + "减" + coupon.discountAmount + "</option>"
+                if(coupon.targetAmount<=totalcost){
+                couponTicketStr += "<option>满" + coupon.targetAmount + "减" + coupon.discountAmount + "</option>"}
             }
             $('#order-coupons').html(couponTicketStr);
-            changeCoupon(0);
+            changeCoupon(-1);
         }
     function changeCoupon(couponIndex) {
+    if(couponIndex!=-1){
         order.couponId = coupons[couponIndex].id;
         var actualTotal = (parseFloat(totalcost) - parseFloat(coupons[couponIndex].discountAmount)).toFixed(2);
-        totalcost=actualTotal;
-        $('#pay-amount').html("<div><b>金额：</b>" + actualTotal + "元</div>");
+                totalcost=actualTotal;}
+       else{
+       order.couponId=-1;}
+        $('#pay-amount').html("<div><b>金额：</b>" + totalcost + "元</div>");
     }
    switchPay= function (type) {
         useVIP = (type == 0);
