@@ -83,4 +83,6 @@ public interface TicketService {
     ResponseVO  TicketPromotion();
     ResponseVO changeTicketPromotion(TicketPromotion ticketPromotion);
     ResponseVO TicketReturn(int ticketId);
+    ResponseVO getCost(int ticketId);
+    ResponseVO getscheduleId(int ticketId);
 }

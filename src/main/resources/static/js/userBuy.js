@@ -1,4 +1,12 @@
 var tmp
+var tocompleteid;
+var order = { ticketId: [], couponId: 0 };
+var coupons = [];
+var isVIP = false;
+var useVIP = true;
+var totalcost;
+var scheduleId;
+var balancenow;
 $(document).ready(function () {
     getMovieList();
 
@@ -12,6 +20,71 @@ $(document).ready(function () {
             function (error) {
                 alert(error);
             });
+    }
+    completeTicket=function (id){
+    getRequest(
+            '/vip/' + sessionStorage.getItem('id') + '/get',
+            function (res) {
+                isVIP = res.success;
+                useVIP = res.success;
+                balancenow=res.content.balance.toFixed(2);
+                if (isVIP) {
+                    $('#member-balance').html("<div><b>会员卡余额：</b>" + res.content.balance.toFixed(2) + "元</div>");
+                } else {
+                    $("#member-pay").css("display", "none");
+                    $("#nonmember-pay").addClass("active");
+
+                    $("#modal-body-member").css("display", "none");
+                    $("#modal-body-nonmember").css("display", "");
+                }
+            },
+            function (error) {
+                alert(error);
+            });
+    tocompleteid=id;
+    getcost();
+    getRequest(
+             '/coupon/' + sessionStorage.getItem("id") + '/get',
+             function (res) {
+listcoupon(res.content);
+            couponPromise=res.content;
+         },
+            function (error) {
+                alert(error);
+            });
+
+     $('#buyModal').modal();
+    }
+    function listcoupon(list){
+          var couponTicketStr = "";
+             coupons = list;
+            for (let coupon of coupons) {
+                couponTicketStr += "<option>满" + coupon.targetAmount + "减" + coupon.discountAmount + "</option>"
+            }
+            $('#order-coupons').html(couponTicketStr);
+            changeCoupon(0);
+        }
+    function changeCoupon(couponIndex) {
+        order.couponId = coupons[couponIndex].id;
+        var actualTotal = (parseFloat(totalcost) - parseFloat(coupons[couponIndex].discountAmount)).toFixed(2);
+        totalcost=actualTotal;
+        $('#pay-amount').html("<div><b>金额：</b>" + actualTotal + "元</div>");
+    }
+   switchPay= function (type) {
+        useVIP = (type == 0);
+        if (type == 0) {
+            $("#member-pay").addClass("active");
+            $("#nonmember-pay").removeClass("active");
+
+            $("#modal-body-member").css("display", "");
+            $("#modal-body-nonmember").css("display", "none");
+        } else {
+            $("#member-pay").removeClass("active");
+            $("#nonmember-pay").addClass("active");
+
+            $("#modal-body-member").css("display", "none");
+            $("#modal-body-nonmember").css("display", "");
+        }
     }
     deleteTicket=function (id){
              postRequest(
@@ -68,7 +141,24 @@ $(document).ready(function () {
 
          );
     }
-
+     function getcost(){
+     getRequest(
+                  '/ticket/'+tocompleteid,
+                  function (res) {
+                  totalcost=res.content;
+              },
+                 function (error) {
+                     alert(error);
+                 });
+    getRequest(
+                  '/ticket/schedule/'+tocompleteid,
+                  function (res) {
+                  scheduleId=res.content;
+              },
+                 function (error) {
+                     alert(error);
+                 });
+     }
     // TODO:填空
     // $('.movie-on-list').empty();
     // var movieDomStr = '';
@@ -92,9 +182,6 @@ $(document).ready(function () {
     // });
     // $('.movie-on-list').append(movieDomStr);
     function renderTicketList(list) {
-                 var button=document.createElement("input");
-                button.type = "button" ;
-                 button.value = "按钮" ;
         $('.ticket-in-table').empty();
         var stateList = ["未完成", "已完成", "已失效"];
         var promises = [];
@@ -110,6 +197,7 @@ $(document).ready(function () {
                     let ticket = list[i];
                     if(ticket.state==0){
                     var button1 ="<a role='button' id="+ticket.id+" onclick='cancelTicket(this.id)'><i class='icon-edit'></i>取消付款</a>";
+                    var button ="<a role='button' id="+ticket.id+" onclick='completeTicket(this.id)'><i class='icon-edit'></i>完成付款</a>";
                     var ticketInfo =
                         "<tr>"
                         + "<td>" + schedule.movieName + "</td>"
@@ -121,7 +209,7 @@ $(document).ready(function () {
                         + schedule.endTime.split("T")[1].split(".")[0] + "</td>"
                         + "<td>" + stateList[ticket.state] + "</td>"
                         + "<td>" + button1 + "</td>"
-                        + "<td>" + '<button type="button" style="height:30px;width:50px;">完成付款</button> '+ "</td>"
+                        + "<td>" + button + "</td>"
                         + " </tr>";}
                     else if(ticket.state==1){
                     var button ="<a role='button' id="+ticket.id+" onclick='deleteTicket(this.id)'><i class='icon-edit'></i>删除</a>";
@@ -161,6 +249,99 @@ $(document).ready(function () {
             alert('Failed');
         })
     }
+payConfirmClick=function () {
+    if (useVIP) {
+        postPayRequest();
+        if(balancenow>=totalcost){
+        postConsumeRequest();}
+         $("#buyModal").modal('hide');
+          window.location.reload();
+    } else {
+        if (validateForm()) {
+            if ($('#userBuy-cardNum').val() === "123123123" && $('#userBuy-cardPwd').val() === "123123") {
+                postPayRequest();
+                postConsumeRequest();
+                 $("#buyModal").modal('hide');
+                 window.location.reload();
+            } else {
+                alert("银行卡号或密码错误");
+            }
+        }
+    }
 
+}
+
+
+function postPayRequest() {
+    var ticketIds = new Array();
+        ticketIds.push(tocompleteid);
+    var form = {
+        //list of ticket Id
+        ids: ticketIds,
+        couponId: $("#order-coupons").children('option:selected').index()
+    };
+    var api;
+    if (useVIP) {
+        api = '/ticket/vip/buy'
+    }
+    else {
+        api = '/ticket/buy'
+    }
+    api += `?ids=${form.ids.join("&ids=")}&&couponId=${form.couponId == -1 ? -1 : coupons[form.couponId].id}`;
+    postRequest(
+        api,
+        {},
+        function (res) {
+            if (res.success) {
+            } else {
+                alert(res.message)
+            }
+        },
+        function (error) {
+            alert(JSON.stringify(error));
+        }
+    );
+
+postConsumeRequest=function (){
+        var type=0;
+        var cost=0;
+        if (useVIP) {
+                  type=1
+              }
+        var form = {
+                  "userid": sessionStorage.getItem("id"),
+                  "type":type,
+                  "amount":totalcost,
+                  "scheduleId": scheduleId
+              };
+        postRequest(
+                '/ticket/consume',
+                form,
+                function (res) {
+                       if (res.success) {
+                        } else {
+                            alert(res.message)
+                            }
+                        },
+                function (error) {
+                            alert(JSON.stringify(error));
+                }
+            );
+}
+}
+function validateForm() {
+    var isValidate = true;
+    if (!$('#userBuy-cardNum').val()) {
+        isValidate = false;
+        $('#userBuy-cardNum').parent('.form-group').addClass('has-error');
+        $('#userBuy-cardNum-error').css("visibility", "visible");
+    }
+    if (!$('#userBuy-cardPwd').val()) {
+        isValidate = false;
+        $('#userBuy-cardPwd').parent('.form-group').addClass('has-error');
+        $('#userBuy-cardPwd-error').css("visibility", "visible");
+    }
+    return isValidate;
+}
 });
 

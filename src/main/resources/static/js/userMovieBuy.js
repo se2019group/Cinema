@@ -8,7 +8,7 @@ var ticketVOList = [];
 var tmp;
 var actualTotal= -1;
 var total;
-
+var balancenow;
 $(document).ready(function () {
     scheduleId = parseInt(window.location.href.split('?')[1].split('&')[1].split('=')[1]);
 
@@ -161,6 +161,7 @@ function orderConfirmClick() {
         function (res) {
             isVIP = res.success;
             useVIP = res.success;
+            balancenow=res.content.balance.toFixed(2);
             if (isVIP) {
                 $('#member-balance').html("<div><b>会员卡余额：</b>" + res.content.balance.toFixed(2) + "元</div>");
             } else {
@@ -232,7 +233,8 @@ function changeCoupon(couponIndex) {
 function payConfirmClick() {
     if (useVIP) {
         postPayRequest();
-        postConsumeRequest();
+        if(balancenow>=actualTotal){
+        postConsumeRequest();}
     } else {
         if (validateForm()) {
             if ($('#userBuy-cardNum').val() === "123123123" && $('#userBuy-cardPwd').val() === "123123") {
@@ -299,6 +301,7 @@ function postConsumeRequest(){
                   "amount":cost,
                   "scheduleId": scheduleId
               };
+        if(balancenow>=actualTotal){
         postRequest(
                 '/ticket/consume',
                 form,
@@ -311,7 +314,7 @@ function postConsumeRequest(){
                 function (error) {
                             alert(JSON.stringify(error));
                 }
-            );
+            );}
 }
 
 

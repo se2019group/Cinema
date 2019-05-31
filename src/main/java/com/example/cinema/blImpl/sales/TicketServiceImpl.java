@@ -478,4 +478,13 @@ public class TicketServiceImpl implements TicketService {
             return ResponseVO.buildSuccess("0");
         }
     }
+    @Override
+    public  ResponseVO getCost(int ticketId){
+        int ID=ticketMapper.selectTicketById(ticketId).getScheduleId();
+        return ResponseVO.buildSuccess(scheduleService.getScheduleItemById(ID).getFare());
+    }
+    @Override
+    public ResponseVO getscheduleId(int ticketId){
+        return ResponseVO.buildSuccess(ticketMapper.selectTicketById(ticketId).getScheduleId());
+    }
 }

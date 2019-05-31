@@ -70,5 +70,57 @@
     </div>
 
 </div>
+<div class="modal fade" id="buyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">付款</h4>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs" style="margin-bottom: 20px;">
+                    <li role="presentation" class="active" id="member-pay" onclick="switchPay(0)"><a href="#">会员卡支付</a></li>
+                    <li role="presentation" id="nonmember-pay" onclick="switchPay(1)"><a href="#">银行卡支付</a></li>
+                </ul>
+
+                <div id="modal-body-member" style="margin-bottom: 20px;">
+                    <div id="member-balance"><b>会员卡余额：</b>&nbsp;&nbsp;90元</div>
+                </div>
+
+                <div id="modal-body-nonmember" style="display: none;">
+                    <div class="form-group">
+                        <label for="userBuy-cardNum">银行卡号</label>
+                        <input class="form-control" id="userBuy-cardNum" placeholder="请输入银行卡号">
+                        <p id="userBuy-cardNum-error" class="notice">银行卡号不能为空</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="userBuy-cardPwd">密码</label>
+                        <input type="password" class="form-control" id="userBuy-cardPwd" placeholder="请输入密码">
+                        <p id="userBuy-cardPwd-error" class="notice">密码不能为空</p>
+                    </div>
+                </div>
+                <div class="order-info">
+                    <div>
+                        优惠券：
+                        <select style="height: 30px;" id="order-coupons"
+                                onchange="changeCoupon(this.options.selectedIndex)">
+                        </select>
+                    </div>
+
+                    <div>
+                        <div class="item" id="order-footer-total"></div>
+                        <div class="item" id="order-discount"></div>
+                    </div>
+                </div>
+                <div id="pay-amount"><b>金额：</b>&nbsp;&nbsp;90元</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" onclick="payConfirmClick()">确认支付</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

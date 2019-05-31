@@ -71,6 +71,16 @@ public class TicketController {
         return ticketService.getConsume_Record(userId);
     }
 
+    @GetMapping("/{ticketId}")
+    public ResponseVO getCost(@PathVariable int ticketId){
+        return ticketService.getCost(ticketId);
+    }
+
+    @GetMapping("/schedule/{ticketId}")
+    public ResponseVO getscheduleId(@PathVariable int ticketId){
+        return ticketService.getscheduleId(ticketId);
+    }
+
     @GetMapping("/promotion/get")
     public ResponseVO getTicketPromotion(){
         return ticketService.TicketPromotion();
