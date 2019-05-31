@@ -42,5 +42,13 @@ public interface AccountService {
      * @return
      */
     public ResponseVO getAllAccount();
+    
+    /**
+     * symbol为0表示全体用户，为1表示会员
+     * @param symbol
+     * @param target
+     * @return
+     */
+    public ResponseVO accountsMatched(int symbol,int target);
 
 }

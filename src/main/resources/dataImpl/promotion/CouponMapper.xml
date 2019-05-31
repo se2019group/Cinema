@@ -28,6 +28,11 @@
 
     </select>
 
+    <select id="selectAllCoupon" resultMap="Coupon">
+        select * from coupon
+
+    </select>
+
     <resultMap id="Coupon" type="com.example.cinema.po.Coupon">
         <result column="description" property="description"></result>
         <result column="id" property="id"></result>

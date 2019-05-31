@@ -21,6 +21,10 @@
         select * from vip_card where user_id=#{userId}
     </select>
 
+    <select id="selectAllCard" resultMap="VIPCard">
+        select * from vip_card
+    </select>
+
     <resultMap id="VIPCard" type="com.example.cinema.po.VIPCard">
         <result column="join_time" property="joinDate"></result>
         <result column="id" property="id"></result>

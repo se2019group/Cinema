@@ -55,4 +55,9 @@ public class AccountController {
     public ResponseVO getAllAccount(){
         return accountService.getAllAccount();
     }
+    
+    @GetMapping("/peopleMatched")
+    public ResponseVO accountsMatched(@RequestParam int symbol,@RequestParam int target) {
+    	return accountService.accountsMatched(symbol, target);
+    }
 }
