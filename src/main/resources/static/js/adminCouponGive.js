@@ -24,7 +24,7 @@ $(document).ready(function() {
                         + "<td>" + peopleMatched.chargeAmount + "</td>"
                         +'<td><button type="button" class="btn btn-primary" id="people-button'+i+'" value='+peopleMatched.userId+'>选择</button></td>'
                         +'<script>'
-                            +"var peopleButton"+i+"=$('#people-button"+i+"');"
+                            +"let peopleButton"+i+"=$('#people-button"+i+"');"
                             +"peopleButton"+i+".click(function(){"
                                 +"if(peopleButton"+i+".text()==='选择'){"
                                     +"peopleButton"+i+".text('取消选择');"
@@ -70,9 +70,8 @@ $(document).ready(function() {
                         '<div>' + formatDate(coupon.startTime) + ' ~ ' + formatDate(coupon.endTime) + '</div>' +
                         '</div></div></div>'+
                         '<button type="button" class="btn btn-primary" id="coupon-button'+i+'" value='+coupon.id+'>选择</button>'+
-                        '</div>'+
                         '<script>'+
-                            "var couponButton"+i+"=$('#coupon-button"+i+"');"+
+                            "let couponButton"+i+"=$('#coupon-button"+i+"');"+
                             "couponButton"+i+".click(function(){"+
                                 "if(couponButton"+i+".text()==='选择'){"+
                                     "couponButton"+i+".text('取消选择');"+
@@ -81,7 +80,8 @@ $(document).ready(function() {
                                     "couponButton"+i+".text('选择');"+
                                 "}"+
                             "});"+
-                        '</script>';
+                        '</script>'+
+                        '</div>';
                 }
                 $('#coupon-list').html(couponListContent);
             }
@@ -110,14 +110,14 @@ $(document).ready(function() {
         var peopleButton;
         var couponButton;
 
-        for(let i=0; i<$('.people-matched').length; i++){
+        for(let i=0; i<$('.people-matched')[0].childNodes.length; i++){
             peopleButton=$('#people-button'+i);
             if(peopleButton.text()==='取消选择'){
                 peopleList.push(peopleButton.val());
             }
         }
 
-        for(let i=0; i<$('#coupon-list').length; i++){
+        for(let i=0; i<$('#coupon-list')[0].childNodes.length; i++){
             couponButton=$('#coupon-button'+i);
             if(couponButton.text()==='取消选择'){
                 couponList.push(couponButton.val());
