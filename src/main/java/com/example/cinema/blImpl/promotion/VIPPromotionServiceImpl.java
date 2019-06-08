@@ -34,7 +34,7 @@ public class VIPPromotionServiceImpl implements VIPPromotionService{
 			vipPromotionMapper.updateVIPPromotion(target, discount,1);
 			return ResponseVO.buildSuccess();
 		}catch (Exception e) {
-			return ResponseVO.buildFailure("失败");
+			return ResponseVO.buildFailure("你遇到了奇怪的错误……");
 		}
 	}
 

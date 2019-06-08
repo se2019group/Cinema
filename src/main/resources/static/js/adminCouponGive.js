@@ -24,13 +24,13 @@ $(document).ready(function() {
                         + "<td>" + peopleMatched.chargeAmount + "</td>"
                         +'<td><button type="button" class="btn btn-primary" id="people-button'+i+'" value='+peopleMatched.userId+'>选择</button></td>'
                         +'<script>'
-                            +"var peopleButton=$('#people-button"+i+"');"
-                            +"peopleButton.click(function(){"
-                                +"if(peopleButton.text()==='选择'){"
-                                    +"peopleButton.text('取消选择');"
+                            +"var peopleButton"+i+"=$('#people-button"+i+"');"
+                            +"peopleButton"+i+".click(function(){"
+                                +"if(peopleButton"+i+".text()==='选择'){"
+                                    +"peopleButton"+i+".text('取消选择');"
                                 +"}"
                                 +"else{"
-                                    +"peopleButton.text('选择');"
+                                    +"peopleButton"+i+".text('选择');"
                                 +"}"
                             +"})"
                         +'</script>'
@@ -72,13 +72,13 @@ $(document).ready(function() {
                         '<button type="button" class="btn btn-primary" id="coupon-button'+i+'" value='+coupon.id+'>选择</button>'+
                         '</div>'+
                         '<script>'+
-                            "var couponButton=$('#coupon-button"+i+"');"+
-                            "couponButton.click(function(){"+
-                                "if(couponButton.text()==='选择'){"+
-                                    "couponButton.text('取消选择');"+
+                            "var couponButton"+i+"=$('#coupon-button"+i+"');"+
+                            "couponButton"+i+".click(function(){"+
+                                "if(couponButton"+i+".text()==='选择'){"+
+                                    "couponButton"+i+".text('取消选择');"+
                                 "}"+
                                 "else{"+
-                                    "couponButton.text('选择');"+
+                                    "couponButton"+i+".text('选择');"+
                                 "}"+
                             "});"+
                         '</script>';
