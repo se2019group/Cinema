@@ -521,7 +521,16 @@ public class TicketServiceImpl implements TicketService {
         try{
             Ticket ticket=ticketMapper.selectTicketById(markRecord.getTicketId());
             ScheduleItem scheduleItem=scheduleMapper.selectScheduleById(ticket.getScheduleId());
-            movieMarkMapper.insertEvaluation(ticket.getUserId(),ticket.getId(),markRecord.getMark(),scheduleItem.getMovieId(),markRecord.getComment());
+            double mark=markRecord.getMark();
+            String comment=markRecord.getComment();
+            if(mark==0){
+                return ResponseVO.buildFailure("评分最低不能为0");
+            }
+            if(!(mark>=0.0) && (mark<=10.0)){
+                return ResponseVO.buildFailure("评分数值不在0~10之间");
+            }
+
+            movieMarkMapper.insertEvaluation(ticket.getUserId(),ticket.getId(),mark,scheduleItem.getMovieId(),comment);
             return ResponseVO.buildSuccess();
         }catch (Exception e){
             e.printStackTrace();
