@@ -231,22 +231,55 @@ function changeCoupon(couponIndex) {
 }
 
 function payConfirmClick() {
+       var cost=0;
+        if(actualTotal==-1){
+         cost=total;}
+        else{
+        cost=actualTotal;}
     if (useVIP) {
         postPayRequest();
-        if(balancenow>=actualTotal){
-        postConsumeRequest();}
+        if(balancenow>=cost){
+        postConsumeRequest();
+        mark();}
     } else {
         if (validateForm()) {
             if ($('#userBuy-cardNum').val() === "123123123" && $('#userBuy-cardPwd').val() === "123123") {
                 postPayRequest();
                 postConsumeRequest();
+                mark();
             } else {
                 alert("银行卡号或密码错误");
             }
         }
     }
 }
+mark=function (){
+ var ticketIds = new Array();
+    ticketVOList.forEach(function (value) {
+        ticketIds.push(value.id);
+    });
+           var cost=0;
+            if(actualTotal==-1){
+             cost=total;}
+            else{
+            cost=actualTotal;}
+         api =  '/ticket/price',
+        api+= `?totalcost=${cost}&&ticketIds=${ticketIds}`;
+        postRequest(
+       api,
+         {},
+            function (res) {
+                               if (res.success) {
+                                } else {
+                                    alert(res.message)
+                                    }
+                                },
+                        function (error) {
+                                    alert(JSON.stringify(error));
+                        }
+                    );
 
+}
 // TODO:填空
 function postPayRequest() {
     $('#order-state').css("display", "none");

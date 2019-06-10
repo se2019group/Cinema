@@ -9,7 +9,9 @@ var scheduleId;
 var balancenow;
 $(document).ready(function () {
     getMovieList();
-
+mark=function(){
+$('#mark').modal();
+}
 
     function getMovieList() {
         getRequest(
@@ -222,6 +224,7 @@ listcoupon(res.content);
                     else if(ticket.state==1){
                     var button ="<a role='button' id="+ticket.id+" onclick='deleteTicket(this.id)'><i class='icon-edit'></i>删除</a>";
                     var button1 ="<a role='button' id="+ticket.id+" onclick='TicketReturn(this.id)'><i class='icon-edit'></i>退票</a>";
+                    var button2 ="<a role='button' id="+ticket.id+" onclick='mark(this.id)'><i class='icon-edit'></i>评价</a>";
                     var ticketInfo =
                         "<tr>"
                         + "<td>" + schedule.movieName + "</td>"
@@ -234,6 +237,7 @@ listcoupon(res.content);
                         + "<td>" + stateList[ticket.state] + "</td>"
                         + "<td>" + button1 + "</td>"
                         + "<td>" + button + "</td>"
+                        + "<td>" + button2 + "</td>"
                         + " </tr>";}
                     else if(ticket.state==2){
                     var button ="<a role='button' id="+ticket.id+" onclick='deleteTicket(this.id)'><i class='icon-edit'></i>删除</a>";
@@ -261,7 +265,8 @@ payConfirmClick=function () {
     if (useVIP) {
         postPayRequest();
         if(balancenow>=totalcost){
-        postConsumeRequest();}
+        postConsumeRequest();
+        mark();}
          $("#buyModal").modal('hide');
           window.location.reload();
     } else {
@@ -269,6 +274,7 @@ payConfirmClick=function () {
             if ($('#userBuy-cardNum').val() === "123123123" && $('#userBuy-cardPwd').val() === "123123") {
                 postPayRequest();
                 postConsumeRequest();
+                mark();
                  $("#buyModal").modal('hide');
                  window.location.reload();
             } else {
@@ -309,7 +315,26 @@ function postPayRequest() {
             alert(JSON.stringify(error));
         }
     );
+mark=function (){
+ var ticketIds = new Array();
+        ticketIds.push(tocompleteid);
+         api =  '/ticket/price',
+        api+= `?totalcost=${totalcost}&&ticketIds=${ticketIds}`;
+        postRequest(
+       api,
+         {},
+            function (res) {
+                               if (res.success) {
+                                } else {
+                                    alert(res.message)
+                                    }
+                                },
+                        function (error) {
+                                    alert(JSON.stringify(error));
+                        }
+                    );
 
+}
 postConsumeRequest=function (){
         var type=0;
         var cost=0;

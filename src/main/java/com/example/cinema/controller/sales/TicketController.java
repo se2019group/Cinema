@@ -93,4 +93,9 @@ public class TicketController {
     public ResponseVO TicketReturn(@PathVariable int ticketId){
         return ticketService.TicketReturn(ticketId);
     }
+
+    @PostMapping("/price")
+    public ResponseVO TicketReturn(@RequestParam double totalcost,@RequestParam List<Integer> ticketIds){
+        return ticketService.TicketPrice(totalcost,ticketIds);
+    }
 }
