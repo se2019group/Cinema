@@ -24,13 +24,12 @@ $(document).ready(function() {
                         + "<td>" + peopleMatched.chargeAmount + "</td>"
                         +'<td><button type="button" class="btn btn-primary" id="people-button'+i+'" value='+peopleMatched.userId+'>选择</button></td>'
                         +'<script>'
-                            +"let peopleButton"+i+"=$('#people-button"+i+"');"
-                            +"peopleButton"+i+".click(function(){"
-                                +"if(peopleButton"+i+".text()==='选择'){"
-                                    +"peopleButton"+i+".text('取消选择');"
+                            +"$('#people-button"+i+"').click(function(){"
+                                +"if($('#people-button"+i+"').text()==='选择'){"
+                                    +"$('#people-button"+i+"').text('取消选择');"
                                 +"}"
                                 +"else{"
-                                    +"peopleButton"+i+".text('选择');"
+                                    +"$('#people-button"+i+"').text('选择');"
                                 +"}"
                             +"})"
                         +'</script>'
@@ -71,13 +70,12 @@ $(document).ready(function() {
                         '</div></div></div>'+
                         '<button type="button" class="btn btn-primary" id="coupon-button'+i+'" value='+coupon.id+'>选择</button>'+
                         '<script>'+
-                            "let couponButton"+i+"=$('#coupon-button"+i+"');"+
-                            "couponButton"+i+".click(function(){"+
-                                "if(couponButton"+i+".text()==='选择'){"+
-                                    "couponButton"+i+".text('取消选择');"+
+                        "$('#coupon-button"+i+"').click(function(){"+
+                                "if($('#coupon-button"+i+"').text()==='选择'){"+
+                                    "$('#coupon-button"+i+"').text('取消选择');"+
                                 "}"+
                                 "else{"+
-                                    "couponButton"+i+".text('选择');"+
+                                    "$('#coupon-button"+i+"').text('选择');"+
                                 "}"+
                             "});"+
                         '</script>'+
