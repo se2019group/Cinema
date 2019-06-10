@@ -43,4 +43,11 @@ public interface CinemaMemberMapper {
      */
     List<CinemaMember> getAccountByName(@Param("username") String username);
 
+    /**
+     * 根据用户id查询用户
+     * @param userId
+     * @return
+     */
+    public CinemaMember selectMemberById(@Param("userId")int userId);
+
 }

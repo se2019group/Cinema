@@ -1,6 +1,7 @@
 package com.example.cinema.blImpl.user;
 
 import com.example.cinema.bl.user.CinemaMemberService;
+import com.example.cinema.data.user.AccountMapper;
 import com.example.cinema.data.user.CinemaMemberMapper;
 import com.example.cinema.po.CinemaMember;
 import com.example.cinema.vo.CinemaMemberForm;
@@ -17,16 +18,18 @@ public class CinemaMemberServiceImpl implements CinemaMemberService {
 
     @Autowired
     CinemaMemberMapper cinemaMemberMapper;
+    @Autowired
+    AccountMapper accountMapper;
 
     @Override
     public ResponseVO addMember(CinemaMemberForm cinemaMemberForm){
         try{
             cinemaMemberMapper.insertCinemaMember(cinemaMemberForm);
-            return ResponseVO.buildSuccess();
+            accountMapper.createNewAccount(cinemaMemberForm.getUsername(),cinemaMemberForm.getPassword());
         }catch (Exception e){
-            e.printStackTrace();
-            return ResponseVO.buildFailure("失败");
+            return ResponseVO.buildFailure("账号已存在");
         }
+        return ResponseVO.buildSuccess();
     }
     @Override
     public ResponseVO getAllMember() {
