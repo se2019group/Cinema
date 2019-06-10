@@ -28,6 +28,10 @@
         delete from cinema_member where id=#{userId}
     </delete>
 
+    <select id="selectMemberById">
+        select from cinema_member where id=#{userId}
+    </select>
+
     <update id="updateMember" parameterType="com.example.cinema.vo.CinemaMemberForm">
         update cinema_member set username = #{username}, type = #{type}, password = #{password}
         where id = #{id}

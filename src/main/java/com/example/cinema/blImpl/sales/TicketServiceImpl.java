@@ -361,11 +361,16 @@ public class TicketServiceImpl implements TicketService {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date now=simpleDateFormat.parse(simpleDateFormat.format(new Date()));
             endtime=simpleDateFormat.parse(simpleDateFormat.format(endtime));
-            if(endtime.before(now)){
+            if(ticket.getState()==2){
                 ticketMapper.deleteTicket(ticketId);
                 return ResponseVO.buildSuccess();
-            }else{
-                return ResponseVO.buildFailure("失败");
+            }else {
+                if (endtime.before(now)) {
+                    ticketMapper.deleteTicket(ticketId);
+                    return ResponseVO.buildSuccess();
+                } else {
+                    return ResponseVO.buildFailure("失败");
+                }
             }
         }catch(Exception e){
             return ResponseVO.buildFailure("失败");

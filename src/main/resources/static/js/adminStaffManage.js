@@ -45,8 +45,12 @@ function getUserList() {
                     '/cinemaMember/add/',
                     CinemaMemberForm,
                     function (res) {
-                        $("#staffModal").modal('hide');
-                        window.location.reload();
+                        if(res.success){
+                            $("#staffModal").modal('hide');
+                            window.location.reload();
+                        }else{
+                            alert(res.message);
+                        }
                     },
                      function (error) {
                         alert(error);
