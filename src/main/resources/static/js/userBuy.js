@@ -224,7 +224,7 @@ listcoupon(res.content);
                     else if(ticket.state==1){
                     var button ="<a role='button' id="+ticket.id+" onclick='deleteTicket(this.id)'><i class='icon-edit'></i>删除</a>";
                     var button1 ="<a role='button' id="+ticket.id+" onclick='TicketReturn(this.id)'><i class='icon-edit'></i>退票</a>";
-                    var button2 ="<a role='button' id="+ticket.id+" onclick='mark(this.id)'><i class='icon-edit'></i>评价</a>";
+                    var button2 ="<a role='button' id="+ticket.id+" onclick='markRecord(this.id)'><i class='icon-edit'></i>评价</a>";
                     var ticketInfo =
                         "<tr>"
                         + "<td>" + schedule.movieName + "</td>"
@@ -261,6 +261,38 @@ listcoupon(res.content);
             alert('Failed');
         })
     }
+    markRecord=function(id){
+        ticketId=id;
+        $('#mark').modal();
+        }
+
+        $("#mark-click").click(function () {
+                    var markRecord = getMarkRecord(ticketId);
+                    postRequest(
+                        '/ticket/evaluate/',
+                        markRecord,
+                        function (res) {
+                            if(res.success){
+                                $("#mark").modal('hide');
+                                window.location.reload();
+                            }else{
+                                alert(res.message);
+                            }
+                        },
+                         function (error) {
+                            alert(error);
+                        });
+                });
+
+    function getMarkRecord(ticketId) {
+                            return {
+                                ticketId: ticketId,
+                                mark: $('#mark-input').val(),
+                                comment:$('#mark-comment-input').val(),
+                            };
+                    }
+
+
 payConfirmClick=function () {
     if (useVIP) {
         postPayRequest();

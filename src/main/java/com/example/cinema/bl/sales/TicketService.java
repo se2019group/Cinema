@@ -1,5 +1,6 @@
 package com.example.cinema.bl.sales;
 
+import com.example.cinema.po.MarkRecord;
 import com.example.cinema.po.TicketPromotion;
 import com.example.cinema.vo.ResponseVO;
 import com.example.cinema.vo.TicketForm;
@@ -86,4 +87,11 @@ public interface TicketService {
     ResponseVO getCost(int ticketId);
     ResponseVO getscheduleId(int ticketId);
     ResponseVO TicketPrice(double totalcost,List<Integer> ticketIds);
+
+    /**
+     * 用户评价
+     * @param markRecord
+     * @return
+     */
+    ResponseVO Evaluate(MarkRecord markRecord);
 }

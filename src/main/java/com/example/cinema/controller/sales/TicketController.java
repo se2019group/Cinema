@@ -1,6 +1,7 @@
 package com.example.cinema.controller.sales;
 
 import com.example.cinema.bl.sales.TicketService;
+import com.example.cinema.po.MarkRecord;
 import com.example.cinema.po.TicketPromotion;
 import com.example.cinema.vo.ConsumeForm;
 import com.example.cinema.vo.ResponseVO;
@@ -97,5 +98,10 @@ public class TicketController {
     @PostMapping("/price")
     public ResponseVO TicketReturn(@RequestParam double totalcost,@RequestParam List<Integer> ticketIds){
         return ticketService.TicketPrice(totalcost,ticketIds);
+    }
+
+    @PostMapping("/evaluate")
+    public ResponseVO Evaluate(@RequestBody MarkRecord markRecord){
+        return ticketService.Evaluate(markRecord);
     }
 }

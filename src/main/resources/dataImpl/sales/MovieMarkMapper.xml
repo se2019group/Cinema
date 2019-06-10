@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.cinema.data.sales.MovieMarkMapper">
+
+    <insert id="insertEvaluation" parameterType="com.example.cinema.po.MarkRecord"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into mark(userid,ticketid,mark,movieid,text)
+        values(#{userid}, #{ticketid},#{mark},#{movieid},#{text})
+    </insert>
+
+    <resultMap id="MarkRecord" type="com.example.cinema.po.MarkRecord">
+        <result column="userid" property="userid"></result>
+        <result column="ticketid" property="ticketid"></result>
+        <result column="mark" property="mark"></result>
+        <result column="movieid" property="movieid"></result>
+        <result column="text" property="text"></result>
+    </resultMap>
+
+
+
+</mapper>

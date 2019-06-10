@@ -7,9 +7,11 @@ import com.example.cinema.blImpl.management.hall.HallServiceForBl;
 import com.example.cinema.blImpl.management.schedule.ScheduleServiceForBl;
 import com.example.cinema.blImpl.promotion.CouponServiceImpl;
 import com.example.cinema.data.management.MovieMapper;
+import com.example.cinema.data.management.ScheduleMapper;
 import com.example.cinema.data.promotion.ActivityMapper;
 import com.example.cinema.data.promotion.CouponMapper;
 import com.example.cinema.data.promotion.VIPCardMapper;
+import com.example.cinema.data.sales.MovieMarkMapper;
 import com.example.cinema.data.sales.TicketMapper;
 import com.example.cinema.data.sales.TicketPromotionMapper;
 import com.example.cinema.data.sales.ConsumeMapper;
@@ -49,6 +51,10 @@ public class TicketServiceImpl implements TicketService {
     VIPCardMapper vipCardMapper;
     @Autowired
     TicketPromotionMapper  ticketPromotionMapper;
+    @Autowired
+    ScheduleMapper scheduleMapper;
+    @Autowired
+    MovieMarkMapper movieMarkMapper;
     @Override
     @Transactional
     public ResponseVO addTicket(TicketForm ticketForm) {
@@ -507,6 +513,20 @@ public class TicketServiceImpl implements TicketService {
             i++;
         }
         return ResponseVO.buildSuccess();
+
+    }
+
+    @Override
+    public ResponseVO Evaluate(MarkRecord markRecord){
+        try{
+            Ticket ticket=ticketMapper.selectTicketById(markRecord.getTicketId());
+            ScheduleItem scheduleItem=scheduleMapper.selectScheduleById(ticket.getScheduleId());
+            movieMarkMapper.insertEvaluation(ticket.getUserId(),ticket.getId(),markRecord.getMark(),scheduleItem.getMovieId(),markRecord.getComment());
+            return ResponseVO.buildSuccess();
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseVO.buildFailure("失败");
+        }
 
     }
 }
