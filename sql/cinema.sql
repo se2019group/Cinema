@@ -373,13 +373,15 @@ DROP TABLE IF EXISTS `vip_promotion`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `vip_promotion` (
+`id` int(11)  NOT NULL AUTO_INCREMENT,
 `target` int(11) NOT NULL,
-`discount` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+`discount` int(11) NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 LOCK TABLES `vip_promotion` WRITE;
-INSERT INTO `vip_promotion` VALUES (100,20);
+INSERT INTO `vip_promotion` VALUES (1,100,20);
 UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `TicketReturn_Promotion`;
@@ -411,9 +413,33 @@ CREATE TABLE `Cinema_Member` (
 ) ENGINE=InnoDB  AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `Cinema_Member` WRITE;
-INSERT INTO `Cinema_Member` VALUES (1,1,'testname','123456'),(0,3,'test','123456'),(1,5,'test1','123456');
+INSERT INTO `Cinema_Member` VALUES (1,1,'test111','123456'),(0,3,'test222','123456'),(1,5,'test333','123456');
 UNLOCK TABLES;
 
+DROP TABLE IF EXISTS `mark`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `mark` (
+`userid` int(11) NOT NULL,
+`mark` float NOT NULL,
+`movieid` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+LOCK TABLES `mark` WRITE;
+INSERT INTO `mark` VALUES (15,10.0,10);
+UNLOCK TABLES;
+
+DROP TABLE IF EXISTS `ticketprice`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ticketprice` (
+`ticketid` int(11) NOT NULL,
+`price` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+LOCK TABLES `ticketprice` WRITE;
+INSERT INTO `ticketprice` VALUES (20,30.5);
+UNLOCK TABLES;
 --
 -- Dumping events for database 'cinema'
 --
