@@ -4,9 +4,12 @@ import java.util.List;
 
 import com.example.cinema.bl.statistics.MovieLikeService;
 import com.example.cinema.blImpl.management.schedule.MovieServiceForBl;
+import com.example.cinema.data.management.MovieMapper;
 import com.example.cinema.data.statistics.MovieLikeMapper;
 import com.example.cinema.po.DateLike;
+import com.example.cinema.po.Movie;
 import com.example.cinema.vo.DateLikeVO;
+import com.example.cinema.vo.LikeMovieVO;
 import com.example.cinema.vo.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +28,8 @@ public class MovieLikeServiceImpl implements MovieLikeService {
     private MovieLikeMapper movieLikeMapper;
     @Autowired
     private MovieServiceForBl movieServiceForBl;
+    @Autowired
+    private MovieMapper movieMapper;
 
     @Override
     public ResponseVO likeMovie(int userId, int movieId) {
@@ -79,6 +84,40 @@ public class MovieLikeServiceImpl implements MovieLikeService {
         }
     }
 
+    @Override
+    public ResponseVO getTop10Movie(){
+        try {
+            List<Movie> movies=movieMapper.selectAllMovie();
+            List<Integer> likeNums=new ArrayList<Integer>();
+            List<Movie> top10Movies=new ArrayList<Movie>();
+            int i,max;
+
+            i=0;
+            while(i<movies.size()){
+                likeNums.add(movieLikeMapper.selectLikeNums(movies.get(i).getId()));
+                i+=1;
+            }
+
+            while(top10Movies.size()<likeNums.size() && top10Movies.size()<10){
+                max=0;
+                i=1;
+                while(i<likeNums.size()){
+                    if(likeNums.get(i)>likeNums.get(max)){
+                        max=i;
+                    }
+                    i+=1;
+                }
+                likeNums.set(max, -1);
+                top10Movies.add(movies.get(max));
+            }
+
+            return ResponseVO.buildSuccess(this.moviesToLikeMovieVOs(top10Movies));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseVO.buildFailure("失败");
+        }
+    }
+
     private boolean userLikeTheMovie(int userId, int movieId) {
         return movieLikeMapper.selectLikeMovie(movieId, userId) == 0 ? false : true;
     }
@@ -90,5 +129,22 @@ public class MovieLikeServiceImpl implements MovieLikeService {
             dateLikeVOList.add(new DateLikeVO(dateLike));
         }
         return dateLikeVOList;
+    }
+
+    private List<LikeMovieVO> moviesToLikeMovieVOs(List<Movie> movies){
+        int i;
+        LikeMovieVO likeMovieVO;
+        List<LikeMovieVO> likeMovieVOs=new ArrayList<LikeMovieVO>();
+
+        i=0;
+        while(i<movies.size()){
+            likeMovieVO=new LikeMovieVO();
+            likeMovieVO.setLikeNum(movieLikeMapper.selectLikeNums(movies.get(i).getId()));
+            likeMovieVO.setName(movies.get(i).getName());
+            likeMovieVOs.add(likeMovieVO);
+            i+=1;
+        }
+
+        return likeMovieVOs;
     }
 }

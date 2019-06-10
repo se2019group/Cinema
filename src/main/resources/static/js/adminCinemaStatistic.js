@@ -13,6 +13,8 @@ $(document).ready(function () {
 
     getPolularMovie();
 
+    getTop10LikeMovie();
+
     function getScheduleRate() {
 
         getRequest(
@@ -231,5 +233,43 @@ $(document).ready(function () {
                 alert(JSON.stringify(error));
             }
         )
+    }
+
+    function getTop10LikeMovie() {
+
+        getRequest(
+            '/movieLike/top10',
+            function (res) {
+                var data = res.content || [];
+                var tableData = data.map(function (item) {
+                    return item.likeNum;
+                });
+                var nameList = data.map(function (item) {
+                    return item.name;
+                });
+                var option = {
+                    title: {
+                        text: '喜欢人数排名前十的电影',
+                        subtext: '截止至' + new Date().toLocaleDateString(),
+                        x: 'center'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: nameList
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [{
+                        data: tableData,
+                        type: 'bar'
+                    }]
+                };
+                var top10LikeMovieChart = echarts.init($("#top10-like-movie-container")[0]);
+                top10LikeMovieChart.setOption(option);
+            },
+            function (error) {
+                alert(JSON.stringify(error));
+            });
     }
 });

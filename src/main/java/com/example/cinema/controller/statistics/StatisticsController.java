@@ -1,5 +1,6 @@
 package com.example.cinema.controller.statistics;
 
+import com.example.cinema.bl.statistics.MovieLikeService;
 import com.example.cinema.bl.statistics.StatisticsService;
 import com.example.cinema.vo.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ import java.util.Date;
 public class StatisticsController {
     @Autowired
     private StatisticsService statisticsService;
+    @Autowired
+    private MovieLikeService movieLikeService;
 
     @RequestMapping(value = "statistics/scheduleRate", method = RequestMethod.GET)
     public ResponseVO getScheduleRateByDate(@RequestParam(required = false) Date date){
@@ -43,7 +46,10 @@ public class StatisticsController {
         return statisticsService.getPopularMovies(days, movieNum);
     }
 
-
+    @RequestMapping(value = "movieLike/top10", method = RequestMethod.GET)
+    public ResponseVO getTop10Movie(){
+        return movieLikeService.getTop10Movie();
+    }
 
 
 

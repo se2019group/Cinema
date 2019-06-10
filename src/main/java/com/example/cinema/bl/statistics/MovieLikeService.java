@@ -36,4 +36,10 @@ public interface MovieLikeService {
      * @return
      */
     ResponseVO getLikeNumsGroupByDate(int movieId);
+
+    /**
+     * 获得拥有前十喜爱人数的电影列表。该列表的排序根据电影的喜爱人数从大到小。
+     * @return
+     */
+    ResponseVO getTop10Movie();
 }
