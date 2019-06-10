@@ -1,5 +1,6 @@
 package com.example.cinema.blImpl.sales;
 
+import java.text.DecimalFormat;
 import com.example.cinema.bl.promotion.*;
 import com.example.cinema.bl.sales.TicketService;
 import com.example.cinema.blImpl.management.hall.HallServiceForBl;
@@ -437,7 +438,8 @@ public class TicketServiceImpl implements TicketService {
         VIPCard vip=vipCardMapper.selectCardByUserId(userid);
         int scheduleId=ticket.getScheduleId();
         ScheduleItem s= scheduleService.getScheduleItemById(scheduleId);
-        double amount=s.getFare();
+        Price p=ticketMapper.selectTicketPriceById(ticketId);
+        double amount=p.getprice();
         Date start_time=s.getStartTime();
         Date nowtime= new Date();
         List<TicketPromotion> t=ticketPromotionMapper.getPromotion(1);
@@ -491,5 +493,20 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public ResponseVO getscheduleId(int ticketId){
         return ResponseVO.buildSuccess(ticketMapper.selectTicketById(ticketId).getScheduleId());
+    }
+    @Override
+    public ResponseVO TicketPrice(double totalcost,List<Integer> ticketIds){
+                 int n=ticketIds.size();
+                 double price=totalcost/(double) n;
+        DecimalFormat    df   = new DecimalFormat("######0.00");
+        String str_price=df.format(price);
+        double lastprice=Double.parseDouble(str_price);
+        int i=0;
+        while(i<n){
+            ticketMapper.insertTicketPrice(ticketIds.get(i),lastprice);
+            i++;
+        }
+        return ResponseVO.buildSuccess();
+
     }
 }

@@ -16,9 +16,16 @@
         </foreach>
 
     </insert>
-
+    <insert id="insertTicketPrice">
+        insert into ticketprice(ticketid,price)
+        values(#{ticketid}, #{price})
+    </insert>
     <select id="selectTicketById" resultMap="Ticket">
         select * from ticket where id=#{id}
+    </select>
+
+    <select id=" selectTicketPriceById" resultMap="Price">
+        select * from ticketprice where ticketid=#{ticketId}
     </select>
 
     <select id="selectTicketsBySchedule" resultMap="Ticket">
@@ -50,6 +57,10 @@
         <result column="row_index" property="rowIndex"></result>
         <result column="state" property="state"></result>
         <result column="time" property="time"></result>
+    </resultMap>
+
+    <resultMap id="Price" type="com.example.cinema.po.Price">
+        <result column="price" property="price"></result>
     </resultMap>
 
     <update id="cleanExpiredTicket">

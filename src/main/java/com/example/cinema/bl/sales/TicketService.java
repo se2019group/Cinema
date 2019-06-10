@@ -85,4 +85,5 @@ public interface TicketService {
     ResponseVO TicketReturn(int ticketId);
     ResponseVO getCost(int ticketId);
     ResponseVO getscheduleId(int ticketId);
+    ResponseVO TicketPrice(double totalcost,List<Integer> ticketIds);
 }

@@ -422,11 +422,12 @@ DROP TABLE IF EXISTS `mark`;
 CREATE TABLE `mark` (
 `userid` int(11) NOT NULL,
 `mark` float NOT NULL,
-`movieid` int(11) NOT NULL
+`movieid` int(11) NOT NULL,
+`text` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 LOCK TABLES `mark` WRITE;
-INSERT INTO `mark` VALUES (15,10.0,10);
+INSERT INTO `mark` VALUES (15,10.0,10,"");
 UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `ticketprice`;
