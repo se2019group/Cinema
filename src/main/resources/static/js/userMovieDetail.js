@@ -3,8 +3,9 @@ var movieId;
 
 $(document).ready(function () {
     movieId = parseInt(window.location.href.split('?')[1].split('&')[0].split('=')[1]);
-
     getSchedule();
+
+
 
     function getSchedule() {
         getRequest(
@@ -23,6 +24,8 @@ $(document).ready(function () {
             }
         );
     }
+
+
 
 });
 

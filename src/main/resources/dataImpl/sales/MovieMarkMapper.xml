@@ -16,6 +16,9 @@
         <result column="text" property="text"></result>
     </resultMap>
 
+    <select id="selectRecordsByMovieId" resultMap="MarkRecord">
+        select * from mark where movieid=#{movieid}
+    </select>
 
 
 </mapper>

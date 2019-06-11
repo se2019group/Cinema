@@ -48,10 +48,17 @@ public interface StatisticsService {
      */
     ResponseVO getPopularMovies(int days, int movieNum);
 
-//    /**
-//     * 计算电影总评分
-//     * @param movieId
-//     * @return
-//     */
-//    ResponseVO getMarkRecord(int movieId);
+    /**
+     * 计算电影总评分
+     * @param movieId
+     * @return
+     */
+    ResponseVO getMarkRecord(int movieId);
+
+    /**
+     * 得到所有评论
+     * @param movieId
+     * @return
+     */
+    ResponseVO getAllComments(int movieId);
 }

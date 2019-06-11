@@ -1,5 +1,6 @@
 package com.example.cinema.data.sales;
 
+import com.example.cinema.po.MarkRecord;
 import com.example.cinema.po.Price;
 import com.example.cinema.po.Ticket;
 import org.apache.ibatis.annotations.Mapper;
@@ -23,7 +24,12 @@ public interface MovieMarkMapper {
      */
     int insertEvaluation(@Param("userid") int userid,@Param("ticketid")int ticketid,@Param("mark")double mark,@Param("movieid")int movieid,@Param("text")String text);
 
-
+    /**
+     * 根据movieId查询评分记录
+     * @param movieid
+     * @return
+     */
+    List<MarkRecord> selectRecordsByMovieId(@Param("movieid")int movieid);
 
 
 

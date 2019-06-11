@@ -51,6 +51,16 @@ public class StatisticsController {
         return movieLikeService.getTop10Movie();
     }
 
+    @RequestMapping(value = "movieMark/average", method = RequestMethod.GET)
+    public ResponseVO getMarkRecord(@RequestParam int movieId){
+        return statisticsService.getMarkRecord(movieId);
+    }
+
+    @RequestMapping(value = "movieMark/comment", method = RequestMethod.GET)
+    public ResponseVO getAllComments(@RequestParam int movieId){
+        return statisticsService.getAllComments(movieId);
+    }
+
 
 
 

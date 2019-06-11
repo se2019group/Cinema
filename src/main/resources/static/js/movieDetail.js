@@ -6,8 +6,44 @@ $(document).ready(function () {
     var startDate;
 
     getMovie();
+    getAverageMark();
+    getComments();
+
     if (sessionStorage.getItem('role') === 'admin')
         getMovieLikeChart();
+
+
+function getAverageMark() {
+            getRequest(
+                '/movieMark/average/?movieId=' + movieId,
+                function (res) {
+                    if (res.success) {
+                        mark=res.content;
+                        alert("电影评分"+mark);
+                    } else {
+                        alert("fail");
+                    }
+                },
+                function (error) {
+                    alert(error);
+                }
+            );
+        }
+function getComments() {
+            getRequest(
+                '/movieMark/comment/?movieId=' + movieId,
+                function (res) {
+                    if (res.success) {
+                        ;
+                    } else {
+                        alert("fail");
+                    }
+                },
+                function (error) {
+                    alert(error);
+                }
+            );
+        }
 
     function getMovieLikeChart() {
         getRequest(

@@ -12,6 +12,7 @@ import com.example.cinema.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -212,13 +213,49 @@ public class StatisticsServiceImpl implements StatisticsService {
         return movieTotalBoxOfficeVOList;
     }
 
-//    @Autowired
-//    public ResponseVO getMarkRecord(int movieId){
-//        try{
-//            MarkRecordForm markRecordForm =movieMarkMapper.seletRecordByMovieId(movieId);
-//            return ResponseVO.buildSuccess();
-//        }catch (Exception e){
-//            return ResponseVO.buildFailure("失败");
-//        }
-//    }
+    /**
+     * 求某部电影评分
+     * @param movieId
+     * @return
+     */
+    @Override
+    public ResponseVO getMarkRecord(int movieId){
+        try{
+            List <MarkRecord> markRecords =movieMarkMapper.selectRecordsByMovieId(movieId);
+            double sumOfMark=0.0;
+            double averageMark=0.0;
+            for(int i=0;i<markRecords.size();i++){
+                sumOfMark=sumOfMark+markRecords.get(i).getMark();
+            }
+            if(markRecords.size()!=0)
+                averageMark=(double)sumOfMark/markRecords.size();
+            else
+                averageMark=0;
+            DecimalFormat decimalFormat = new DecimalFormat(".00");
+            String result=decimalFormat.format(averageMark);
+            return ResponseVO.buildSuccess(result);
+        }catch (Exception e){
+            return ResponseVO.buildFailure("求电影评分失败");
+        }
+    }
+
+    @Override
+    public ResponseVO getAllComments(int movieId){
+        try{
+            List <MarkRecord> markRecords =movieMarkMapper.selectRecordsByMovieId(movieId);
+            ArrayList <String> comments=new ArrayList<String>();
+            for (int i=0;i<markRecords.size();i++){
+                if(markRecords.get(i).getComment()!=""){
+                    comments.add(markRecords.get(i).getComment());
+                }
+            }
+            for (int i=0;i<comments.size();i++){
+                if (comments.get(i)!=null)
+                    System.out.println(comments.get(i));
+            }
+            return ResponseVO.buildSuccess(comments);
+        }catch (Exception e){
+            return ResponseVO.buildFailure("求电影评论失败");
+        }
+    }
 }

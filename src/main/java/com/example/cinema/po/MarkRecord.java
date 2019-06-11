@@ -2,33 +2,33 @@ package com.example.cinema.po;
 
 public class MarkRecord {
 
-    private int userId;
+    private int userid;
 
     private double mark;
 
-    private int movieId;
+    private int movieid;
 
-    private int ticketId;
+    private int ticketid;
 
-    private String comment;
+    private String text;
 
-    public int getUserId(){ return userId;}
+    public int getUserId(){ return userid;}
 
-    public void setUserId(int userId){ this.userId=userId;}
+    public void setUserId(int userId){ this.userid=userId;}
 
-    public int getMovieId(){ return movieId;}
+    public int getMovieId(){ return movieid;}
 
-    public void setMovieId(int movieId){ this.movieId=movieId;}
+    public void setMovieId(int movieId){ this.movieid=movieId;}
 
-    public int getTicketId(){ return ticketId;}
+    public int getTicketId(){ return ticketid;}
 
-    public void setTicketId(int ticketId){ this.ticketId=ticketId;}
+    public void setTicketId(int ticketId){ this.ticketid=ticketId;}
 
     public double getMark(){ return mark;}
 
     public void setMark(double mark){ this.mark=mark;}
 
-    public String getComment(){ return comment;}
+    public String getComment(){ return text;}
 
-    public void setComment(String comment){ this.comment=comment;}
+    public void setComment(String text){ this.text=text;}
 }
