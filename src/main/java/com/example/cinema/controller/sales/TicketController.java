@@ -4,6 +4,7 @@ import com.example.cinema.bl.sales.TicketService;
 import com.example.cinema.po.MarkRecord;
 import com.example.cinema.po.TicketPromotion;
 import com.example.cinema.vo.ConsumeForm;
+import com.example.cinema.vo.MarkRecordForm;
 import com.example.cinema.vo.ResponseVO;
 import com.example.cinema.vo.TicketForm;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
@@ -101,7 +102,7 @@ public class TicketController {
     }
 
     @PostMapping("/evaluate")
-    public ResponseVO Evaluate(@RequestBody MarkRecord markRecord){
-        return ticketService.Evaluate(markRecord);
+    public ResponseVO Evaluate(@RequestBody MarkRecordForm markRecordForm){
+        return ticketService.Evaluate(markRecordForm);
     }
 }

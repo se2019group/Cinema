@@ -1,24 +1,12 @@
 package com.example.cinema.vo;
 
-public class MarkRecordVO {
-
-    private int userId;
+public class MarkRecordForm {
 
     private double mark;
-
-    private int movieId;
 
     private int ticketId;
 
     private String comment;
-
-    public int getUserId(){ return userId;}
-
-    public void setUserId(int userId){ this.userId=userId;}
-
-    public int getMovieId(){ return movieId;}
-
-    public void setMovieId(int movieId){ this.movieId=movieId;}
 
     public int getTicketId(){ return ticketId;}
 

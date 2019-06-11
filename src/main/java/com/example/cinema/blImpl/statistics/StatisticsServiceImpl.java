@@ -4,19 +4,11 @@ import com.example.cinema.bl.statistics.StatisticsService;
 import com.example.cinema.data.management.HallMapper;
 import com.example.cinema.data.management.MovieMapper;
 import com.example.cinema.data.management.ScheduleMapper;
+import com.example.cinema.data.sales.MovieMarkMapper;
 import com.example.cinema.data.sales.TicketMapper;
 import com.example.cinema.data.statistics.StatisticsMapper;
-import com.example.cinema.po.AudiencePrice;
-import com.example.cinema.po.Hall;
-import com.example.cinema.po.Movie;
-import com.example.cinema.po.MovieScheduleTime;
-import com.example.cinema.po.MovieTotalBoxOffice;
-import com.example.cinema.po.ScheduleItem;
-import com.example.cinema.vo.AudiencePriceVO;
-import com.example.cinema.vo.MovieScheduleTimeVO;
-import com.example.cinema.vo.MovieTotalBoxOfficeVO;
-import com.example.cinema.vo.RelativeRatesVO;
-import com.example.cinema.vo.ResponseVO;
+import com.example.cinema.po.*;
+import com.example.cinema.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +35,8 @@ public class StatisticsServiceImpl implements StatisticsService {
     private TicketMapper ticketMapper;
     @Autowired
     private HallMapper hallMapper;
+    @Autowired
+    private MovieMarkMapper movieMarkMapper;
     
     @Override
     public ResponseVO getScheduleRateByDate(Date date) {
@@ -217,4 +211,14 @@ public class StatisticsServiceImpl implements StatisticsService {
         }
         return movieTotalBoxOfficeVOList;
     }
+
+//    @Autowired
+//    public ResponseVO getMarkRecord(int movieId){
+//        try{
+//            MarkRecordForm markRecordForm =movieMarkMapper.seletRecordByMovieId(movieId);
+//            return ResponseVO.buildSuccess();
+//        }catch (Exception e){
+//            return ResponseVO.buildFailure("失败");
+//        }
+//    }
 }

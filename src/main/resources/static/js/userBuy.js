@@ -267,10 +267,10 @@ listcoupon(res.content);
         }
 
         $("#mark-click").click(function () {
-                    var markRecord = getMarkRecord(ticketId);
+                    var markRecordForm = getMarkRecord(ticketId);
                     postRequest(
                         '/ticket/evaluate/',
-                        markRecord,
+                        markRecordForm,
                         function (res) {
                             if(res.success){
                                 $("#mark").modal('hide');

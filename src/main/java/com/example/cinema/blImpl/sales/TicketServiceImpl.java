@@ -517,19 +517,18 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public ResponseVO Evaluate(MarkRecord markRecord){
+    public ResponseVO Evaluate(MarkRecordForm markRecordForm){
         try{
-            Ticket ticket=ticketMapper.selectTicketById(markRecord.getTicketId());
+            Ticket ticket=ticketMapper.selectTicketById(markRecordForm.getTicketId());
             ScheduleItem scheduleItem=scheduleMapper.selectScheduleById(ticket.getScheduleId());
-            double mark=markRecord.getMark();
-            String comment=markRecord.getComment();
+            double mark=markRecordForm.getMark();
+            String comment=markRecordForm.getComment();
             if(mark==0){
                 return ResponseVO.buildFailure("评分最低不能为0");
             }
             if(!(mark>=0.0) && (mark<=10.0)){
                 return ResponseVO.buildFailure("评分数值不在0~10之间");
             }
-
             movieMarkMapper.insertEvaluation(ticket.getUserId(),ticket.getId(),mark,scheduleItem.getMovieId(),comment);
             return ResponseVO.buildSuccess();
         }catch (Exception e){

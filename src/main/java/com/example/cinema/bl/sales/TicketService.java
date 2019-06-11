@@ -1,6 +1,7 @@
 package com.example.cinema.bl.sales;
 
 import com.example.cinema.po.MarkRecord;
+import com.example.cinema.vo.MarkRecordForm;
 import com.example.cinema.po.TicketPromotion;
 import com.example.cinema.vo.ResponseVO;
 import com.example.cinema.vo.TicketForm;
@@ -90,8 +91,8 @@ public interface TicketService {
 
     /**
      * 用户评价
-     * @param markRecord
+     * @param markRecordForm
      * @return
      */
-    ResponseVO Evaluate(MarkRecord markRecord);
+    ResponseVO Evaluate(MarkRecordForm markRecordForm);
 }

@@ -57,4 +57,5 @@ public interface MovieService {
      */
     ResponseVO updateMovie(MovieForm updateMovieForm);
 
+
 }
