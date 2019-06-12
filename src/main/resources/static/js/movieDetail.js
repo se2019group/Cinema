@@ -8,6 +8,7 @@ $(document).ready(function () {
     getMovie();
     getAverageMark();
     getComments();
+    getCommentsForUser();
 
     if (sessionStorage.getItem('role') === 'admin')
         getMovieLikeChart();
@@ -44,7 +45,21 @@ function getComments() {
                 }
             );
         }
-
+function getCommentsForUser() {
+            getRequest(
+                '/movieMark/commentforUser?userId=' + userId,
+                function (res) {
+                    if (res.success) {
+                        ;
+                    } else {
+                        alert("failTOGet");
+                    }
+                },
+                function (error) {
+                    alert(error);
+                }
+            );
+        }
     function getMovieLikeChart() {
         getRequest(
             '/movie/' + movieId + '/like/date',

@@ -15,10 +15,7 @@ import org.springframework.stereotype.Service;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author fjj
@@ -243,19 +240,46 @@ public class StatisticsServiceImpl implements StatisticsService {
     public ResponseVO getAllComments(int movieId){
         try{
             List <MarkRecord> markRecords =movieMarkMapper.selectRecordsByMovieId(movieId);
-            ArrayList <String> comments=new ArrayList<String>();
-            for (int i=0;i<markRecords.size();i++){
-                if(markRecords.get(i).getComment()!=""){
-                    comments.add(markRecords.get(i).getComment());
-                }
-            }
-            for (int i=0;i<comments.size();i++){
-                if (comments.get(i)!=null)
-                    System.out.println(comments.get(i));
-            }
-            return ResponseVO.buildSuccess(comments);
+//            ArrayList <String> comments=new ArrayList<String>();
+//            for (int i=0;i<markRecords.size();i++){
+//                if(markRecords.get(i).getComment().length()!=0){
+//                    comments.add(markRecords.get(i).getComment());
+//                }
+//            }
+//            for (int i=0;i<comments.size();i++){
+//                if (comments.get(i)!=null)
+//                    System.out.println(comments.get(i));
+//            }
+            return ResponseVO.buildSuccess(markRecords);
         }catch (Exception e){
             return ResponseVO.buildFailure("求电影评论失败");
+        }
+    }
+
+    @Override
+    public ResponseVO getCommentsByUserId(int userId){
+        try{
+            List <MarkRecord> markRecords =movieMarkMapper.selectRecordsByUserId(userId);
+            ArrayList <String> comments=new ArrayList<String>();
+            ArrayList <String> commentsFormovie=new ArrayList<String>();
+            List<MovieComment> movieComments=new ArrayList<MovieComment>();
+            MovieComment movieComment;
+            for (int i=0;i<markRecords.size();i++){
+                if(markRecords.get(i).getComment().length()!=0){
+                    movieComment=new MovieComment();
+                    movieComment.setMovieId(markRecords.get(i).getMovieId());
+                    movieComment.setComment(markRecords.get(i).getComment());
+
+                    movieComments.add(movieComment);
+                }
+            }
+//            for (int i=0;i<movieComments.size();i++){
+//               System.out.print(movieComments.get(i).getComment());
+//               System.out.println(movieComments.get(i).getMovieId());
+//            }
+            return ResponseVO.buildSuccess(movieComments);
+        }catch (Exception e){
+            return ResponseVO.buildFailure("查询用户评论失败");
         }
     }
 }
