@@ -61,6 +61,9 @@ public class StatisticsController {
         return statisticsService.getAllComments(movieId);
     }
 
+    @RequestMapping(value = "movieMark/commentforUser", method = RequestMethod.GET)
+    public ResponseVO getCommentsByUserId(@RequestParam int userId){ return statisticsService.getCommentsByUserId(userId);}
+
 
 
 

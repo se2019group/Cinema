@@ -61,4 +61,11 @@ public interface StatisticsService {
      * @return
      */
     ResponseVO getAllComments(int movieId);
+
+    /**
+     * 查看某用户所有评论
+     * @param userId
+     * @return
+     */
+    ResponseVO getCommentsByUserId(int userId);
 }
