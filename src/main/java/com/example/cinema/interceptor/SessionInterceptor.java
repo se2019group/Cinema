@@ -14,11 +14,12 @@ import javax.servlet.http.HttpSession;
 public class SessionInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object handler) throws Exception{
-        HttpSession session=httpServletRequest.getSession();
-        if(null!=session && null!=session.getAttribute(InterceptorConfiguration.SESSION_KEY)){
-            return true;
-        }
-        httpServletResponse.sendRedirect("/index");
-        return false;
+//        HttpSession session=httpServletRequest.getSession();
+//        if(null!=session && null!=session.getAttribute(InterceptorConfiguration.SESSION_KEY)){
+//            return true;
+//        }
+//        httpServletResponse.sendRedirect("/index");
+//        return false;
+        return true;
     }
 }
