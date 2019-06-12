@@ -20,5 +20,8 @@
         select * from mark where movieid=#{movieid}
     </select>
 
+    <select id="selectRecordByTicketId" resultMap="MarkRecord">
+        select * from mark where ticketid=#{ticketid}
+    </select>
 
 </mapper>

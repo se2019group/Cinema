@@ -520,14 +520,16 @@ public class TicketServiceImpl implements TicketService {
     public ResponseVO Evaluate(MarkRecordForm markRecordForm){
         try{
             Ticket ticket=ticketMapper.selectTicketById(markRecordForm.getTicketId());
+            MarkRecord markRecord=movieMarkMapper.selectRecordByTicketId(ticket.getId());
+            if(markRecord!=null){
+                return ResponseVO.buildFailure("您已经评分过");
+            }
+
             ScheduleItem scheduleItem=scheduleMapper.selectScheduleById(ticket.getScheduleId());
             double mark=markRecordForm.getMark();
             String comment=markRecordForm.getComment();
-            if(mark==0){
-                return ResponseVO.buildFailure("评分最低不能为0");
-            }
-            if(!(mark>=0.0) && (mark<=10.0)){
-                return ResponseVO.buildFailure("评分数值不在0~10之间");
+            if(!(mark==1 || mark==2 || mark==3 || mark==4 || mark==5)){
+                return ResponseVO.buildFailure("评分只能为1 2 3 4 5");
             }
             movieMarkMapper.insertEvaluation(ticket.getUserId(),ticket.getId(),mark,scheduleItem.getMovieId(),comment);
             return ResponseVO.buildSuccess();

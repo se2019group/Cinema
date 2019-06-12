@@ -31,6 +31,13 @@ public interface MovieMarkMapper {
      */
     List<MarkRecord> selectRecordsByMovieId(@Param("movieid")int movieid);
 
+    /**
+     * 根据ticketId查询评分记录
+     * @param ticketid
+     * @return
+     */
+    MarkRecord selectRecordByTicketId(@Param("ticketid")int ticketid);
+
 
 
 }
