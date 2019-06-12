@@ -520,6 +520,11 @@ public class TicketServiceImpl implements TicketService {
     public ResponseVO Evaluate(MarkRecordForm markRecordForm){
         try{
             Ticket ticket=ticketMapper.selectTicketById(markRecordForm.getTicketId());
+            MarkRecord markRecord=movieMarkMapper.selectRecordByTicketId(ticket.getId());
+            if(markRecord!=null){
+                return ResponseVO.buildFailure("您已经评分过");
+            }
+
             ScheduleItem scheduleItem=scheduleMapper.selectScheduleById(ticket.getScheduleId());
             double mark=markRecordForm.getMark();
             String comment=markRecordForm.getComment();
