@@ -306,7 +306,7 @@ payConfirmClick=function () {
             if ($('#userBuy-cardNum').val() === "123123123" && $('#userBuy-cardPwd').val() === "123123") {
                 postPayRequest();
                 postConsumeRequest();
-                mark();
+                recordPrice();
                  $("#buyModal").modal('hide');
                  window.location.reload();
             } else {
@@ -376,7 +376,7 @@ postConsumeRequest=function (){
             );
 }
 
-mark=function (){
+recordPrice=function (){
  var ticketIds = new Array();
         ticketIds.push(tocompleteid);
          api =  '/ticket/price',
