@@ -347,6 +347,35 @@ function postPayRequest() {
             alert(JSON.stringify(error));
         }
     );
+}
+postConsumeRequest=function (){
+        var type=0;
+        var cost=0;
+        if (useVIP) {
+                  type=1
+              }
+        var form = {
+                  "userid": sessionStorage.getItem("id"),
+                  "type":type,
+                  "amount":totalcost,
+                  "scheduleId": scheduleId
+              };
+         console.log(form);
+        postRequest(
+                '/ticket/consume',
+                form,
+                function (res) {
+                       if (res.success) {
+                        } else {
+                            alert(res.message)
+                            }
+                        },
+                function (error) {
+                            alert(JSON.stringify(error));
+                }
+            );
+}
+
 mark=function (){
  var ticketIds = new Array();
         ticketIds.push(tocompleteid);
@@ -366,33 +395,6 @@ mark=function (){
                         }
                     );
 
-}
-postConsumeRequest=function (){
-        var type=0;
-        var cost=0;
-        if (useVIP) {
-                  type=1
-              }
-        var form = {
-                  "userid": sessionStorage.getItem("id"),
-                  "type":type,
-                  "amount":totalcost,
-                  "scheduleId": scheduleId
-              };
-        postRequest(
-                '/ticket/consume',
-                form,
-                function (res) {
-                       if (res.success) {
-                        } else {
-                            alert(res.message)
-                            }
-                        },
-                function (error) {
-                            alert(JSON.stringify(error));
-                }
-            );
-}
 }
 function validateForm() {
     var isValidate = true;
