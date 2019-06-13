@@ -98,7 +98,7 @@ public class MovieLikeServiceImpl implements MovieLikeService {
                 i+=1;
             }
 
-            while(top10Movies.size()<likeNums.size() && top10Movies.size()<4){
+            while(top10Movies.size()<likeNums.size() && top10Movies.size()<10){
                 max=0;
                 i=1;
                 while(i<likeNums.size()){

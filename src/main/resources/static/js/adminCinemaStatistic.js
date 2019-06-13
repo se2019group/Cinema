@@ -155,9 +155,9 @@ $(document).ready(function () {
 
     function getPlacingRate() {
         // todo
-        var date = new Date()
+        var placingRateDate=$('#placingrate-date-year').val()+"-"+$('#placingrate-date-month').val()+"-"+$('#placingrate-date-day').val();
         getRequest(
-            `/statistics/PlacingRate?date=${date.toISOString().split("T")[0]}`,
+            '/statistics/PlacingRate?date='+placingRateDate,
             function (res) {
                 var data = res.content || [];
                 tmp = res.content;
@@ -168,7 +168,7 @@ $(document).ready(function () {
                 var option = {
                     title: {
                         text: '所有电影排片率',
-                        subtext: '截止至' + date.toLocaleDateString(),
+                        subtext: '日期' + placingRateDate,
                         x: 'center'
                     },
                     xAxis: {
@@ -185,18 +185,17 @@ $(document).ready(function () {
                 };
                 var scheduleRateChart = echarts.init($("#place-rate-container")[0]);
                 scheduleRateChart.setOption(option);
-                $("#place-rate-container").prepend("请输入要获得的上座率的日期"+'<input type="text" name="date" value="2019-05-27">'+'<button type="button" style="height:30px;width:80px;">提交</button> ');
             },
             function (error) {
-                alert(JSON.stringify(error));
+                alert("输入格式不规范！\n格式：yyyy-mm-dd");
             }
         )
     }
 
     function getPolularMovie() {
         // todo
-        var days = 7;
-        var movieNum = 7;
+        var days = $('#popular-movie-days').val();
+        var movieNum = $('#popular-movie-num').val();
         getRequest(
             `/statistics/popular/movie?days=${days}&&movieNum=${movieNum}`,
             function (res) {
@@ -226,11 +225,9 @@ $(document).ready(function () {
                 };
                 var scheduleRateChart = echarts.init($("#popular-movie-container")[0]);
                 scheduleRateChart.setOption(option);
-                $("#popular-movie-container").prepend("请输入天数"+'<input type="text" name="dates" value="7">'+'<button type="button" style="height:30px;width:80px;">提交</button> ');
-                $("#popular-movie-container").prepend("请输入要获得排名数量"+'<input type="text" name="date" value="7">');
             },
             function (error) {
-                alert(JSON.stringify(error));
+                alert("请输入数字！");
             }
         )
     }
@@ -272,4 +269,30 @@ $(document).ready(function () {
                 alert(JSON.stringify(error));
             });
     }
+
+    $('#change-placingrate-date').click(function(){
+        var year=$('#placingrate-date-year').val();
+        var month=$('#placingrate-date-month').val();
+        var day=$('#placingrate-date-day').val();
+
+        while(year.length<4){
+            year="0"+year;
+            $('#placingrate-date-year').val(year);
+        }
+        while(month.length<2){
+            month="0"+month;
+            $('#placingrate-date-month').val(month);
+        }
+        while(day.length<2){
+            day="0"+day;
+            $('#placingrate-date-day').val(day);
+        }
+        
+        getPlacingRate();
+    })
+
+    $('#change-popular-movie').click(function(){
+
+        getPolularMovie();
+    })
 });

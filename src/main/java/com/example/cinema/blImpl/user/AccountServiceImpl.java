@@ -101,56 +101,80 @@ public class AccountServiceImpl implements AccountService {
 	public ResponseVO accountsMatched(int symbol, int target) {
 		try {
 			List<User> users=accountMapper.selectAllUser();
+			List<User> orderedUsers=new ArrayList<User>();
 			List<ConsumeRecord> consumeRecords;
-			int i,j;
-			double sum;
+			int i,j,n,max;
+			double sum,sum1,sum2;
 						
 			//满足消费金额门槛
 			i=0;
 			while(i<users.size()) {
-				consumeRecords=(List<ConsumeRecord>)ticketService.getConsume_Record(users.get(i).getId()).getContent();
-				sum=0;
-				j=0;
-				while(j<consumeRecords.size()) {
-					sum+=consumeRecords.get(j).getamount();
-					j+=1;
-				}
-				
-				if(sum<target) {
+				if(this.getTotalConsumeRecords(users.get(i).getId())<target) {
 					users.remove(i);
 					i-=1;
 				}
 				i+=1;
 			}
+			//按消费金额从大到小排序
+			n=users.size();
+			while(orderedUsers.size()<n){
+				max=0;
+				i=1;
+				while(i<users.size()){
+					if(this.getTotalConsumeRecords(users.get(i).getId())>this.getTotalConsumeRecords(users.get(max).getId())){
+						max=i;
+					}
+					i+=1;
+				}
+
+				orderedUsers.add(users.get(max));
+				users.remove(users.get(max));
+			}
 			
 			//满足人群选择
 			if(symbol==0) {
-				return ResponseVO.buildSuccess(UsersToPeopleMatcheds(users));
+				return ResponseVO.buildSuccess(UsersToPeopleMatcheds(orderedUsers));
 			}
 			else {
 				List<VIPCard> vipCards=vipCardMapper.selectAllCard();
 				
 				i=0;
-				while(i<users.size()) {
+				while(i<orderedUsers.size()) {
 					j=0;
 					while(j<vipCards.size()) {
-						if(users.get(i).getId()==vipCards.get(j).getUserId()) {
+						if(orderedUsers.get(i).getId()==vipCards.get(j).getUserId()) {
 							break;
 						}
 						j+=1;
 					}
-					if(j==users.size()) {
-						users.remove(i);
+					if(j==orderedUsers.size()) {
+						orderedUsers.remove(i);
 						i-=1;
 					}
 					i+=1;
 				}
 				
-				return ResponseVO.buildSuccess(UsersToPeopleMatcheds(users));
+				return ResponseVO.buildSuccess(UsersToPeopleMatcheds(orderedUsers));
 			}
         } catch (Exception e) {
             return ResponseVO.buildFailure(ACCOUNT_EXIST);
         }
+	}
+
+	private double getTotalConsumeRecords(int userId){
+		List<ConsumeRecord> consumeRecords;
+		int i;
+		double sum;
+
+		consumeRecords=(List<ConsumeRecord>)ticketService.getConsume_Record(userId).getContent();
+		sum=0;
+		i=0;
+		while(i<consumeRecords.size()) {
+			sum+=consumeRecords.get(i).getamount();
+			i+=1;
+		}
+			
+		return sum;
 	}
 
 	private List<PeopleMatched> UsersToPeopleMatcheds(List<User> users){
