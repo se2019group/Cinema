@@ -306,7 +306,7 @@ payConfirmClick=function () {
             if ($('#userBuy-cardNum').val() === "123123123" && $('#userBuy-cardPwd').val() === "123123") {
                 postPayRequest();
                 postConsumeRequest();
-                mark();
+                recordPrice();
                  $("#buyModal").modal('hide');
                  window.location.reload();
             } else {
@@ -347,7 +347,36 @@ function postPayRequest() {
             alert(JSON.stringify(error));
         }
     );
-mark=function (){
+}
+postConsumeRequest=function (){
+        var type=0;
+        var cost=0;
+        if (useVIP) {
+                  type=1
+              }
+        var form = {
+                  "userid": sessionStorage.getItem("id"),
+                  "type":type,
+                  "amount":totalcost,
+                  "scheduleId": scheduleId
+              };
+         console.log(form);
+        postRequest(
+                '/ticket/consume',
+                form,
+                function (res) {
+                       if (res.success) {
+                        } else {
+                            alert(res.message)
+                            }
+                        },
+                function (error) {
+                            alert(JSON.stringify(error));
+                }
+            );
+}
+
+recordPrice=function (){
  var ticketIds = new Array();
         ticketIds.push(tocompleteid);
          api =  '/ticket/price',
@@ -366,33 +395,6 @@ mark=function (){
                         }
                     );
 
-}
-postConsumeRequest=function (){
-        var type=0;
-        var cost=0;
-        if (useVIP) {
-                  type=1
-              }
-        var form = {
-                  "userid": sessionStorage.getItem("id"),
-                  "type":type,
-                  "amount":totalcost,
-                  "scheduleId": scheduleId
-              };
-        postRequest(
-                '/ticket/consume',
-                form,
-                function (res) {
-                       if (res.success) {
-                        } else {
-                            alert(res.message)
-                            }
-                        },
-                function (error) {
-                            alert(JSON.stringify(error));
-                }
-            );
-}
 }
 function validateForm() {
     var isValidate = true;

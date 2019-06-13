@@ -240,7 +240,7 @@ function payConfirmClick() {
         postPayRequest();
         if(balancenow>=cost){
         postConsumeRequest();
-        mark();}
+        recordPrice();}
     } else {
         if (validateForm()) {
             if ($('#userBuy-cardNum').val() === "123123123" && $('#userBuy-cardPwd').val() === "123123") {
@@ -253,7 +253,7 @@ function payConfirmClick() {
         }
     }
 }
-mark=function (){
+recordPrice=function (){
  var ticketIds = new Array();
     ticketVOList.forEach(function (value) {
         ticketIds.push(value.id);

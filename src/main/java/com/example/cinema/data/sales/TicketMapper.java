@@ -31,7 +31,7 @@ public interface TicketMapper {
     List<Ticket> selectTicketByUser(int userId);
 
     void insertTicketPrice(int ticketid,double price);
-    Price selectTicketPriceById(int ticketid);
+    Price selectTicketPriceById(@Param("ticketId") int ticketId);
     @Scheduled(cron = "0/1 * * * * ?")
     void cleanExpiredTicket();
 }
