@@ -521,11 +521,24 @@ public class TicketServiceImpl implements TicketService {
         try{
             Ticket ticket=ticketMapper.selectTicketById(markRecordForm.getTicketId());
             MarkRecord markRecord=movieMarkMapper.selectRecordByTicketId(ticket.getId());
+            ScheduleItem scheduleItem=scheduleMapper.selectScheduleById(ticket.getScheduleId());
+
+            long l = System.currentTimeMillis();
+            Date now=new Date(l);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            Date end = scheduleItem.getEndTime();
+            now=simpleDateFormat.parse(simpleDateFormat.format(now));
+            end=simpleDateFormat.parse(simpleDateFormat.format(end));
+
+            if(now.before(end)){
+                return ResponseVO.buildFailure("您尚未看完电影");
+            }
+
             if(markRecord!=null){
                 return ResponseVO.buildFailure("您已经评分过");
             }
 
-            ScheduleItem scheduleItem=scheduleMapper.selectScheduleById(ticket.getScheduleId());
+
             double mark=markRecordForm.getMark();
             String comment=markRecordForm.getComment();
             if(!(mark==1 || mark==2 || mark==3 || mark==4 || mark==5)){
