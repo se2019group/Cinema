@@ -298,7 +298,7 @@ payConfirmClick=function () {
         postPayRequest();
         if(balancenow>=totalcost){
         postConsumeRequest();
-        mark();}
+       recordPrice();}
          $("#buyModal").modal('hide');
           window.location.reload();
     } else {
