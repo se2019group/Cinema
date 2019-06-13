@@ -277,7 +277,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 //               System.out.print(movieComments.get(i).getComment());
 //               System.out.println(movieComments.get(i).getMovieId());
 //            }
-            return ResponseVO.buildSuccess(movieComments);
+            return ResponseVO.buildSuccess(markRecords);
         }catch (Exception e){
             return ResponseVO.buildFailure("查询用户评论失败");
         }

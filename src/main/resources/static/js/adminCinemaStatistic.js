@@ -242,7 +242,7 @@ $(document).ready(function () {
             function (res) {
                 var data = res.content || [];
                 var tableData = data.map(function (item) {
-                    return item.likeNum;
+                    return item.likeCount;
                 });
                 var nameList = data.map(function (item) {
                     return item.name;

@@ -36,9 +36,9 @@ public class AccountController {
     }
 
     @PostMapping("/logout")
-    public String logOut(HttpSession session){
+    public ResponseVO logOut(HttpSession session){
         session.removeAttribute(InterceptorConfiguration.SESSION_KEY);
-        return "index";
+        return ResponseVO.buildSuccess("index");
     }
 
     @RequestMapping(value = "/search/member",method = RequestMethod.GET)
