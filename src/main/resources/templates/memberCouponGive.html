@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>优惠券赠送</title>
+    <meta charset="UTF-8">
+    <title>VIP优惠</title>
+    <link rel="stylesheet" type="text/css" href="/css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/adminSchedule.css"/>
+
+    <!-- Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.css"/>
+    <!-- font-asesome图标库 -->
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css"/>
+
+    <!-- 引入css样式文件 -->
+    <link rel="stylesheet" type="text/css" href="/css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/userMember.css"/>
+
+    <script src="/js/jquery.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <script src="/js/request.js"></script>
+    <script src="/js/adminCouponGive.js"></script>
+</head>
+<body>
+<div class="main-container">
+    <div class="nav-left-container">
+        <div class="nav-user-container" style="margin-bottom: 50px;">
+            <img class="avatar-lg" src="/images/defaultAvatar.jpg" />
+            <p class="title">Admin</p>
+        </div>
+        <ul class="nav nav-pills nav-stacked">
+            <li role="presentation"><a href="/member/VIP/discount"><i class="icon-bar-chart"></i> 会员卡优惠</a></li>
+            <li role="presentation"><a href="/member/ticket/return"><i class="icon-bar-chart"></i> 退票策略</a></li>
+            <li role="presentation" class="active"><a href="/member/Coupon/give"><i class="icon-bar-chart"></i> 优惠券赠送</a></li>
+        </ul>
+    </div>
+
+    <div class="content-container">
+        <div class="content-header">
+            <span class="title gray-text">赠送优惠券</span>
+        </div>
+
+        <div class="card col-md-8 col-md-offset-2" style="margin:20px,0;padding: 20px">
+            <div class="header">
+                <div class="title">筛选条件</div>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="people-select"><span class="error-text">*</span>人群选择</label>
+                        <div class="col-sm-10">
+                            <select id="people-select" class="form-control">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="money-target-input"><span class="error-text">*</span>消费金额门槛</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="money-target-input" value=50>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="select-people-button">确认</button>
+            </div>
+        </div>
+
+        <!--满足的成员-->
+        <div class="card col-md-8 col-md-offset-2" style="margin:20px,0;padding: 20px">
+            <div class="header">
+                <div class="title">    满足的成员</div>
+            </div>
+            <div>
+                <table class="table table-striped" >
+                    <thead>
+                    <tr>
+                        <th>用户名</th>
+                        <th>消费金额</th>
+                        <th>充值金额</th>
+                        <th>选择</th>
+                    </tr>
+                    </thead>
+                    <tbody class="people-matched">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!--可选择的的优惠券-->
+        <div class="card col-md-8 col-md-offset-2" style="margin:20px,0;padding: 20px">
+            <div class="header">
+                <div class="title">可选择的的优惠券</div>
+            </div>
+            <div id="coupon-list"></div>
+        </div>
+        
+        <div class="card col-md-8 col-md-offset-2" style="margin:20px,0;padding: 20px">
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="coupon-give-btn">确认赠送</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

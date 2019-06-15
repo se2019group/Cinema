@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VIP优惠</title>
+    <link rel="stylesheet" type="text/css" href="/css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/adminSchedule.css"/>
+
+
+
+    <script src="/js/jquery.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <script src="/js/request.js"></script>
+    <script src="/js/adminVIPPromotion.js"></script>
+</head>
+<body>
+<div class="main-container">
+    <div class="nav-left-container">
+        <div class="nav-user-container" style="margin-bottom: 50px;">
+            <img class="avatar-lg" src="/images/defaultAvatar.jpg" />
+            <p class="title">Admin</p>
+        </div>
+        <ul class="nav nav-pills nav-stacked">
+            <li role="presentation" class="active"><a href="/member/VIP/discount"><i class="icon-bar-chart"></i> 会员卡优惠</a></li>
+            <li role="presentation"><a href="/member/ticket/return"><i class="icon-bar-chart"></i> 退票策略</a></li>
+            <li role="presentation"><a href="/member/Coupon/give"><i class="icon-bar-chart"></i> 优惠券赠送</a></li>
+        </ul>
+    </div>
+    <div class="content-container">
+        <div class="content-header">
+            <span class="title gray-text">会员卡充值赠送修改</span>
+        </div>
+        <div class="content">
+        每次到达的金额:<br>
+        <input type="text" id="target" value=200>
+        <br>
+        每次赠送的金额:<br>
+        <input type="text" id="discount" value=30>
+        <br><br>
+        <input type="button" value="确认修改" id="change">
+        </div>
+    </br>
+    </div>
+
+</div>
+</body>
+</html>

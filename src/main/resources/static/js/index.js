@@ -18,10 +18,12 @@ $(document).ready(function () {
                         window.location.href = "/admin/movie/manage"
                     }
                     else if(res.content.type==1){
-                        console.log(1)
+                        sessionStorage.setItem('role', 'admin');
+                        window.location.href = "/member/VIP/discount"
                     }
                     else if(res.content.type==0){
-                        console.log(0)
+                       sessionStorage.setItem('role', 'admin');
+                       window.location.href = "/member/movie/manage"
                     }
                     else {
                         sessionStorage.setItem('role', 'user');

@@ -68,6 +68,49 @@ public class ViewController {
     @RequestMapping(value = "/admin/movieDetail")
     public String getAdminMovieDetail(@RequestParam int id) { return "adminMovieDetail"; }
 
+    //以下是员工界面
+    @RequestMapping(value = "/member/movie/manage")
+    public String getMemberMovieManage() {
+        return "memberMovieManage";
+    }
+
+    @RequestMapping(value = "/member/session/manage")
+    public String getMemberSessionManage() {
+        return "memberScheduleManage";
+    }
+
+    @RequestMapping(value = "/member/cinema/manage")
+    public String getMemberCinemaManage() {
+        return "memberCinemaManage";
+    }
+
+    @RequestMapping(value = "/member/promotion/manage")
+    public String getMemberPromotionManage() {
+        return "memberPromotionManage";
+    }
+
+    @RequestMapping(value = "/member/cinema/statistic")
+    public String getMemberCinemaStatistic() { return "memberCinemaStatistic"; }
+
+    @RequestMapping(value = "/member/VIP/discount")
+    public String getMemberVIPdiscount() {
+        return "memberVIPdiscount";
+    }
+
+    @RequestMapping(value = "/member/ticket/return")
+    public String getMemberTickerRerun() {
+        return "memberTicketReturn";
+    }
+
+    @RequestMapping(value = "/member/Coupon/give")
+    public String getMemberCoupongive() {
+        return "memberCoupongive";
+    }
+
+    @RequestMapping(value = "/member/movieDetail")
+    public String getMemberMovieDetail(@RequestParam int id) { return "memberMovieDetail"; }
+
+    //以下是用户界面
     @RequestMapping(value = "/user/home")
     public String getUserHome() {
         return "userHome";
