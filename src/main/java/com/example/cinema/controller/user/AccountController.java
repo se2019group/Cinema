@@ -3,9 +3,7 @@ package com.example.cinema.controller.user;
 import com.example.cinema.bl.user.AccountService;
 import com.example.cinema.blImpl.user.AccountServiceImpl;
 import com.example.cinema.config.InterceptorConfiguration;
-import com.example.cinema.vo.UserForm;
-import com.example.cinema.vo.ResponseVO;
-import com.example.cinema.vo.UserVO;
+import com.example.cinema.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,8 +21,12 @@ public class AccountController {
     @PostMapping("/login")
     public ResponseVO login(@RequestBody UserForm userForm, HttpSession session){
         UserVO user = accountService.login(userForm);
-        if(user==null){
-           return ResponseVO.buildFailure(ACCOUNT_INFO_ERROR);
+        if(user==null) {
+            CinemaMemberVO member = accountService.memberlogin(userForm);
+            if (member == null) {
+                return ResponseVO.buildFailure(ACCOUNT_INFO_ERROR);
+            }
+            return ResponseVO.buildSuccess(member);
         }
         //注册session
         session.setAttribute(InterceptorConfiguration.SESSION_KEY,userForm);

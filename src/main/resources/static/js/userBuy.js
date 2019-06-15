@@ -300,7 +300,7 @@ payConfirmClick=function () {
         postConsumeRequest();
        recordPrice();}
          $("#buyModal").modal('hide');
-          window.location.reload();
+          window.location.reload();4
     } else {
         if (validateForm()) {
             if ($('#userBuy-cardNum').val() === "123123123" && $('#userBuy-cardPwd').val() === "123123") {

@@ -2,6 +2,7 @@ package com.example.cinema.data.user;
 
 import com.example.cinema.po.User;
 import com.example.cinema.vo.UserForm;
+import com.example.cinema.po.CinemaMember;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -28,7 +29,12 @@ public interface AccountMapper {
      * @return
      */
     public User getAccountByName(@Param("username") String username);
-
+    /**
+     * 根据用户名查找账号
+     * @param username
+     * @return
+     */
+    public CinemaMember getMemberByName(@Param("username") String username);
     /**
      * 根据用户id删除账号
      * @param userId

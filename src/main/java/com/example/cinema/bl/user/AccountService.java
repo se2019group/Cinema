@@ -1,8 +1,6 @@
 package com.example.cinema.bl.user;
 
-import com.example.cinema.vo.UserForm;
-import com.example.cinema.vo.ResponseVO;
-import com.example.cinema.vo.UserVO;
+import com.example.cinema.vo.*;
 
 /**
  * @author huwen
@@ -22,7 +20,11 @@ public interface AccountService {
      */
     public UserVO login(UserForm userForm);
 
-
+    /**
+     * 影院角色登录，登录成功会将用户信息保存再session中
+     * @return
+     */
+    public CinemaMemberVO memberlogin(UserForm userForm);
     /**
      * 管理员可用，删除相应id的账号
      * @param userId

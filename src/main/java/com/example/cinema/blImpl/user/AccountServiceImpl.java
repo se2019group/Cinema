@@ -7,14 +7,11 @@ import com.example.cinema.data.promotion.VIPCardMapper;
 import com.example.cinema.data.user.AccountMapper;
 import com.example.cinema.data.user.CinemaMemberMapper;
 import com.example.cinema.po.CinemaMember;
+import com.example.cinema.vo.CinemaMemberVO;
 import com.example.cinema.po.RechargeForm;
 import com.example.cinema.po.User;
 import com.example.cinema.po.VIPCard;
-import com.example.cinema.vo.UserForm;
-import com.example.cinema.vo.ConsumeRecord;
-import com.example.cinema.vo.PeopleMatched;
-import com.example.cinema.vo.ResponseVO;
-import com.example.cinema.vo.UserVO;
+import com.example.cinema.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -57,7 +54,14 @@ public class AccountServiceImpl implements AccountService {
         }
         return new UserVO(user);
     }
-
+    @Override
+	public CinemaMemberVO memberlogin(UserForm userForm){
+		CinemaMember member = accountMapper.getMemberByName(userForm.getUsername());
+		if (null == member || !member.getPassword().equals(userForm.getPassword())) {
+			return null;
+		}
+		return new CinemaMemberVO(member);
+	}
     @Override
     public ResponseVO deleteAccount(int userId){
         try{

@@ -8,6 +8,16 @@
     <select id="getAccountByName" resultMap="User">
         select * from user where username=#{username}
     </select>
+    <select id="getMemberByName" resultMap="CinemaMember">
+        select * from cinema_member where username=#{username}
+    </select>
+
+    <resultMap id="CinemaMember" type="com.example.cinema.po.CinemaMember">
+        <result column="Type" property="type"></result>
+        <result column="id" property="id"></result>
+        <result column="username" property="username"></result>
+        <result column="password" property="password"></result>
+    </resultMap>
 
     <resultMap id="User" type="com.example.cinema.po.User">
         <id column="id" property="id"></id>
