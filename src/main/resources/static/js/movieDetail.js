@@ -20,7 +20,6 @@ function getAverageMark() {
                 function (res) {
                     if (res.success) {
                         mark=res.content;
-                        alert("电影评分"+mark);
                     } else {
                         alert("fail");
                     }
