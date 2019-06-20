@@ -8,6 +8,11 @@
     <select id="getAccountByName" resultMap="User">
         select * from user where username=#{username}
     </select>
+    
+    <select id="getAccountById" resultMap="User">
+        select * from user where id=#{userId}
+    </select>
+
     <select id="getMemberByName" resultMap="CinemaMember">
         select * from cinema_member where username=#{username}
     </select>
