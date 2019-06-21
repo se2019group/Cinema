@@ -386,6 +386,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public ResponseVO Consume_Record(ConsumeForm consumeform){
+        try{
         String cardNumber="123123123";
         ConsumeRecord onerecord=new ConsumeRecord();
        onerecord.setamount(consumeform.getamount());
@@ -399,7 +400,10 @@ public class TicketServiceImpl implements TicketService {
        onerecord.setcardNumber(cardNumber);
        consumeMapper.insertConsume(onerecord);
         return ResponseVO.buildSuccess();
-
+        }catch (Exception e) {
+            e.printStackTrace();
+            return ResponseVO.buildFailure("失败");
+        }
  }
 
 
@@ -428,15 +432,21 @@ public class TicketServiceImpl implements TicketService {
         return ResponseVO.buildSuccess(ticketPromotionMapper.getPromotion(1));
     }
     @Override
-    public ResponseVO changeTicketPromotion(TicketPromotion ticketPromotion){
-        ticketPromotionMapper.changePromotion(ticketPromotion.getFullTime(),ticketPromotion.getPartTime(),ticketPromotion.getDiscounts(),ticketPromotion.getOutTime());
-        return ResponseVO.buildSuccess();
+    public ResponseVO changeTicketPromotion(TicketPromotion ticketPromotion) {
+        try {
+            ticketPromotionMapper.changePromotion(ticketPromotion.getFullTime(), ticketPromotion.getPartTime(), ticketPromotion.getDiscounts(), ticketPromotion.getOutTime());
+            return ResponseVO.buildSuccess();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseVO.buildFailure("失败");
+        }
     }
     //策略说明，在全额时间前的全部退，在全额时间与部分退款时间中，折扣退，在部分退款和不能退款中折扣上继续折扣退，在不能退款时间后不能退。
     //默认退款给VIP卡，没有VIP卡的退到银行卡，因为默认是123123123，所以相当于不退款。
     //第二次的折扣是在第一次的价格上减去百分之10，此百分之10为整数，向下取整。
     @Override
     public ResponseVO TicketReturn(int ticketId){
+        try{
         boolean canreturn=true;
         double returnamount=0;
         Ticket ticket=ticketMapper.selectTicketById(ticketId);
@@ -490,18 +500,33 @@ public class TicketServiceImpl implements TicketService {
         else{
             return ResponseVO.buildSuccess("0");
         }
+        }catch (Exception e) {
+            e.printStackTrace();
+            return ResponseVO.buildFailure("失败");
+        }
     }
     @Override
     public  ResponseVO getCost(int ticketId){
+        try{
         int ID=ticketMapper.selectTicketById(ticketId).getScheduleId();
         return ResponseVO.buildSuccess(scheduleService.getScheduleItemById(ID).getFare());
+        }catch (Exception e) {
+            e.printStackTrace();
+            return ResponseVO.buildFailure("失败");
+        }
     }
     @Override
     public ResponseVO getscheduleId(int ticketId){
+        try{
         return ResponseVO.buildSuccess(ticketMapper.selectTicketById(ticketId).getScheduleId());
+        }catch (Exception e) {
+            e.printStackTrace();
+            return ResponseVO.buildFailure("失败");
+        }
     }
     @Override
     public ResponseVO TicketPrice(double totalcost,List<Integer> ticketIds){
+        try{
                  int n=ticketIds.size();
                  double price=totalcost/(double) n;
         DecimalFormat    df   = new DecimalFormat("######0.00");
@@ -513,7 +538,10 @@ public class TicketServiceImpl implements TicketService {
             i++;
         }
         return ResponseVO.buildSuccess();
-
+        }catch (Exception e) {
+            e.printStackTrace();
+            return ResponseVO.buildFailure("失败");
+        }
     }
 
     @Override

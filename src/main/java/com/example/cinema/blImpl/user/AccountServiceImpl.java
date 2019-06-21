@@ -166,6 +166,7 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	private double getTotalConsumeRecords(int userId){
+
 		List<ConsumeRecord> consumeRecords;
 		int i;
 		double sum;

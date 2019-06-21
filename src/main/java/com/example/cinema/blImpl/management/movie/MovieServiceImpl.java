@@ -77,11 +77,15 @@ public class MovieServiceImpl implements MovieService, MovieServiceForBl {
 
     @Override
     public ResponseVO getMovieByKeyword(String keyword) {
+        try {
         if (keyword==null||keyword.equals("")){
             return ResponseVO.buildSuccess(movieList2MovieVOList(movieMapper.selectAllMovie()));
         }
         return ResponseVO.buildSuccess(movieList2MovieVOList(movieMapper.selectMovieByKeyword(keyword)));
-    }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseVO.buildFailure("失败");
+        }}
 
 
 
@@ -134,6 +138,7 @@ public class MovieServiceImpl implements MovieService, MovieServiceForBl {
      * @return
      */
     public ResponseVO preCheck(List<Integer> movieIdList){
+        try {
         Date thisTime = new Date();
         List<ScheduleItem> scheduleItems = scheduleServiceForBl.getScheduleByMovieIdList(movieIdList);
 
@@ -144,6 +149,10 @@ public class MovieServiceImpl implements MovieService, MovieServiceForBl {
             }
         }
         return ResponseVO.buildSuccess();
+        }catch (Exception e) {
+            e.printStackTrace();
+            return ResponseVO.buildFailure("失败");
+        }
     }
 
 
