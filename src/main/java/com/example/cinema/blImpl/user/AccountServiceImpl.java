@@ -104,11 +104,25 @@ public class AccountServiceImpl implements AccountService {
     @Override
 	public ResponseVO accountsMatched(int symbol, int target) {
 		try {
-			List<User> users=accountMapper.selectAllUser();
+			List<User> users;
 			List<User> orderedUsers=new ArrayList<User>();
 			List<ConsumeRecord> consumeRecords;
 			int i,j,n,max;
 			double sum,sum1,sum2;
+
+			//满足人群选择
+			if(symbol==0){
+				users=accountMapper.selectAllUser();
+			}
+			else{
+				List<VIPCard> vipCards=vipCardMapper.selectAllCard();
+				users=new ArrayList<User>();
+				i=0;
+				while(i<vipCards.size()){
+					users.add(accountMapper.getAccountById(vipCards.get(i).getUserId()));
+					i+=1;
+				}
+			}
 						
 			//满足消费金额门槛
 			i=0;
@@ -135,31 +149,8 @@ public class AccountServiceImpl implements AccountService {
 				users.remove(users.get(max));
 			}
 			
-			//满足人群选择
-			if(symbol==0) {
-				return ResponseVO.buildSuccess(UsersToPeopleMatcheds(orderedUsers));
-			}
-			else {
-				List<VIPCard> vipCards=vipCardMapper.selectAllCard();
-				
-				i=0;
-				while(i<orderedUsers.size()) {
-					j=0;
-					while(j<vipCards.size()) {
-						if(orderedUsers.get(i).getId()==vipCards.get(j).getUserId()) {
-							break;
-						}
-						j+=1;
-					}
-					if(j==orderedUsers.size()) {
-						orderedUsers.remove(i);
-						i-=1;
-					}
-					i+=1;
-				}
-				
-				return ResponseVO.buildSuccess(UsersToPeopleMatcheds(orderedUsers));
-			}
+			return ResponseVO.buildSuccess(this.UsersToPeopleMatcheds(orderedUsers));
+			
         } catch (Exception e) {
             return ResponseVO.buildFailure(ACCOUNT_EXIST);
         }

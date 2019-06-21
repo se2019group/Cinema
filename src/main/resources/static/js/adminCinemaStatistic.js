@@ -2,6 +2,7 @@ var tmp;
 
 $(document).ready(function () {
 
+    getName();
 
     getScheduleRate();
 
@@ -14,6 +15,10 @@ $(document).ready(function () {
     getPolularMovie();
 
     getTop10LikeMovie();
+
+    function getName(){
+        $('#name').html("admin");
+    }
 
     function getScheduleRate() {
 

@@ -2,7 +2,11 @@ spring:
   datasource:
      url: jdbc:mysql://localhost:3306/cinema?serverTimezone=CTT&characterEncoding=UTF-8
      username: root
+<<<<<<< HEAD
      password: SIshen123456
+=======
+     password: dyj15438
+>>>>>>> 5a82960f3927d48acb72ef0cab9b2209cb809861
      driver-class-name: com.mysql.cj.jdbc.Driver
      max-active: 200
      max-idle: 20
